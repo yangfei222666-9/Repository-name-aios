@@ -153,6 +153,11 @@ def main():
                 
                 # 记录检查耗时
                 METRICS.observe("file.check_duration", 0.01, labels={"file": watched_file.name})
+                
+                # 写入共享 Metrics 文件（供 Dashboard 读取）
+                shared_metrics_file = demo_dir.parent / "data" / "metrics_shared.json"
+                shared_metrics_file.parent.mkdir(exist_ok=True)
+                METRICS.write_snapshot(str(shared_metrics_file))
             
             time.sleep(2)
     
@@ -205,8 +210,14 @@ def main():
     print("   • 日志: aios/logs/aios.jsonl")
     print("   • Dashboard: python aios.py dashboard")
     
-    print("\n🧹 清理演示环境：")
-    print(f"   rm -rf {demo_dir}")
+    # 自动清理演示环境
+    print("\n🧹 清理演示环境...")
+    import shutil
+    try:
+        shutil.rmtree(demo_dir)
+        print("   ✅ 清理完成")
+    except Exception as e:
+        print(f"   ⚠️  清理失败: {e}")
 
 if __name__ == "__main__":
     main()
