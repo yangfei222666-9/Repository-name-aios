@@ -218,14 +218,15 @@ class AIOSCLI:
         print("🎬 AIOS 演示")
         print("=" * 60)
         print("\n选择演示场景：")
-        print("  1. 简单演示（10秒快速体验）")
+        print("  1. 文件监控 + 自动备份（推荐，真实场景，20秒）")
         print("  2. API 健康检查（真实场景，20秒）")
-        print("\n默认运行场景 2（API 健康检查）")
+        print("  3. 简单演示（10秒快速体验）")
+        print("\n默认运行场景 1（文件监控 + 自动备份）")
         print("=" * 60)
         
-        # 默认运行 API 健康检查
+        # 默认运行文件监控演示
         result = subprocess.run(
-            [self.python, "-X", "utf8", str(self.aios_root / "demo_api_health.py")],
+            [self.python, "-X", "utf8", str(self.aios_root / "demo_file_monitor.py")],
             cwd=str(self.aios_root)
         )
         
