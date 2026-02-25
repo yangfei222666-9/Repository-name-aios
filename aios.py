@@ -129,23 +129,26 @@ class AIOSCLI:
         print("   服务器启动中...")
         subprocess.Popen(
             [self.python, "-X", "utf8", str(self.aios_root / "dashboard" / "server.py")],
-            cwd=str(self.aios_root / "dashboard")
+            cwd=str(self.aios_root / "dashboard"),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
         )
         
-        # 等待服务器启动（最多5秒）
-        import socket
+        # 等待 HTTP 服务就绪（最多10秒）
+        import urllib.request
         url = "http://127.0.0.1:9091"
-        for i in range(50):  # 5秒，每次100ms
+        
+        for i in range(100):  # 10秒，每次100ms
             try:
-                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                sock.settimeout(0.1)
-                result = sock.connect_ex(("127.0.0.1", 9091))
-                sock.close()
-                if result == 0:
+                response = urllib.request.urlopen(url, timeout=0.5)
+                if response.status == 200:
                     break
             except:
                 pass
             time.sleep(0.1)
+        
+        # 额外等待500ms确保完全就绪
+        time.sleep(0.5)
         
         # 打开浏览器
         import webbrowser
