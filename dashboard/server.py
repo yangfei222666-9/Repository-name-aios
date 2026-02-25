@@ -179,7 +179,7 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
         if "/api/metrics/stream" not in str(args):
             super().log_message(format, *args)
 
-def start_server(port=9091, open_browser=True):
+def start_server(port=9091, open_browser=False):
     """启动 Dashboard 服务器"""
     try:
         with socketserver.ThreadingTCPServer(("", port), DashboardHandler) as httpd:
@@ -189,7 +189,7 @@ def start_server(port=9091, open_browser=True):
             print(f"   实时推送: 已启用（SSE）")
             print(f"\n按 Ctrl+C 停止服务器")
             
-            # 自动打开浏览器
+            # 自动打开浏览器（默认关闭，由 aios.py 控制）
             if open_browser:
                 import webbrowser
                 threading.Timer(1.0, lambda: webbrowser.open(url)).start()
