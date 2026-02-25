@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AIOS 控制台 v2</title>
+    <title>AIOS Dashboard V2 - 实时监控</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
@@ -20,9 +20,9 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #1a1f3a 0%, #0f1729 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px 40px;
-            border-bottom: 1px solid #1e2847;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -34,6 +34,7 @@
             gap: 12px;
             font-size: 24px;
             font-weight: 600;
+            color: white;
         }
 
         .logo-icon {
@@ -45,7 +46,30 @@
             gap: 20px;
             align-items: center;
             font-size: 14px;
-            color: #8b92a7;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .container {
@@ -54,6 +78,56 @@
             margin: 0 auto;
         }
 
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1e2847 0%, #151b33 100%);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #2a3555;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #8b92a7;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #e0e6ed;
+            margin-bottom: 8px;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            color: #4ade80;
+        }
+
+        .stat-change.negative {
+            color: #f87171;
+        }
+
+        /* 图表卡片 */
         .card {
             background: linear-gradient(135deg, #1e2847 0%, #151b33 100%);
             border-radius: 12px;
@@ -65,8 +139,14 @@
         .card-header {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
             margin-bottom: 20px;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 16px;
             font-weight: 600;
         }
@@ -87,1098 +167,438 @@
             height: 250px;
         }
 
-        /* 表格样式 */
-        .stats-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
+        /* 指标列表 */
+        .metrics-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .stats-table th {
-            background: rgba(255, 255, 255, 0.05);
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 12px;
-            text-align: left;
-            font-weight: 600;
-            border-bottom: 2px solid #2a3555;
-        }
-
-        .stats-table td {
-            padding: 12px;
-            border-bottom: 1px solid #2a3555;
-        }
-
-        .stats-table tr:hover {
             background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .value-current {
-            color: #3b82f6;
-            font-weight: 700;
+        .metric-name {
+            font-size: 14px;
+            color: #8b92a7;
+        }
+
+        .metric-value {
             font-size: 16px;
+            font-weight: 600;
+            color: #e0e6ed;
         }
 
-        .value-1h {
-            color: #10b981;
+        /* 事件流 */
+        .events-list {
+            max-height: 400px;
+            overflow-y: auto;
         }
 
-        .value-24h {
-            color: #f59e0b;
+        .event-item {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
         }
 
-        .value-7d {
+        .event-item:last-child {
+            border-bottom: none;
+        }
+
+        .event-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .event-icon.success {
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+        }
+
+        .event-icon.error {
+            background: rgba(248, 113, 113, 0.1);
+            color: #f87171;
+        }
+
+        .event-icon.info {
+            background: rgba(96, 165, 250, 0.1);
+            color: #60a5fa;
+        }
+
+        .event-content {
+            flex: 1;
+        }
+
+        .event-title {
+            font-size: 14px;
+            color: #e0e6ed;
+            margin-bottom: 4px;
+        }
+
+        .event-time {
+            font-size: 12px;
             color: #8b92a7;
         }
 
         .empty-state {
-            color: #6b7280;
-            font-size: 13px;
-            font-style: italic;
-        }
-
-        .last-run {
+            text-align: center;
+            padding: 60px 20px;
             color: #8b92a7;
-            font-size: 12px;
-            margin-top: 4px;
         }
 
-        /* 行为记录列表 */
-        .action-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 300px;
-            overflow-y: auto;
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
         }
 
-        .action-item {
-            display: grid;
-            grid-template-columns: 60px 1fr 1fr 80px 60px;
-            gap: 12px;
-            padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 6px;
-            font-size: 13px;
-            align-items: center;
-        }
-
-        .action-time {
-            color: #8b92a7;
-            font-size: 12px;
-        }
-
-        .action-result-success {
-            color: #10b981;
-            font-weight: 600;
-        }
-
-        .action-result-failed {
-            color: #ef4444;
-            font-weight: 600;
-        }
-
-        /* Scrollbar */
+        /* 滚动条样式 */
         ::-webkit-scrollbar {
             width: 8px;
-            height: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #1e2847;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #3b82f6;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #2563eb;
-        }
-
-        .no-data {
-            text-align: center;
-            color: #6b7280;
-            padding: 40px;
-            font-size: 14px;
+            background: rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
 <body>
+    <!-- 头部 -->
     <div class="header">
         <div class="logo">
-            <span class="logo-icon">🤖</span>
-            <span>AIOS 控制台 v2</span>
+            <span class="logo-icon">🚀</span>
+            <span>AIOS Dashboard</span>
         </div>
         <div class="header-right">
-            <button onclick="forceRefresh()" style="
-                background: #3b82f6;
-                color: white;
-                border: none;
-                padding: 6px 12px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 12px;
-            ">🔄 刷新</button>
-            <span>最后更新: <span id="last-update">--:--</span></span>
-            <span id="connection-status">🟢 就绪</span>
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span id="status-text">LIVE</span>
+            </div>
+            <span id="last-update">最后更新: --:--:--</span>
         </div>
     </div>
 
+    <!-- 主容器 -->
     <div class="container">
-        <!-- 顶部状态栏 -->
-        <div style="
-            background: linear-gradient(135deg, #1e2847 0%, #151b33 100%);
-            border-radius: 12px;
-            padding: 15px 25px;
-            border: 1px solid #2a3555;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        ">
-            <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
-                <div>
-                    <span style="color: #8b92a7; font-size: 12px;">模式</span>
-                    <span id="status-mode" style="color: #10b981; font-weight: 600; margin-left: 8px;">正常</span>
-                </div>
-                <div>
-                    <span style="color: #8b92a7; font-size: 12px;">模型</span>
-                    <span id="status-provider" style="color: #e0e6ed; font-weight: 600; margin-left: 8px;">claude-sonnet-4-6</span>
-                    <span id="status-provider-state" style="color: #10b981; margin-left: 4px;">(正常)</span>
-                </div>
-                <div>
-                    <span style="color: #8b92a7; font-size: 12px;">熔断</span>
-                    <span id="status-circuit" style="color: #10b981; font-weight: 600; margin-left: 8px;">关闭</span>
-                </div>
-                <div>
-                    <span style="color: #8b92a7; font-size: 12px;">队列</span>
-                    <span id="status-queue" style="color: #e0e6ed; font-weight: 600; margin-left: 8px;">0/0/0/0 (0/5)</span>
-                </div>
-                <div>
-                    <span style="color: #8b92a7; font-size: 12px;">心跳</span>
-                    <span id="status-heartbeat" style="color: #e0e6ed; font-weight: 600; margin-left: 8px;">--</span>
-                </div>
-                <div>
-                    <span style="color: #8b92a7; font-size: 12px;">上次活动</span>
-                    <span id="status-last-activity" style="color: #e0e6ed; font-weight: 600; margin-left: 8px;">--</span>
-                </div>
-                <div>
-                    <span style="color: #8b92a7; font-size: 12px;">下次计划</span>
-                    <span id="status-next-task" style="color: #e0e6ed; font-weight: 600; margin-left: 8px;">--</span>
-                </div>
+        <!-- 统计卡片 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">总事件数</div>
+                <div class="stat-value" id="total-events">0</div>
+                <div class="stat-change">实时统计</div>
             </div>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="generateTestLoad()" style="
-                    background: #3b82f6;
-                    color: white;
-                    border: none;
-                    padding: 6px 12px;
-                    border-radius: 6px;
-                    cursor: pointer;
-                    font-size: 12px;
-                ">🧪 生成测试负载</button>
+            <div class="stat-card">
+                <div class="stat-label">最近1小时</div>
+                <div class="stat-value" id="recent-events">0</div>
+                <div class="stat-change">活跃事件</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">成功率</div>
+                <div class="stat-value" id="success-rate">0%</div>
+                <div class="stat-change" id="success-change">运行正常</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">错误事件</div>
+                <div class="stat-value" id="error-events">0</div>
+                <div class="stat-change negative" id="error-change">需要关注</div>
             </div>
         </div>
 
-        <!-- 第一层：系统状态总览（表格化） -->
+        <!-- 图表区域 -->
         <div class="grid-2">
-            <!-- Scheduler 调度总览 -->
+            <!-- 实时指标 -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-icon">🧠</span>
-                    <span>SCHEDULER 调度总览</span>
+                    <div class="card-title">
+                        <span class="card-icon">📊</span>
+                        <span>实时指标 (Counters)</span>
+                    </div>
                 </div>
-                <table class="stats-table">
-                    <thead>
-                        <tr>
-                            <th>指标</th>
-                            <th>当前</th>
-                            <th>1h</th>
-                            <th>24h</th>
-                            <th>7d</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>决策次数</td>
-                            <td class="value-current" id="sched-current-decisions">--</td>
-                            <td class="value-1h" id="sched-1h-decisions">--</td>
-                            <td class="value-24h" id="sched-24h-decisions">--</td>
-                            <td class="value-7d" id="sched-7d-decisions">--</td>
-                        </tr>
-                        <tr>
-                            <td>执行成功率</td>
-                            <td class="value-current" id="sched-current-success">--</td>
-                            <td class="value-1h" id="sched-1h-success">--</td>
-                            <td class="value-24h" id="sched-24h-success">--</td>
-                            <td class="value-7d" id="sched-7d-success">--</td>
-                        </tr>
-                        <tr>
-                            <td>平均延迟</td>
-                            <td class="value-current" id="sched-current-latency">--</td>
-                            <td class="value-1h" id="sched-1h-latency">--</td>
-                            <td class="value-24h" id="sched-24h-latency">--</td>
-                            <td class="value-7d" id="sched-7d-latency">--</td>
-                        </tr>
-                        <tr>
-                            <td>失败次数</td>
-                            <td class="value-current" id="sched-current-failures">--</td>
-                            <td class="value-1h" id="sched-1h-failures">--</td>
-                            <td class="value-24h" id="sched-24h-failures">--</td>
-                            <td class="value-7d" id="sched-7d-failures">--</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="metrics-list" id="counters-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">📊</div>
+                        <div>暂无数据</div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Reactor 自动响应 -->
+            <!-- 系统状态 -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-icon">⚡</span>
-                    <span>REACTOR 自动响应</span>
-                </div>
-                <table class="stats-table">
-                    <thead>
-                        <tr>
-                            <th>指标</th>
-                            <th>当前</th>
-                            <th>1h</th>
-                            <th>24h</th>
-                            <th>7d</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>触发次数</td>
-                            <td class="value-current" id="react-current-triggers">--</td>
-                            <td class="value-1h" id="react-1h-triggers">--</td>
-                            <td class="value-24h" id="react-24h-triggers">--</td>
-                            <td class="value-7d" id="react-7d-triggers">--</td>
-                        </tr>
-                        <tr>
-                            <td>验证通过率</td>
-                            <td class="value-current" id="react-current-verify">--</td>
-                            <td class="value-1h" id="react-1h-verify">--</td>
-                            <td class="value-24h" id="react-24h-verify">--</td>
-                            <td class="value-7d" id="react-7d-verify">--</td>
-                        </tr>
-                        <tr>
-                            <td>平均修复耗时</td>
-                            <td class="value-current" id="react-current-duration">--</td>
-                            <td class="value-1h" id="react-1h-duration">--</td>
-                            <td class="value-24h" id="react-24h-duration">--</td>
-                            <td class="value-7d" id="react-7d-duration">--</td>
-                        </tr>
-                        <tr>
-                            <td>熔断次数</td>
-                            <td class="value-current" id="react-current-breakers">--</td>
-                            <td class="value-1h" id="react-1h-breakers">--</td>
-                            <td class="value-24h" id="react-24h-breakers">--</td>
-                            <td class="value-7d" id="react-7d-breakers">--</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- 4张永远有值的卡片 -->
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;">
-            <!-- Queue & Concurrency -->
-            <div class="card" style="padding: 20px;">
-                <div style="font-size: 14px; font-weight: 600; margin-bottom: 15px; color: #e0e6ed;">
-                    📊 队列与并发
-                </div>
-                <div style="font-size: 12px; color: #8b92a7; line-height: 1.8;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>就绪:</span>
-                        <span id="queue-ready" style="color: #e0e6ed; font-weight: 600;">0</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>运行中:</span>
-                        <span id="queue-running" style="color: #10b981; font-weight: 600;">0</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>重试中:</span>
-                        <span id="queue-retrying" style="color: #f59e0b; font-weight: 600;">0</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>死信队列:</span>
-                        <span id="queue-dlq" style="color: #ef4444; font-weight: 600;">0</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid #2a3555;">
-                        <span>并发:</span>
-                        <span id="queue-concurrency" style="color: #e0e6ed; font-weight: 600;">0/5</span>
+                    <div class="card-title">
+                        <span class="card-icon">💻</span>
+                        <span>系统状态 (Gauges)</span>
                     </div>
                 </div>
-            </div>
-
-            <!-- Circuit & Failover -->
-            <div class="card" style="padding: 20px;">
-                <div style="font-size: 14px; font-weight: 600; margin-bottom: 15px; color: #e0e6ed;">
-                    ⚡ 熔断与故障转移
-                </div>
-                <div style="font-size: 12px; color: #8b92a7; line-height: 1.8;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>状态:</span>
-                        <span id="circuit-state" style="color: #10b981; font-weight: 600;">关闭</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>24h 触发:</span>
-                        <span id="circuit-count" style="color: #e0e6ed; font-weight: 600;">0 次</span>
-                    </div>
-                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #2a3555;">
-                        <div style="color: #8b92a7; margin-bottom: 5px;">最近切换:</div>
-                        <div id="circuit-last" style="color: #e0e6ed; font-size: 11px;">无</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Alerts -->
-            <div class="card" style="padding: 20px;">
-                <div style="font-size: 14px; font-weight: 600; margin-bottom: 15px; color: #e0e6ed;">
-                    ⚠️ 告警
-                </div>
-                <div style="font-size: 12px; color: #8b92a7; line-height: 1.8;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>严重:</span>
-                        <span id="alerts-crit" style="color: #ef4444; font-weight: 600;">0</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>警告:</span>
-                        <span id="alerts-warn" style="color: #f59e0b; font-weight: 600;">0</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>信息:</span>
-                        <span id="alerts-info" style="color: #3b82f6; font-weight: 600;">0</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid #2a3555;">
-                        <span>未确认:</span>
-                        <span id="alerts-unacked" style="color: #ef4444; font-weight: 600;">0</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Skills -->
-            <div class="card" style="padding: 20px;">
-                <div style="font-size: 14px; font-weight: 600; margin-bottom: 15px; color: #e0e6ed;">
-                    🛠️ 技能面板
-                </div>
-                <div style="font-size: 12px; color: #8b92a7; line-height: 1.8;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span>已安装:</span>
-                        <span id="skills-installed" style="color: #e0e6ed; font-weight: 600;">--</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span>今日新增:</span>
-                        <span id="skills-new-today" style="color: #10b981; font-weight: 600;">0</span>
-                    </div>
-                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #2a3555;">
-                        <div style="color: #8b92a7; margin-bottom: 5px; font-size: 11px;">1h Top3 调用:</div>
-                        <div id="skills-top3" style="font-size: 11px; color: #e0e6ed; line-height: 1.6;">
-                            暂无调用
-                        </div>
+                <div class="metrics-list" id="gauges-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">💻</div>
+                        <div>暂无数据</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 第二层：事件流 + 行为记录（左右分栏） -->
-        <div class="grid-2">
-            <!-- 左侧：事件流 -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-icon">🔴</span>
-                    <span>事件流（最近20条）</span>
-                </div>
-                <!-- 摘要行 -->
-                <div style="font-size: 11px; color: #8b92a7; margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 6px;">
-                    总事件: <span id="events-total" style="color: #e0e6ed; font-weight: 600;">0</span> | 
-                    错误: <span id="events-errors" style="color: #ef4444; font-weight: 600;">0</span> | 
-                    p95延迟: <span id="events-p95" style="color: #e0e6ed; font-weight: 600;">--</span>ms | 
-                    Top类型: <span id="events-top-types" style="color: #e0e6ed; font-weight: 600;">--</span>
-                </div>
-                <!-- 过滤按钮 -->
-                <div style="margin-bottom: 10px; display: flex; gap: 8px;">
-                    <button onclick="filterEvents('all')" id="filter-all" style="
-                        background: #3b82f6;
-                        color: white;
-                        border: none;
-                        padding: 4px 8px;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        font-size: 10px;
-                    ">全部</button>
-                    <button onclick="filterEvents('key')" id="filter-key" style="
-                        background: #374151;
-                        color: white;
-                        border: none;
-                        padding: 4px 8px;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        font-size: 10px;
-                    ">只看关键</button>
-                    <button onclick="filterEvents('error')" id="filter-error" style="
-                        background: #374151;
-                        color: white;
-                        border: none;
-                        padding: 4px 8px;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        font-size: 10px;
-                    ">只看错误</button>
-                </div>
-                <div id="events-stream" style="
-                    background: #0f1729;
-                    border-radius: 8px;
-                    padding: 15px;
-                    max-height: 400px;
-                    overflow-y: auto;
-                    font-family: 'Courier New', monospace;
-                    font-size: 11px;
-                ">
-                    <div class="no-data">等待事件...</div>
-                </div>
-            </div>
-
-            <!-- 右侧：最近行为（Tab切换） -->
-            <div class="card">
-                <div class="card-header">
+        <!-- 事件流 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
                     <span class="card-icon">📝</span>
-                    <span>最近行为（最近10条）</span>
-                    <div style="margin-left: auto; display: flex; gap: 8px;">
-                        <button onclick="switchTab('reactor')" id="tab-reactor" style="
-                            background: #3b82f6;
-                            color: white;
-                            border: none;
-                            padding: 4px 8px;
-                            border-radius: 4px;
-                            cursor: pointer;
-                            font-size: 10px;
-                        ">Reactor</button>
-                        <button onclick="switchTab('scheduler')" id="tab-scheduler" style="
-                            background: #374151;
-                            color: white;
-                            border: none;
-                            padding: 4px 8px;
-                            border-radius: 4px;
-                            cursor: pointer;
-                            font-size: 10px;
-                        ">Scheduler</button>
-                    </div>
-                </div>
-                <div id="tab-content" style="max-height: 400px; overflow-y: auto;">
-                    <div class="action-list" id="reactor-actions">
-                        <div class="no-data">
-                            暂无行为（过去24h）<br>
-                            <span style="font-size: 11px; color: #6b7280;">上次行为：未记录</span><br>
-                            <button onclick="generateTestLoad()" style="
-                                background: #3b82f6;
-                                color: white;
-                                border: none;
-                                padding: 6px 12px;
-                                border-radius: 6px;
-                                cursor: pointer;
-                                font-size: 11px;
-                                margin-top: 10px;
-                            ">生成测试负载</button>
-                        </div>
-                    </div>
+                    <span>实时事件流 (最近 10 条)</span>
                 </div>
             </div>
-        </div>
-
-        <!-- 第三层：趋势可视化 -->
-        <div class="grid-2">
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-icon">📊</span>
-                    <span>每日事件量（最近7天）</span>
-                </div>
-                <div id="chart-subtitle" style="font-size: 12px; color: #8b92a7; margin-bottom: 15px;">
-                    当前：<span id="events-current">0</span> 事件/天 | 峰值：<span id="events-peak">0</span> 事件/天
-                </div>
-                <div class="chart-container">
-                    <canvas id="events-chart"></canvas>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-icon">📈</span>
-                    <span>系统进化趋势（7天）</span>
-                </div>
-                <div style="font-size: 12px; color: #8b92a7; margin-bottom: 15px;">
-                    Evolution Score: <span id="evo-score" style="color: #10b981; font-weight: 600;">0.00</span> (健康) | 
-                    Reactor 执行率: <span id="evo-reactor-rate" style="color: #3b82f6; font-weight: 600;">0%</span>
-                </div>
-                <div class="chart-container">
-                    <canvas id="evolution-chart"></canvas>
+            <div class="events-list" id="events-list">
+                <div class="empty-state">
+                    <div class="empty-icon">📝</div>
+                    <div>暂无事件</div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Chart.js 配置
-        Chart.defaults.color = '#8b92a7';
-        Chart.defaults.borderColor = '#2a3555';
+        let eventSource = null;
+        let reconnectTimer = null;
+        let isConnected = false;
 
-        let eventsChart, evolutionChart;
+        // 连接 SSE
+        function connectSSE() {
+            try {
+                eventSource = new EventSource('/api/metrics/stream');
+                
+                eventSource.onopen = function() {
+                    console.log('SSE 连接成功');
+                    setConnectionStatus(true);
+                };
 
-        // 初始化图表
-        function initCharts() {
-            // 每日事件量柱状图
-            const eventsCtx = document.getElementById('events-chart').getContext('2d');
-            eventsChart = new Chart(eventsCtx, {
-                type: 'bar',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: '事件数',
-                        data: [],
-                        backgroundColor: 'rgba(59, 130, 246, 0.8)',
-                        borderColor: 'rgba(59, 130, 246, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: '#2a3555' }
-                        },
-                        x: {
-                            grid: { display: false }
-                        }
+                eventSource.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
+                    updateDashboard(data);
+                };
+
+                eventSource.onerror = function(error) {
+                    console.error('SSE 连接错误:', error);
+                    setConnectionStatus(false);
+                    
+                    if (eventSource) {
+                        eventSource.close();
+                        eventSource = null;
                     }
-                }
-            });
-
-            // 进化趋势折线图
-            const evolutionCtx = document.getElementById('evolution-chart').getContext('2d');
-            evolutionChart = new Chart(evolutionCtx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [
-                        {
-                            label: '基线分',
-                            data: [],
-                            borderColor: '#3b82f6',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        },
-                        {
-                            label: 'Reactor分',
-                            data: [],
-                            borderColor: '#10b981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 1,
-                            grid: { color: '#2a3555' }
-                        },
-                        x: {
-                            grid: { display: false }
-                        }
+                    
+                    if (!reconnectTimer) {
+                        reconnectTimer = setTimeout(() => {
+                            reconnectTimer = null;
+                            connectSSE();
+                        }, 5000);
                     }
-                }
-            });
-        }
-
-        // 格式化空值
-        function formatValue(value, suffix = '', emptyText = '暂无数据（过去 1h）') {
-            if (value === null || value === undefined || value === 0 || value === '--') {
-                return `<span class="empty-state">${emptyText}</span>`;
+                };
+            } catch (error) {
+                console.error('创建 SSE 连接失败:', error);
+                setConnectionStatus(false);
             }
-            return value + suffix;
         }
 
-        // 格式化时间
-        function formatTime(timestamp) {
-            if (!timestamp) return '--:--';
-            const date = new Date(timestamp);
-            return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+        // 设置连接状态
+        function setConnectionStatus(connected) {
+            isConnected = connected;
+            const statusText = document.getElementById('status-text');
+            const statusDot = document.querySelector('.status-dot');
+            
+            if (connected) {
+                statusText.textContent = 'LIVE';
+                statusDot.style.background = '#4ade80';
+            } else {
+                statusText.textContent = 'OFFLINE';
+                statusDot.style.background = '#f87171';
+            }
         }
 
         // 更新 Dashboard
         function updateDashboard(data) {
             // 更新时间
             const now = new Date();
-            document.getElementById('last-update').textContent = now.toLocaleTimeString('zh-CN');
+            document.getElementById('last-update').textContent = 
+                `最后更新: ${now.toLocaleTimeString('zh-CN')}`;
 
-            // ✅ 更新顶部状态栏
-            if (data.system) {
-                const modeMap = {'NORMAL': '正常', 'DEGRADED': '降级', 'RECOVERY': '恢复中', 'MAINTENANCE': '维护', 'CIRCUIT_OPEN': '熔断'};
-                document.getElementById('status-mode').textContent = modeMap[data.system.mode] || '正常';
-                document.getElementById('status-provider').textContent = data.system.provider?.current || '--';
-                
-                const statusMap = {'OK': '正常', 'ERROR': '错误', 'DEGRADED': '降级'};
-                document.getElementById('status-provider-state').textContent = `(${statusMap[data.system.provider?.status] || '正常'})`;
-                
-                const circuitMap = {'CLOSED': '关闭', 'OPEN': '打开', 'HALF_OPEN': '半开'};
-                document.getElementById('status-circuit').textContent = circuitMap[data.system.provider?.circuit?.state] || '关闭';
-                
-                if (data.system.heartbeat?.last_seen_sec_ago !== null) {
-                    const sec = data.system.heartbeat.last_seen_sec_ago;
-                    document.getElementById('status-heartbeat').textContent = sec < 60 ? `${sec}秒前` : `${Math.floor(sec/60)}分钟前`;
-                } else {
-                    document.getElementById('status-heartbeat').textContent = '--';
-                }
-            }
+            // 更新统计卡片
+            updateStatsCards(data);
 
-            // ✅ 上次活动
-            if (data.scheduler?.last_completed) {
-                const task = data.scheduler.last_completed;
-                const taskName = task.task || 'unknown';
-                const duration = task.duration_ms || 0;
-                document.getElementById('status-last-activity').textContent = `${taskName} (${duration}ms)`;
+            // 更新 Counters
+            updateCounters(data.counters);
+
+            // 更新 Gauges
+            updateGauges(data.gauges);
+        }
+
+        // 更新统计卡片
+        function updateStatsCards(data) {
+            const counters = data.counters || {};
+            
+            // 总事件数
+            const totalEvents = counters['aios.events.total'] || 0;
+            document.getElementById('total-events').textContent = totalEvents;
+
+            // 最近1小时
+            const recentEvents = counters['aios.events.recent_1h'] || 0;
+            document.getElementById('recent-events').textContent = recentEvents;
+
+            // 错误事件
+            const errorEvents = counters['aios.events.errors'] || 0;
+            document.getElementById('error-events').textContent = errorEvents;
+
+            // 成功率
+            const gauges = data.gauges || {};
+            const successRate = gauges['aios.success_rate'] || 0;
+            document.getElementById('success-rate').textContent = successRate.toFixed(1) + '%';
+
+            // 更新成功率颜色
+            const successChange = document.getElementById('success-change');
+            if (successRate >= 90) {
+                successChange.textContent = '运行正常';
+                successChange.className = 'stat-change';
+            } else if (successRate >= 70) {
+                successChange.textContent = '需要关注';
+                successChange.className = 'stat-change';
             } else {
-                document.getElementById('status-last-activity').textContent = '--';
+                successChange.textContent = '需要修复';
+                successChange.className = 'stat-change negative';
             }
 
-            // ✅ 下次计划（从后端获取真实时间）
-            if (data.system?.next_orchestrator) {
-                document.getElementById('status-next-task').textContent = data.system.next_orchestrator;
+            // 更新错误事件颜色
+            const errorChange = document.getElementById('error-change');
+            if (errorEvents === 0) {
+                errorChange.textContent = '无错误';
+                errorChange.className = 'stat-change';
+            } else if (errorEvents < 10) {
+                errorChange.textContent = '少量错误';
+                errorChange.className = 'stat-change';
             } else {
-                document.getElementById('status-next-task').textContent = '约30分钟后 (Orchestrator)';
-            }
-
-            // ✅ 更新队列状态
-            if (data.scheduler?.queue) {
-                const q = data.scheduler.queue;
-                document.getElementById('status-queue').textContent = 
-                    `${q.ready}/${q.running}/${q.retrying}/${q.dlq} (${q.concurrency.used}/${q.concurrency.max})`;
-                
-                document.getElementById('queue-ready').textContent = q.ready;
-                document.getElementById('queue-running').textContent = q.running;
-                document.getElementById('queue-retrying').textContent = q.retrying;
-                document.getElementById('queue-dlq').textContent = q.dlq;
-                document.getElementById('queue-concurrency').textContent = `${q.concurrency.used}/${q.concurrency.max}`;
-            }
-
-            // ✅ 更新熔断状态
-            if (data.system?.provider?.circuit) {
-                const circuit = data.system.provider.circuit;
-                const circuitMap = {'CLOSED': '关闭', 'OPEN': '打开', 'HALF_OPEN': '半开'};
-                document.getElementById('circuit-state').textContent = circuitMap[circuit.state] || '关闭';
-                document.getElementById('circuit-count').textContent = `${circuit.opened_count_24h || 0} 次`;
-                document.getElementById('circuit-last').textContent = circuit.open_until || '无';
-            }
-
-            // ✅ 更新告警
-            if (data.alerts) {
-                document.getElementById('alerts-crit').textContent = data.alerts.crit || 0;
-                document.getElementById('alerts-warn').textContent = data.alerts.warn || 0;
-                document.getElementById('alerts-info').textContent = data.alerts.info || 0;
-                document.getElementById('alerts-unacked').textContent = data.alerts.unacked || 0;
-            }
-
-            // ✅ 更新技能面板
-            if (data.skills) {
-                document.getElementById('skills-installed').textContent = data.skills.installed_count || '--';
-                document.getElementById('skills-new-today').textContent = data.skills.new_today || 0;
-                
-                if (data.skills.top_calls_1h && data.skills.top_calls_1h.length > 0) {
-                    const top3Html = data.skills.top_calls_1h.slice(0, 3).map(skill => {
-                        const okRate = Math.round(skill.ok_rate * 100);
-                        const color = okRate >= 90 ? '#10b981' : okRate >= 70 ? '#f59e0b' : '#ef4444';
-                        return `<div>${skill.name}: ${skill.count} (${okRate}%)</div>`;
-                    }).join('');
-                    document.getElementById('skills-top3').innerHTML = top3Html;
-                } else {
-                    document.getElementById('skills-top3').innerHTML = '暂无调用（显示24h数据）';
-                }
-            }
-
-            // ✅ 更新事件流摘要
-            if (data.events_tail?.items && data.events_tail.items.length > 0) {
-                allEvents = data.events_tail.items;
-                
-                // 计算摘要
-                const total = allEvents.length;
-                const errors = allEvents.filter(e => e.status === 'error' || e.severity === 'ERR' || e.severity === 'CRIT').length;
-                const latencies = allEvents.map(e => e.latency_ms).filter(l => l > 0).sort((a, b) => a - b);
-                const p95 = latencies.length > 0 ? latencies[Math.floor(latencies.length * 0.95)] : 0;
-                
-                // Top3 类型
-                const typeCounts = {};
-                allEvents.forEach(e => {
-                    const type = e.event.split('.')[0];
-                    typeCounts[type] = (typeCounts[type] || 0) + 1;
-                });
-                const top3Types = Object.entries(typeCounts)
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 3)
-                    .map(([type, count]) => `${type}(${count})`)
-                    .join(' / ');
-                
-                document.getElementById('events-total').textContent = total;
-                document.getElementById('events-errors').textContent = errors;
-                document.getElementById('events-p95').textContent = p95;
-                document.getElementById('events-top-types').textContent = top3Types || '--';
-                
-                filterEvents(currentEventFilter);
-            }
-
-            // Scheduler 统计（v2 格式）
-            const scheduler = data.summary?.scheduler?.table?.rows || [];
-            scheduler.forEach(row => {
-                const key = row.key;
-                const values = row.values;
-                
-                const formatCell = (value, unit) => {
-                    if (value === null || value === undefined) {
-                        return '--';
-                    }
-                    if (unit === 'pct') {
-                        return Math.round(value * 100) + '%';
-                    }
-                    if (unit === 'ms') {
-                        return value + 'ms';
-                    }
-                    return value;
-                };
-                
-                const currentEl = document.getElementById(`sched-current-${key}`);
-                if (currentEl) {
-                    if (values.current === null) {
-                        currentEl.innerHTML = `<span class="empty-state">${row.empty_hint || '暂无数据'}</span>`;
-                    } else {
-                        currentEl.textContent = formatCell(values.current, row.unit);
-                    }
-                }
-                
-                ['1h', '24h', '7d'].forEach(window => {
-                    const el = document.getElementById(`sched-${window}-${key}`);
-                    if (el) {
-                        el.textContent = formatCell(values[window], row.unit);
-                    }
-                });
-            });
-
-            // Reactor 统计（v2 格式）
-            const reactor = data.summary?.reactor?.table?.rows || [];
-            reactor.forEach(row => {
-                const key = row.key;
-                const values = row.values;
-                
-                const formatCell = (value, unit) => {
-                    if (value === null || value === undefined) {
-                        return '--';
-                    }
-                    if (unit === 'pct') {
-                        return Math.round(value * 100) + '%';
-                    }
-                    if (unit === 'ms') {
-                        return (value / 1000).toFixed(1) + 's';
-                    }
-                    return value;
-                };
-                
-                const currentEl = document.getElementById(`react-current-${key}`);
-                if (currentEl) {
-                    if (values.current === null) {
-                        currentEl.innerHTML = `<span class="empty-state">${row.empty_hint || '暂无数据'}</span>`;
-                    } else {
-                        currentEl.textContent = formatCell(values.current, row.unit);
-                    }
-                }
-                
-                ['1h', '24h', '7d'].forEach(window => {
-                    const el = document.getElementById(`react-${window}-${key}`);
-                    if (el) {
-                        el.textContent = formatCell(values[window], row.unit);
-                    }
-                });
-            });
-
-            // 最近 Reactor 执行（改为10条）
-            const reactorRuns = data.activity?.reactor_runs || {};
-            const reactorList = document.getElementById('reactor-actions');
-            if (reactorRuns.items && reactorRuns.items.length > 0) {
-                reactorList.innerHTML = reactorRuns.items.slice(0, 10).map(action => {
-                    const resultClass = action.result === 'success' ? 'action-result-success' : 'action-result-failed';
-                    const resultText = action.result === 'success' ? '成功' : '失败';
-                    return `
-                        <div class="action-item">
-                            <span class="action-time">${formatTime(action.ts)}</span>
-                            <span>${action.trigger || '未知触发'}</span>
-                            <span>${action.action || '未知行动'}</span>
-                            <span class="${resultClass}">${resultText}</span>
-                            <span>${action.duration_ms || '--'}ms</span>
-                        </div>
-                    `;
-                }).join('');
-            } else {
-                reactorList.innerHTML = `
-                    <div class="no-data">
-                        暂无行为（过去24h）<br>
-                        <span style="font-size: 11px; color: #6b7280;">上次行为：未记录</span><br>
-                        <button onclick="generateTestLoad()" style="
-                            background: #3b82f6;
-                            color: white;
-                            border: none;
-                            padding: 6px 12px;
-                            border-radius: 6px;
-                            cursor: pointer;
-                            font-size: 11px;
-                            margin-top: 10px;
-                        ">生成测试负载</button>
-                    </div>
-                `;
-            }
-
-            // 最近 Scheduler 决策（改为10条）
-            const schedulerTop = data.activity?.scheduler_top_decisions || {};
-            const schedulerList = document.getElementById('scheduler-actions');
-            if (schedulerTop.items && schedulerTop.items.length > 0) {
-                schedulerList.innerHTML = schedulerTop.items.slice(0, 10).map(item => {
-                    const failRatePercent = Math.round(item.fail_rate * 100);
-                    const resultClass = failRatePercent < 10 ? 'action-result-success' : 'action-result-failed';
-                    return `
-                        <div class="action-item">
-                            <span>${item.type}</span>
-                            <span>次数: ${item.count}</span>
-                            <span>平均: ${item.avg_ms}ms</span>
-                            <span class="${resultClass}">失败率: ${failRatePercent}%</span>
-                            <span></span>
-                        </div>
-                    `;
-                }).join('');
-            } else {
-                schedulerList.innerHTML = `
-                    <div class="no-data">
-                        暂无决策（过去24h）<br>
-                        <span style="font-size: 11px; color: #6b7280;">上次决策：未记录</span><br>
-                        <button onclick="generateTestLoad()" style="
-                            background: #3b82f6;
-                            color: white;
-                            border: none;
-                            padding: 6px 12px;
-                            border-radius: 6px;
-                            cursor: pointer;
-                            font-size: 11px;
-                            margin-top: 10px;
-                        ">生成测试负载</button>
-                    </div>
-                `;
-            }
-
-            // 每日事件量图表（保持原有逻辑）
-            if (data.daily_events && data.daily_events.length > 0) {
-                const labels = data.daily_events.map(d => d.date);
-                const counts = data.daily_events.map(d => d.count);
-                
-                eventsChart.data.labels = labels;
-                eventsChart.data.datasets[0].data = counts;
-                eventsChart.update('none');
-                
-                const current = counts[counts.length - 1] || 0;
-                const peak = Math.max(...counts);
-                document.getElementById('events-current').textContent = current;
-                document.getElementById('events-peak').textContent = peak;
-            }
-
-            // 进化趋势图表（保持原有逻辑）
-            if (data.evolution_trend && data.evolution_trend.length > 0) {
-                const labels = data.evolution_trend.map(d => d.time);
-                const baseData = data.evolution_trend.map(d => d.base);
-                const reactorData = data.evolution_trend.map(d => d.reactor);
-                
-                evolutionChart.data.labels = labels;
-                evolutionChart.data.datasets[0].data = baseData;
-                evolutionChart.data.datasets[1].data = reactorData;
-                evolutionChart.update('none');
-                
-                const evolution = data.evolution || {};
-                document.getElementById('evo-score').textContent = (evolution.score || 0).toFixed(2);
-                const reactorRate = data.summary?.reactor?.table?.rows?.find(r => r.key === 'verify_pass_rate')?.values['1h'];
-                document.getElementById('evo-reactor-rate').textContent = reactorRate ? Math.round(reactorRate * 100) + '%' : '0%';
+                errorChange.textContent = '需要关注';
+                errorChange.className = 'stat-change negative';
             }
         }
 
-        // ✅ 事件流筛选
-        let currentEventFilter = 'all';
-        let allEvents = [];
-        
-        function filterEvents(type) {
-            currentEventFilter = type;
+        // 更新 Counters
+        function updateCounters(counters) {
+            const container = document.getElementById('counters-list');
             
-            document.getElementById('filter-all').style.background = type === 'all' ? '#3b82f6' : '#374151';
-            document.getElementById('filter-key').style.background = type === 'key' ? '#3b82f6' : '#374151';
-            document.getElementById('filter-error').style.background = type === 'error' ? '#ef4444' : '#374151';
-            
-            const eventStream = document.getElementById('events-stream');
-            let filtered = allEvents;
-            
-            if (type === 'error') {
-                filtered = allEvents.filter(e => 
-                    e.status === 'error' || 
-                    e.severity === 'ERR' ||
-                    e.severity === 'CRIT'
-                );
-            } else if (type === 'key') {
-                // 只看关键：scheduler/reactor/provider/skill/alert
-                filtered = allEvents.filter(e => {
-                    const event = e.event.toLowerCase();
-                    return event.includes('scheduler') || 
-                           event.includes('reactor') || 
-                           event.includes('provider') || 
-                           event.includes('skill') || 
-                           event.includes('alert');
-                });
-            }
-            
-            if (filtered.length === 0) {
-                eventStream.innerHTML = '<div class="no-data">无匹配事件</div>';
+            if (!counters || Object.keys(counters).length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📊</div>
+                        <div>暂无数据</div>
+                    </div>
+                `;
                 return;
             }
-            
-            eventStream.innerHTML = filtered.slice(-20).reverse().map(event => {
-                const timeStr = event.ts ? event.ts.split('T')[1].substring(0, 8) : '';
-                const statusColor = event.status === 'ok' ? '#10b981' : '#ef4444';
-                
-                return `
-                    <div style="display: grid; grid-template-columns: 70px 80px 1fr 50px 50px; gap: 8px; align-items: center; padding: 4px 0; border-bottom: 1px solid #1e2847;">
-                        <span style="font-size: 11px; color: #6b7280;">${timeStr}</span>
-                        <span style="font-size: 10px; color: #3b82f6; opacity: 0.7;">[${event.layer}]</span>
-                        <span style="font-size: 11px; color: #10b981;">${event.event}</span>
-                        <span style="font-size: 10px; color: ${statusColor}; font-weight: 600;">${event.status}</span>
-                        <span style="font-size: 10px; opacity: 0.7;">${event.latency_ms}ms</span>
+
+            let html = '';
+            for (const [key, value] of Object.entries(counters)) {
+                html += `
+                    <div class="metric-item">
+                        <span class="metric-name">${key}</span>
+                        <span class="metric-value">${value}</span>
                     </div>
                 `;
-            }).join('');
+            }
+            container.innerHTML = html;
         }
 
-        // ✅ Tab 切换
-        let currentTab = 'reactor';
-        
-        function switchTab(tab) {
-            currentTab = tab;
+        // 更新 Gauges
+        function updateGauges(gauges) {
+            const container = document.getElementById('gauges-list');
             
-            document.getElementById('tab-reactor').style.background = tab === 'reactor' ? '#3b82f6' : '#374151';
-            document.getElementById('tab-scheduler').style.background = tab === 'scheduler' ? '#3b82f6' : '#374151';
-            
-            const tabContent = document.getElementById('tab-content');
-            if (tab === 'reactor') {
-                tabContent.innerHTML = '<div class="action-list" id="reactor-actions"><div class="no-data">暂无数据</div></div>';
-            } else {
-                tabContent.innerHTML = '<div class="action-list" id="scheduler-actions"><div class="no-data">暂无数据</div></div>';
-            }
-            
-            // 重新渲染当前数据
-            if (window.lastData) {
-                updateDashboard(window.lastData);
-            }
-        }
-
-        // ✅ 生成测试负载
-        async function generateTestLoad() {
-            try {
-                const response = await fetch('/api/actions/generate_test_load', { method: 'POST' });
-                const result = await response.json();
-                if (result.success) {
-                    alert('✅ 测试负载已生成！刷新页面查看效果。');
-                    await pollSnapshot();
-                } else {
-                    alert('❌ 生成失败: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Generate test load error:', error);
-                alert('❌ 请求失败: ' + error.message);
-            }
-        }
-
-        // 强制刷新
-        async function forceRefresh() {
-            console.log('Force refresh triggered');
-            const statusElement = document.getElementById('connection-status');
-            statusElement.textContent = '🟡 刷新中...';
-            
-            try {
-                await pollSnapshot();
-                statusElement.textContent = '🟢 在线';
-            } catch (error) {
-                console.error('Force refresh failed:', error);
-                statusElement.textContent = '🔴 刷新失败';
-                setTimeout(() => {
-                    statusElement.textContent = '🟢 在线';
-                }, 2000);
-            }
-        }
-
-        // HTTP 轮询
-        let _pollInFlight = false;
-        async function pollSnapshot() {
-            if (_pollInFlight) {
-                console.log('Poll already in flight, skipping...');
+            if (!gauges || Object.keys(gauges).length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">💻</div>
+                        <div>暂无数据</div>
+                    </div>
+                `;
                 return;
             }
-            _pollInFlight = true;
+
+            let html = '';
+            for (const [key, value] of Object.entries(gauges)) {
+                const displayValue = typeof value === 'number' ? value.toFixed(2) : value;
+                html += `
+                    <div class="metric-item">
+                        <span class="metric-name">${key}</span>
+                        <span class="metric-value">${displayValue}</span>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        // 加载事件
+        async function loadEvents() {
             try {
-                console.log('Fetching snapshot v2...');
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000);
-                const response = await fetch('/api/snapshot/v2', { signal: controller.signal });
-                clearTimeout(timeoutId);
+                const response = await fetch('/api/events');
+                const events = await response.json();
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                const container = document.getElementById('events-list');
+                
+                if (!events || events.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">📝</div>
+                            <div>暂无事件</div>
+                        </div>
+                    `;
+                    return;
                 }
-                
-                const data = await response.json();
-                console.log('Snapshot v2 received:', Object.keys(data));
-                window.lastData = data;  // ✅ 保存到全局变量
-                updateDashboard(data);
+
+                let html = '';
+                events.slice(-10).reverse().forEach(event => {
+                    const level = event.level || 'info';
+                    const icon = level === 'error' ? '❌' : level === 'warn' ? '⚠️' : '✅';
+                    const iconClass = level === 'error' ? 'error' : level === 'warn' ? 'info' : 'success';
+                    const time = new Date(event.timestamp * 1000).toLocaleTimeString('zh-CN');
+                    
+                    html += `
+                        <div class="event-item">
+                            <div class="event-icon ${iconClass}">${icon}</div>
+                            <div class="event-content">
+                                <div class="event-title">${event.type || '未知事件'}</div>
+                                <div class="event-time">${time}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
             } catch (error) {
-                if (error.name !== 'AbortError') {
-                    console.error('Polling error:', error);
-                }
-            } finally {
-                _pollInFlight = false;
+                console.error('加载事件失败:', error);
             }
         }
 
         // 初始化
-        let initialized = false;
-        window.addEventListener('load', async () => {
-            if (initialized) {
-                console.log('Already initialized, skipping...');
-                return;
-            }
-            initialized = true;
-            
-            console.log('Initializing dashboard v2...');
-            initCharts();
-            
-            // 立即拉取一次数据
-            await pollSnapshot();
-            
-            console.log('Dashboard v2 initialized. Use manual refresh button.');
-        });
+        connectSSE();
+        loadEvents();
+        setInterval(loadEvents, 5000); // 每5秒刷新事件
     </script>
 </body>
 </html>
