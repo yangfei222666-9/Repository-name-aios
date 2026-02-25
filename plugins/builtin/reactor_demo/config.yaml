@@ -1,0 +1,7 @@
+enabled: true
+
+# 监听的错误类别
+target_categories:
+  - resource_error
+  - gpu_error
+  - network_error

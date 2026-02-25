@@ -1,0 +1,21 @@
+{
+  "default_view": "prod",
+  "environments": [
+    "prod",
+    "test"
+  ],
+  "filter_rules": {
+    "dashboard": {
+      "default": "prod",
+      "show_test_toggle": true
+    },
+    "evolution": {
+      "analyze_env": "prod",
+      "exclude_test_failures": true
+    },
+    "alerts": {
+      "prod_only": true,
+      "test_alerts_to_separate_channel": false
+    }
+  }
+}

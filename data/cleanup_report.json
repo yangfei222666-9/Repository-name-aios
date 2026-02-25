@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-24T09:33:20.649577",
+  "results": {
+    "events": {
+      "status": "cleaned",
+      "kept_events": 0,
+      "saved_mb": 0.0
+    },
+    "memory": {
+      "status": "archived",
+      "count": 0,
+      "files": []
+    },
+    "temp": {
+      "status": "cleaned",
+      "count": 8,
+      "files": [
+        "aios\\__pycache__",
+        "scripts\\__pycache__",
+        "aios\\agent_system\\__pycache__",
+        "aios\\core\\__pycache__",
+        "aios\\learning\\__pycache__"
+      ]
+    },
+    "disk": {
+      "status": "ok",
+      "usage_percent": 56.1,
+      "threshold_warning": 80,
+      "threshold_critical": 90
+    }
+  }
+}

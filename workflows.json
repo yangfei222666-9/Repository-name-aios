@@ -1,0 +1,142 @@
+{
+  "workflows": [
+    {
+      "id": "wf-001-daily-health-check",
+      "name": "每日健康检查",
+      "description": "每天早上 9:00 自动检查系统健康状态",
+      "enabled": true,
+      "schedule": {
+        "type": "cron",
+        "cron": "0 9 * * *",
+        "timezone": "Asia/Shanghai"
+      },
+      "steps": [
+        {
+          "name": "运行 Pipeline",
+          "type": "command",
+          "command": "python -X utf8 C:\\Users\\A\\.openclaw\\workspace\\aios\\pipeline.py run"
+        },
+        {
+          "name": "检查 Evolution Score",
+          "type": "check",
+          "condition": "evolution_score < 0.3",
+          "action": "notify",
+          "message": "⚠️ Evolution Score 低于 0.3，系统可能需要优化"
+        },
+        {
+          "name": "生成日报",
+          "type": "command",
+          "command": "python -X utf8 -m aios.learning.analyze report"
+        }
+      ],
+      "created_at": "2026-02-23T19:40:00"
+    },
+    {
+      "id": "wf-002-auto-backup",
+      "name": "自动备份",
+      "description": "每天凌晨 2:00 自动备份重要数据",
+      "enabled": true,
+      "schedule": {
+        "type": "cron",
+        "cron": "0 2 * * *",
+        "timezone": "Asia/Shanghai"
+      },
+      "steps": [
+        {
+          "name": "备份 AIOS 数据",
+          "type": "command",
+          "command": "powershell -Command \"Compress-Archive -Path C:\\Users\\A\\.openclaw\\workspace\\aios\\data -DestinationPath C:\\Users\\A\\.openclaw\\workspace\\backups\\aios-data-$(Get-Date -Format 'yyyyMMdd').zip -Force\""
+        },
+        {
+          "name": "备份 Memory",
+          "type": "command",
+          "command": "powershell -Command \"Compress-Archive -Path C:\\Users\\A\\.openclaw\\workspace\\memory -DestinationPath C:\\Users\\A\\.openclaw\\workspace\\backups\\memory-$(Get-Date -Format 'yyyyMMdd').zip -Force\""
+        },
+        {
+          "name": "清理旧备份",
+          "type": "command",
+          "command": "powershell -Command \"Get-ChildItem C:\\Users\\A\\.openclaw\\workspace\\backups -Filter *.zip | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-7)} | Remove-Item -Force\""
+        }
+      ],
+      "created_at": "2026-02-23T19:40:00"
+    },
+    {
+      "id": "wf-003-error-alert",
+      "name": "错误告警",
+      "description": "实时监控错误事件，超过阈值自动告警",
+      "enabled": true,
+      "schedule": {
+        "type": "interval",
+        "interval_minutes": 5
+      },
+      "steps": [
+        {
+          "name": "检查错误率",
+          "type": "check",
+          "condition": "error_count_1h > 10",
+          "action": "notify",
+          "message": "🚨 最近1小时错误数超过 10 个，请检查系统状态"
+        },
+        {
+          "name": "触发 Reactor",
+          "type": "command",
+          "command": "python -X utf8 C:\\Users\\A\\.openclaw\\workspace\\aios\\reactor_auto_trigger.py"
+        }
+      ],
+      "created_at": "2026-02-23T19:40:00"
+    },
+    {
+      "id": "wf-004-weekly-report",
+      "name": "周报生成",
+      "description": "每周一早上 9:00 生成周报",
+      "enabled": true,
+      "schedule": {
+        "type": "cron",
+        "cron": "0 9 * * 1",
+        "timezone": "Asia/Shanghai"
+      },
+      "steps": [
+        {
+          "name": "生成周趋势报告",
+          "type": "command",
+          "command": "python -X utf8 -m aios.scripts.trend_weekly --save --format telegram"
+        },
+        {
+          "name": "检查记忆盲区",
+          "type": "command",
+          "command": "python -X utf8 -m aios.scripts.memory_gaps --format telegram"
+        },
+        {
+          "name": "发送周报",
+          "type": "notify",
+          "message": "📊 本周 AIOS 周报已生成，请查看"
+        }
+      ],
+      "created_at": "2026-02-23T19:40:00"
+    },
+    {
+      "id": "wf-005-agent-cleanup",
+      "name": "Agent 清理",
+      "description": "每天清理闲置的 Agent",
+      "enabled": true,
+      "schedule": {
+        "type": "cron",
+        "cron": "0 0 * * *",
+        "timezone": "Asia/Shanghai"
+      },
+      "steps": [
+        {
+          "name": "清理闲置 Agent",
+          "type": "command",
+          "command": "python -X utf8 -m aios.agent_system.pool cleanup"
+        },
+        {
+          "name": "统计 Agent 使用情况",
+          "type": "command",
+          "command": "python -X utf8 -m aios.agent_system.pool status"
+        }
+      ],
+      "created_at": "2026-02-23T19:40:00"
+    }
+  ]
+}

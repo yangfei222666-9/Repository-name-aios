@@ -1,0 +1,8 @@
+enabled: true
+interval: 60  # 采集间隔（秒）
+
+# 阈值配置
+thresholds:
+  cpu_percent: 80      # CPU 使用率阈值（%）
+  memory_percent: 85   # 内存使用率阈值（%）
+  disk_percent: 90     # 磁盘使用率阈值（%）

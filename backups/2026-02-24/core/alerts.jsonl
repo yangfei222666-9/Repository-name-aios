@@ -1,0 +1,3 @@
+{"timestamp": "2026-02-24T12:07:06.295265", "type": "evolution_score", "severity": "warning", "message": "Evolution Score 偏低: 0.38 (healthy)", "data": {"score": 0.38, "grade": "healthy"}}
+{"timestamp": "2026-02-24T12:07:27.112907", "type": "evolution_score", "severity": "warning", "message": "Evolution Score 偏低: 0.38 (healthy)", "data": {"score": 0.38, "grade": "healthy"}}
+{"timestamp": "2026-02-24T12:08:43.301318", "type": "evolution_score", "severity": "warning", "message": "Evolution Score 偏低: 0.38 (healthy)", "data": {"score": 0.38, "grade": "healthy"}}

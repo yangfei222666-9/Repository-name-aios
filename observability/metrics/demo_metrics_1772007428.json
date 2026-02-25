@@ -1,0 +1,122 @@
+{
+  "created_at": 1772007420.9799306,
+  "snapshot_at": 1772007428.1045096,
+  "counters": [
+    {
+      "name": "tasks.created",
+      "labels": {
+        "scenario": "reactor",
+        "type": "monitor"
+      },
+      "value": 3.0
+    },
+    {
+      "name": "tasks.failed",
+      "labels": {
+        "error": "FileNotFoundError"
+      },
+      "value": 3.0
+    },
+    {
+      "name": "reactor.fixes",
+      "labels": {
+        "playbook": "file-not-found"
+      },
+      "value": 1.0
+    },
+    {
+      "name": "tasks.created",
+      "labels": {
+        "scenario": "self_improving",
+        "type": "code"
+      },
+      "value": 3.0
+    },
+    {
+      "name": "tasks.timeout",
+      "labels": {
+        "agent": "coder"
+      },
+      "value": 3.0
+    },
+    {
+      "name": "improvements.generated",
+      "labels": {
+        "type": "timeout_adjustment"
+      },
+      "value": 1.0
+    },
+    {
+      "name": "improvements.applied",
+      "labels": {
+        "agent": "coder"
+      },
+      "value": 1.0
+    },
+    {
+      "name": "prompt.gaps_found",
+      "labels": {},
+      "value": 2.0
+    },
+    {
+      "name": "prompt.patches_generated",
+      "labels": {},
+      "value": 2.0
+    },
+    {
+      "name": "evolution.applied",
+      "labels": {
+        "agent": "coder"
+      },
+      "value": 1.0
+    },
+    {
+      "name": "knowledge.transfers",
+      "labels": {},
+      "value": 3.0
+    }
+  ],
+  "gauges": [
+    {
+      "name": "reactor.success_rate",
+      "labels": {},
+      "value": 1.0
+    },
+    {
+      "name": "agent.success_rate",
+      "labels": {
+        "agent": "coder"
+      },
+      "value": 1.0
+    },
+    {
+      "name": "traces.collected",
+      "labels": {},
+      "value": 15.0
+    }
+  ],
+  "histograms": [
+    {
+      "name": "reactor.fix_duration_ms",
+      "labels": {},
+      "value": {
+        "count": 1,
+        "sum": 500.0,
+        "min": 500.0,
+        "max": 500.0,
+        "avg": 500.0
+      }
+    },
+    {
+      "name": "task.duration_sec",
+      "labels": {},
+      "value": {
+        "count": 3,
+        "sum": 195.0,
+        "min": 65.0,
+        "max": 65.0,
+        "avg": 65.0
+      }
+    }
+  ]
+}

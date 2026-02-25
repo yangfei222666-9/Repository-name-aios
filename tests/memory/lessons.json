@@ -1,0 +1,69 @@
+{
+  "lessons": [
+    {
+      "id": "encoding_1771877098",
+      "category": "encoding",
+      "pattern": "UnicodeError",
+      "lesson": "使用 -X utf8 参数",
+      "timestamp": "2026-02-24T04:04:58.811836",
+      "confidence": "draft"
+    },
+    {
+      "id": "path_1771877098",
+      "category": "path",
+      "pattern": "FileNotFoundError",
+      "lesson": "使用绝对路径",
+      "timestamp": "2026-02-24T04:04:58.812334",
+      "confidence": "draft"
+    },
+    {
+      "id": "permission_1771877098",
+      "category": "permission",
+      "pattern": "PermissionError",
+      "lesson": "使用管理员权限",
+      "timestamp": "2026-02-24T04:04:58.812334",
+      "confidence": "draft"
+    },
+    {
+      "id": "test_error_1771877098",
+      "category": "test_error",
+      "pattern": "timeout",
+      "lesson": "增加重试机制，使用指数退避",
+      "timestamp": "2026-02-24T04:04:58.813337",
+      "confidence": "draft"
+    },
+    {
+      "id": "encoding_1771902542",
+      "category": "encoding",
+      "pattern": "UnicodeError",
+      "lesson": "使用 -X utf8 参数",
+      "timestamp": "2026-02-24T11:09:02.484041",
+      "confidence": "draft"
+    },
+    {
+      "id": "path_1771902542",
+      "category": "path",
+      "pattern": "FileNotFoundError",
+      "lesson": "使用绝对路径",
+      "timestamp": "2026-02-24T11:09:02.484540",
+      "confidence": "draft"
+    },
+    {
+      "id": "permission_1771902542",
+      "category": "permission",
+      "pattern": "PermissionError",
+      "lesson": "使用管理员权限",
+      "timestamp": "2026-02-24T11:09:02.485042",
+      "confidence": "draft"
+    },
+    {
+      "id": "test_error_1771902542",
+      "category": "test_error",
+      "pattern": "timeout",
+      "lesson": "增加重试机制，使用指数退避",
+      "timestamp": "2026-02-24T11:09:02.485042",
+      "confidence": "draft"
+    }
+  ],
+  "rules_derived": []
+}

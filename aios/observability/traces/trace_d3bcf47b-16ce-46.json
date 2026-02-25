@@ -1,0 +1,253 @@
+{
+  "trace_id": "d3bcf47b-16ce-46",
+  "service": "AIOS-Demo",
+  "timestamp": "2026-02-25T16:03:31.233272",
+  "spans": [
+    {
+      "span_id": "21092786",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "67ec2c5e",
+      "name": "create-failing-tasks",
+      "start_time": "2026-02-25T16:03:24.117569",
+      "end_time": "2026-02-25T16:03:24.618805",
+      "duration_ms": 501,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "4ca8d766",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "67ec2c5e",
+      "name": "simulate-failures",
+      "start_time": "2026-02-25T16:03:24.618805",
+      "end_time": "2026-02-25T16:03:25.120000",
+      "duration_ms": 501,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "b8541c98",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "274c2bda",
+      "name": "execute-fix",
+      "start_time": "2026-02-25T16:03:25.420533",
+      "end_time": "2026-02-25T16:03:25.921112",
+      "duration_ms": 500,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "274c2bda",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "67ec2c5e",
+      "name": "reactor-trigger",
+      "start_time": "2026-02-25T16:03:25.120000",
+      "end_time": "2026-02-25T16:03:25.921112",
+      "duration_ms": 801,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "e4765d6f",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "67ec2c5e",
+      "name": "verify-fix",
+      "start_time": "2026-02-25T16:03:25.921112",
+      "end_time": "2026-02-25T16:03:26.222217",
+      "duration_ms": 301,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "67ec2c5e",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": null,
+      "name": "scenario-1-reactor",
+      "start_time": "2026-02-25T16:03:24.117569",
+      "end_time": "2026-02-25T16:03:26.222217",
+      "duration_ms": 2104,
+      "status": "success",
+      "tags": {
+        "scenario": "reactor_fix"
+      },
+      "logs": []
+    },
+    {
+      "span_id": "e4910687",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "75ebaa9f",
+      "name": "create-complex-tasks",
+      "start_time": "2026-02-25T16:03:26.222217",
+      "end_time": "2026-02-25T16:03:26.723295",
+      "duration_ms": 501,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "b4c6a88a",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "75ebaa9f",
+      "name": "simulate-timeouts",
+      "start_time": "2026-02-25T16:03:26.723295",
+      "end_time": "2026-02-25T16:03:27.224245",
+      "duration_ms": 500,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "bdb1d0c3",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "4f65df7e",
+      "name": "analyze-failures",
+      "start_time": "2026-02-25T16:03:27.525048",
+      "end_time": "2026-02-25T16:03:27.825758",
+      "duration_ms": 300,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "76694112",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "4f65df7e",
+      "name": "generate-improvement",
+      "start_time": "2026-02-25T16:03:27.825758",
+      "end_time": "2026-02-25T16:03:28.126805",
+      "duration_ms": 301,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "fdf9e799",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "4f65df7e",
+      "name": "apply-improvement",
+      "start_time": "2026-02-25T16:03:28.126805",
+      "end_time": "2026-02-25T16:03:28.627582",
+      "duration_ms": 500,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "e68018e2",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "4f65df7e",
+      "name": "verify-improvement",
+      "start_time": "2026-02-25T16:03:28.627582",
+      "end_time": "2026-02-25T16:03:28.928436",
+      "duration_ms": 300,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "4f65df7e",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "75ebaa9f",
+      "name": "trigger-improvement",
+      "start_time": "2026-02-25T16:03:27.224245",
+      "end_time": "2026-02-25T16:03:28.928436",
+      "duration_ms": 1704,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "75ebaa9f",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": null,
+      "name": "scenario-2-self-improving",
+      "start_time": "2026-02-25T16:03:26.222217",
+      "end_time": "2026-02-25T16:03:28.928436",
+      "duration_ms": 2706,
+      "status": "success",
+      "tags": {
+        "scenario": "self_improving"
+      },
+      "logs": []
+    },
+    {
+      "span_id": "b0ad9904",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "b1094d87",
+      "name": "collect-traces",
+      "start_time": "2026-02-25T16:03:28.928940",
+      "end_time": "2026-02-25T16:03:29.429663",
+      "duration_ms": 500,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "da52fa51",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "b1094d87",
+      "name": "analyze-prompt-gaps",
+      "start_time": "2026-02-25T16:03:29.429663",
+      "end_time": "2026-02-25T16:03:29.930590",
+      "duration_ms": 500,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "aa75696f",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "b1094d87",
+      "name": "generate-prompt-patch",
+      "start_time": "2026-02-25T16:03:29.930590",
+      "end_time": "2026-02-25T16:03:30.431556",
+      "duration_ms": 500,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "cee1a417",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "b1094d87",
+      "name": "apply-evolution",
+      "start_time": "2026-02-25T16:03:30.431556",
+      "end_time": "2026-02-25T16:03:30.932489",
+      "duration_ms": 500,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "7d69683b",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": "b1094d87",
+      "name": "share-knowledge",
+      "start_time": "2026-02-25T16:03:30.932489",
+      "end_time": "2026-02-25T16:03:31.233273",
+      "duration_ms": 300,
+      "status": "success",
+      "tags": {},
+      "logs": []
+    },
+    {
+      "span_id": "b1094d87",
+      "trace_id": "d3bcf47b-16ce-46",
+      "parent_span_id": null,
+      "name": "scenario-3-evolution",
+      "start_time": "2026-02-25T16:03:28.928436",
+      "end_time": "2026-02-25T16:03:31.233273",
+      "duration_ms": 2304,
+      "status": "success",
+      "tags": {
+        "scenario": "evolution"
+      },
+      "logs": []
+    }
+  ]
+}

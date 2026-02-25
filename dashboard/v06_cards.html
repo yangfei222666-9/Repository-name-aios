@@ -1,0 +1,119 @@
+<!-- v0.6 新增：调度与容灾总览 -->
+<div class="card">
+    <div class="card-header">
+        <span class="card-icon">⚡</span>
+        <span>调度与容灾总览 (v0.6)</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+        <!-- 队列状态 -->
+        <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px;">
+            <div style="font-size: 12px; color: #8b92a7; margin-bottom: 8px;">队列状态</div>
+            <div style="display: flex; gap: 10px; align-items: baseline;">
+                <span style="font-size: 24px; font-weight: 600;" id="v06-queue-ready">0</span>
+                <span style="font-size: 12px; color: #8b92a7;">ready</span>
+            </div>
+            <div style="font-size: 11px; color: #6b7280; margin-top: 5px;">
+                <span id="v06-queue-retrying">0</span> retrying
+            </div>
+        </div>
+
+        <!-- 并发状态 -->
+        <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px;">
+            <div style="font-size: 12px; color: #8b92a7; margin-bottom: 8px;">并发</div>
+            <div style="display: flex; gap: 10px; align-items: baseline;">
+                <span style="font-size: 24px; font-weight: 600;" id="v06-concurrency-used">0</span>
+                <span style="font-size: 12px; color: #8b92a7;">/ <span id="v06-concurrency-max">5</span></span>
+            </div>
+            <div style="font-size: 11px; color: #6b7280; margin-top: 5px;">
+                <span id="v06-running">0</span> running
+            </div>
+        </div>
+
+        <!-- DLQ -->
+        <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px;">
+            <div style="font-size: 12px; color: #8b92a7; margin-bottom: 8px;">DLQ</div>
+            <div style="display: flex; gap: 10px; align-items: baseline;">
+                <span style="font-size: 24px; font-weight: 600;" id="v06-dlq">0</span>
+                <span style="font-size: 12px; color: #8b92a7;">total</span>
+            </div>
+            <div style="font-size: 11px; color: #6b7280; margin-top: 5px;">
+                +<span id="v06-dlq-new-1h">0</span> last 1h
+            </div>
+        </div>
+
+        <!-- 性能 -->
+        <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px;">
+            <div style="font-size: 12px; color: #8b92a7; margin-bottom: 8px;">性能 P95</div>
+            <div style="display: flex; gap: 10px; align-items: baseline;">
+                <span style="font-size: 24px; font-weight: 600;" id="v06-exec-p95">0</span>
+                <span style="font-size: 12px; color: #8b92a7;">ms</span>
+            </div>
+            <div style="font-size: 11px; color: #6b7280; margin-top: 5px;">
+                wait: <span id="v06-wait-p95">0</span>ms
+            </div>
+        </div>
+    </div>
+
+    <!-- 熔断器状态 -->
+    <div style="margin-top: 15px; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <span style="font-size: 12px; color: #8b92a7;">熔断器:</span>
+            <span id="v06-circuit-status" style="font-size: 13px; font-weight: 600; color: #10b981;">CLOSED</span>
+        </div>
+        <div style="font-size: 11px; color: #6b7280;">
+            重试率: <span id="v06-retry-rate">0%</span>
+        </div>
+    </div>
+</div>
+
+<!-- v0.6 新增：Reactor 索引状态 -->
+<div class="card">
+    <div class="card-header">
+        <span class="card-icon">🔍</span>
+        <span>Reactor 索引状态 (v0.6)</span>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
+        <!-- 左侧：规则统计 -->
+        <div>
+            <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                <div style="font-size: 12px; color: #8b92a7; margin-bottom: 8px;">规则总数</div>
+                <div style="font-size: 32px; font-weight: 600;" id="v06-rules-total">0</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px;">
+                <div style="font-size: 12px; color: #8b92a7; margin-bottom: 8px;">Any 规则</div>
+                <div style="font-size: 24px; font-weight: 600;" id="v06-any-rules">0</div>
+            </div>
+        </div>
+
+        <!-- 右侧：匹配统计 -->
+        <div>
+            <div style="font-size: 13px; font-weight: 600; margin-bottom: 12px; color: #e0e6ed;">匹配统计 (1h)</div>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;">
+                    <div style="font-size: 11px; color: #8b92a7; margin-bottom: 5px;">总事件</div>
+                    <div style="font-size: 20px; font-weight: 600;" id="v06-match-total">0</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;">
+                    <div style="font-size: 11px; color: #8b92a7; margin-bottom: 5px;">平均候选</div>
+                    <div style="font-size: 20px; font-weight: 600;" id="v06-match-candidates">0</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;">
+                    <div style="font-size: 11px; color: #8b92a7; margin-bottom: 5px;">命中率</div>
+                    <div style="font-size: 20px; font-weight: 600;" id="v06-match-hitrate">0%</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;">
+                    <div style="font-size: 11px; color: #8b92a7; margin-bottom: 5px;">匹配耗时</div>
+                    <div style="font-size: 20px; font-weight: 600;"><span id="v06-match-time">0</span>ms</div>
+                </div>
+            </div>
+
+            <!-- 规则类型分布 -->
+            <div style="margin-top: 12px; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px;">
+                <div style="font-size: 11px; color: #8b92a7; margin-bottom: 8px;">规则类型分布</div>
+                <div id="v06-rules-by-type" style="font-size: 11px; color: #6b7280;">
+                    暂无数据
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

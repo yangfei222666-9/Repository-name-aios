@@ -1,0 +1,33 @@
+{
+  "id": "pb-021-file-not-found-fix",
+  "name": "文件路径不存在自动修复",
+  "description": "检测到 FileNotFoundError 时自动创建缺失路径或切换到备用路径",
+  "trigger": {
+    "rule": "file_not_found",
+    "keywords": [
+      "FileNotFoundError",
+      "Path not found",
+      "file not found",
+      "路径不存在"
+    ],
+    "severity": [
+      "WARN",
+      "ERR",
+      "high"
+    ]
+  },
+  "action": {
+    "type": "auto",
+    "command": "powershell -Command \"if (!(Test-Path 'C:\\fake\\path\\to')) { New-Item -ItemType Directory -Path 'C:\\fake\\path\\to' -Force | Out-Null }; if (!(Test-Path 'C:\\fake\\path\\to\\resource')) { New-Item -ItemType File -Path 'C:\\fake\\path\\to\\resource' -Force | Out-Null; Add-Content -Path 'C:\\fake\\path\\to\\resource' -Value 'Auto-created by AIOS Reactor' }; Write-Host 'Path created successfully'\"",
+    "risk": "low"
+  },
+  "cooldown_min": 10,
+  "enabled": true,
+  "created_at": "2026-02-25T15:50:00",
+  "success_count": 0,
+  "fail_count": 0,
+  "metadata": {
+    "auto_fix": true,
+    "verify_command": "Test-Path 'C:\\fake\\path\\to\\resource'"
+  }
+}

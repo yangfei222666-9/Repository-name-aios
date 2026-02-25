@@ -1,0 +1,890 @@
+﻿{
+    "timestamp":  "2026-02-24T13:26:09.048057",
+    "system_health":  {
+                          "status":  "idle",
+                          "events_1h":  0,
+                          "errors_1h":  0,
+                          "warnings_1h":  0,
+                          "last_event":  {
+                                             "ts":  "2026-02-24T12:59:29",
+                                             "epoch":  1771909169,
+                                             "layer":  "KERNEL",
+                                             "event":  "resource_snapshot",
+                                             "status":  "ok",
+                                             "severity":  "INFO",
+                                             "payload":  {
+                                                             "cpu_percent":  13.3,
+                                                             "memory_percent":  41.5
+                                                         }
+                                         }
+                      },
+    "agents":  {
+                   "total":  9,
+                   "active":  0,
+                   "archived":  1,
+                   "total_tasks":  3,
+                   "agents":  [
+                                  {
+                                      "id":  "analyst-620268",
+                                      "template":  "analyst",
+                                      "name":  "æ°æ®åæä¸å",
+                                      "description":  "è´è´£æ°æ®åæãç»è®¡ãå¯è§å",
+                                      "created_at":  "2026-02-22T13:20:20.268040",
+                                      "updated_at":  "2026-02-22T13:20:20.275057",
+                                      "status":  "archived",
+                                      "workspace":  "~/.openclaw/agents/analyst-620268",
+                                      "skills":  [
+
+                                                 ],
+                                      "tools":  {
+                                                    "allow":  [
+                                                                  "exec",
+                                                                  "read",
+                                                                  "write",
+                                                                  "web_search"
+                                                              ],
+                                                    "deny":  [
+                                                                 "message",
+                                                                 "cron",
+                                                                 "gateway",
+                                                                 "edit"
+                                                             ]
+                                                },
+                                      "system_prompt":  "ä½ æ¯ä¸ä¸ªä¸ä¸çæ°æ®åæä¸åãä½ çèè´£æ¯ï¼\n1. åææ°æ®è¶å¿åæ¨¡å¼\n2. çæç»è®¡æ¥å\n3. æ°æ®å¯è§å\n4. æä¾æ´å¯åå»ºè®®\n\nå·¥ä½ååï¼\n- æ°æ®é©±å¨å³ç­\n- å®¢è§ãåç¡®ãæ¸\u0085æ°\n- å\u0085³æ³¨å\u0085³é®ææ \n- æä¾å¯è¡å¨çå»ºè®®",
+                                      "model":  "claude-sonnet-4-5",
+                                      "thinking":  "low",
+                                      "stats":  {
+                                                    "tasks_completed":  0,
+                                                    "tasks_failed":  0,
+                                                    "success_rate":  0.0,
+                                                    "avg_duration_sec":  0,
+                                                    "total_duration_sec":  0,
+                                                    "last_active":  null
+                                                },
+                                      "task_description":  "åæç¨æ·æ°æ®",
+                                      "archived_at":  "2026-02-22T13:20:20.275057",
+                                      "archive_reason":  "Idle for 0+ hours"
+                                  },
+                                  {
+                                      "id":  "analyst-688334",
+                                      "template":  "analyst",
+                                      "name":  "æ°æ®åæä¸å",
+                                      "description":  "è´è´£æ°æ®åæãç»è®¡ãå¯è§å",
+                                      "created_at":  "2026-02-24T00:04:48.334245",
+                                      "updated_at":  "2026-02-24T00:04:48.334245",
+                                      "status":  "active",
+                                      "workspace":  "~/.openclaw/agents/analyst-688334",
+                                      "skills":  [
+
+                                                 ],
+                                      "tools":  {
+                                                    "allow":  [
+                                                                  "exec",
+                                                                  "read",
+                                                                  "write",
+                                                                  "web_search"
+                                                              ],
+                                                    "deny":  [
+                                                                 "message",
+                                                                 "cron",
+                                                                 "gateway",
+                                                                 "edit"
+                                                             ]
+                                                },
+                                      "system_prompt":  "ä½ æ¯ä¸ä¸ªä¸ä¸çæ°æ®åæä¸åãä½ çèè´£æ¯ï¼\n1. åææ°æ®è¶å¿åæ¨¡å¼\n2. çæç»è®¡æ¥å\n3. æ°æ®å¯è§å\n4. æä¾æ´å¯åå»ºè®®\n\nå·¥ä½ååï¼\n- æ°æ®é©±å¨å³ç­\n- å®¢è§ãåç¡®ãæ¸\u0085æ°\n- å\u0085³æ³¨å\u0085³é®ææ \n- æä¾å¯è¡å¨çå»ºè®®",
+                                      "model":  "claude-sonnet-4-5",
+                                      "thinking":  "low",
+                                      "stats":  {
+                                                    "tasks_completed":  0,
+                                                    "tasks_failed":  0,
+                                                    "success_rate":  0.0,
+                                                    "avg_duration_sec":  0,
+                                                    "total_duration_sec":  0,
+                                                    "last_active":  null
+                                                },
+                                      "task_description":  null
+                                  },
+                                  {
+                                      "id":  "coder-scheduler",
+                                      "label":  "aios-refactor-scheduler",
+                                      "session_key":  "agent:main:subagent:3c930981-458b-4c66-a48a-510ada94c4d8",
+                                      "template":  "coder",
+                                      "name":  "Coder Agent",
+                                      "status":  "active",
+                                      "task_description":  null,
+                                      "created_at":  "2026-02-24T01:12:10.930456",
+                                      "stats":  {
+                                                    "tasks_completed":  1,
+                                                    "success_rate":  0.0,
+                                                    "last_active":  "2026-02-24T01:14:08.675900"
+                                                }
+                                  },
+                                  {
+                                      "id":  "analyst-analysis",
+                                      "label":  "aios-performance-analysis",
+                                      "session_key":  "agent:main:subagent:785365ce-6dec-4f12-bfc1-73b4d988f9a5",
+                                      "template":  "analyst",
+                                      "name":  "Analyst Agent",
+                                      "status":  "active",
+                                      "task_description":  "Aios Performance Analysis",
+                                      "created_at":  "2026-02-24T01:12:10.930456",
+                                      "stats":  {
+                                                    "tasks_completed":  0,
+                                                    "success_rate":  0.0,
+                                                    "last_active":  null
+                                                }
+                                  },
+                                  {
+                                      "id":  "analyst-script",
+                                      "label":  "aios-cleanup-script",
+                                      "session_key":  "agent:main:subagent:0331e1a4-8e61-4af2-86f7-e5b4ecc60b08",
+                                      "template":  "analyst",
+                                      "name":  "Analyst Agent",
+                                      "status":  "active",
+                                      "task_description":  null,
+                                      "created_at":  "2026-02-24T01:14:08.675900",
+                                      "stats":  {
+                                                    "tasks_completed":  1,
+                                                    "success_rate":  1.0,
+                                                    "last_active":  "2026-02-24T01:14:08.675900"
+                                                }
+                                  },
+                                  {
+                                      "id":  "analyst-task",
+                                      "label":  "aios-analysis-task",
+                                      "session_key":  "agent:main:subagent:1de4f409-35ca-486f-a706-a41143a64968",
+                                      "template":  "analyst",
+                                      "name":  "Analyst Agent",
+                                      "status":  "active",
+                                      "task_description":  null,
+                                      "created_at":  "2026-02-24T01:14:08.675900",
+                                      "stats":  {
+                                                    "tasks_completed":  1,
+                                                    "success_rate":  1.0,
+                                                    "last_active":  "2026-02-24T01:14:08.675900"
+                                                }
+                                  },
+                                  {
+                                      "id":  "monitor-515385",
+                                      "template":  "monitor",
+                                      "name":  "ç³»ç»çæ§ä¸å",
+                                      "description":  "è´è´£ç³»ç»å¥åº·æ£æ¥ãæ§è½çæ§",
+                                      "created_at":  "2026-02-24T01:58:35.385149",
+                                      "updated_at":  "2026-02-24T01:58:35.385149",
+                                      "status":  "active",
+                                      "workspace":  "~/.openclaw/agents/monitor-515385",
+                                      "skills":  [
+                                                     "system-resource-monitor"
+                                                 ],
+                                      "tools":  {
+                                                    "allow":  [
+                                                                  "exec",
+                                                                  "read",
+                                                                  "web_fetch"
+                                                              ],
+                                                    "deny":  [
+                                                                 "write",
+                                                                 "edit",
+                                                                 "message",
+                                                                 "cron",
+                                                                 "gateway"
+                                                             ]
+                                                },
+                                      "system_prompt":  "ä½ æ¯ä¸ä¸ªä¸ä¸çç³»ç»çæ§ä¸åãä½ çèè´£æ¯ï¼\n1. å®ææ£æ¥ç³»ç»å¥åº·ç¶æ\n2. çæ§èµæºä½¿ç¨æ\u0085åµ\n3. åç°å¼å¸¸å¹¶åæ¶åè­¦\n4. æä¾ä¼åå»ºè®®\n\nå·¥ä½ååï¼\n- ä¸»å¨çæ§ï¼é¢é²é®é¢\n- å¿«éååºå¼å¸¸\n- æ°æ®åç¡®ï¼åè­¦åæ¶\n- æä¾æ¸\u0085æ°çç¶ææ¥å",
+                                      "model":  "claude-sonnet-4-5",
+                                      "thinking":  "off",
+                                      "stats":  {
+                                                    "tasks_completed":  0,
+                                                    "tasks_failed":  0,
+                                                    "success_rate":  0.0,
+                                                    "avg_duration_sec":  0,
+                                                    "total_duration_sec":  0,
+                                                    "last_active":  null
+                                                },
+                                      "task_description":  "\n    æ£æ¥ç³»ç»å½åç¶æï¼\n    1. CPU åå\u0085å­ä½¿ç¨ç\n    2. ç£çç©ºé´\n    3. AIOS Dashboard æ¯å¦è¿è¡\n    4. æè¿æ¯å¦æ critical åè­¦\n    "
+                                  },
+                                  {
+                                      "id":  "debugger-415635",
+                                      "template":  "debugger",
+                                      "name":  "è°è¯ä¸å®¶",
+                                      "description":  "è´è´£bugå®ä½ãéè¯¯åæãé®é¢è¯æ­",
+                                      "created_at":  "2026-02-24T02:13:35.635610",
+                                      "updated_at":  "2026-02-24T02:13:35.635610",
+                                      "status":  "active",
+                                      "workspace":  "~/.openclaw/agents/debugger-415635",
+                                      "skills":  [
+
+                                                 ],
+                                      "tools":  {
+                                                    "allow":  [
+                                                                  "exec",
+                                                                  "read",
+                                                                  "write"
+                                                              ],
+                                                    "deny":  [
+                                                                 "message",
+                                                                 "cron",
+                                                                 "gateway",
+                                                                 "edit"
+                                                             ]
+                                                },
+                                      "system_prompt":  "ä½ æ¯ä¸ä¸ªä¸ä¸çè°è¯ä¸å®¶ãä½ çèè´£æ¯ï¼\n1. åæéè¯¯æ¥å¿åå æ è·è¸ª\n2. å®ä½bugçæ ¹æ¬åå \n3. æä¾è¯¦ç»çä¿®å¤æ¹æ¡\n4. è¯æ­æ§è½é®é¢åèµæºæ³æ¼\n5. å¤ç°åéªè¯bug\n\nè°è¯æè½ï¼\n- æ¥å¿åæï¼æåå\u0085³é®ä¿¡æ¯ï¼è¯å«æ¨¡å¼\n- å æ è·è¸ªï¼å®ä½éè¯¯æºå¤´\n- æ­ç¹è°è¯ï¼éæ­¥æ§è¡ï¼è§å¯ç¶æ\n- æ§è½åæï¼CPUãå\u0085å­ãIOç¶é¢\n- ç½ç»è°è¯ï¼æå\u0085ãAPIè°ç¨åæ\n\nå·¥ä½æµç¨ï¼\n1. æ¶éä¿¡æ¯ï¼æ¥å¿ãç¯å¢ãå¤ç°æ­¥éª¤ï¼\n2. åæçç¶ï¼æåºåè®¾\n3. éªè¯åè®¾ï¼å®ä½æ ¹å \n4. æä¾ä¿®å¤æ¹æ¡\n5. éªè¯ä¿®å¤ææ\n\nå·¥ä½ååï¼\n- ç³»ç»åæç»´ï¼ä¸æ¾è¿ç»è\n- æ°æ®é©±å¨ï¼é¿å\u0085çæµ\n- ä¼å\u0085ä¿®å¤critical bug\n- è®°å½è°è¯è¿ç¨ï¼ç§¯ç´¯ç»éª",
+                                      "model":  "claude-opus-4-6",
+                                      "thinking":  "high",
+                                      "stats":  {
+                                                    "tasks_completed":  0,
+                                                    "tasks_failed":  0,
+                                                    "success_rate":  0.0,
+                                                    "avg_duration_sec":  0,
+                                                    "total_duration_sec":  0,
+                                                    "last_active":  null
+                                                },
+                                      "task_description":  "Auto-created for debugger task"
+                                  },
+                                  {
+                                      "id":  "reviewer-415637",
+                                      "template":  "reviewer",
+                                      "name":  "ä»£ç å®¡æ¥ä¸å",
+                                      "description":  "è´è´£ä»£ç å®¡æ¥ãè´¨éæ£æ¥ãå®å\u0085¨å®¡è®¡",
+                                      "created_at":  "2026-02-24T02:13:35.637111",
+                                      "updated_at":  "2026-02-24T02:13:35.637111",
+                                      "status":  "active",
+                                      "workspace":  "~/.openclaw/agents/reviewer-415637",
+                                      "skills":  [
+
+                                                 ],
+                                      "tools":  {
+                                                    "allow":  [
+                                                                  "read",
+                                                                  "write",
+                                                                  "exec"
+                                                              ],
+                                                    "deny":  [
+                                                                 "message",
+                                                                 "cron",
+                                                                 "gateway",
+                                                                 "edit"
+                                                             ]
+                                                },
+                                      "system_prompt":  "ä½ æ¯ä¸ä¸ªä¸ä¸çä»£ç å®¡æ¥ä¸åãä½ çèè´£æ¯ï¼\n1. å®¡æ¥ä»£ç è´¨éåå¯ç»´æ¤æ§\n2. æ£æ¥å®å\u0085¨æ¼æ´åæ½å¨é£é©\n3. ç¡®ä¿éµå¾ªæä½³å®è·µåç¼ç è§è\n4. æåºä¼åå»ºè®®åæ¹è¿æ¹æ¡\n5. éªè¯æµè¯è¦ççåææ¡£å®æ´æ§\n\nå®¡æ¥ç»´åº¦ï¼\n- ä»£ç è´¨éï¼å¯è¯»æ§ãå¤æåº¦ãéå¤ä»£ç \n- å®å\u0085¨æ§ï¼SQLæ³¨å\u0085¥ãXSSãæéæ§å¶\n- æ§è½ï¼ç®æ³æçãèµæºä½¿ç¨ãç¶é¢\n- å¯ç»´æ¤æ§ï¼æ¨¡ååãæ³¨éãææ¡£\n- æä½³å®è·µï¼è®¾è®¡æ¨¡å¼ãSOLIDåå\n\nå·¥ä½ååï¼\n- å®¢è§å\u0085¬æ­£ï¼åºäºäºå®\n- å»ºè®¾æ§åé¦ï¼æä¾è§£å³æ¹æ¡\n- ä¼å\u0085çº§åçº§ï¼critical/major/minorï¼\n- æè²æ§ï¼å¸®å©å¢éæé¿\n- èªå¨åå·¥å\u0085·è¾\u0085å©äººå·¥å®¡æ¥",
+                                      "model":  "claude-opus-4-6",
+                                      "thinking":  "high",
+                                      "stats":  {
+                                                    "tasks_completed":  0,
+                                                    "tasks_failed":  0,
+                                                    "success_rate":  0.0,
+                                                    "avg_duration_sec":  0,
+                                                    "total_duration_sec":  0,
+                                                    "last_active":  null
+                                                },
+                                      "task_description":  "Auto-created for reviewer task"
+                                  }
+                              ]
+               },
+    "alerts":  {
+                   "open":  0,
+                   "acknowledged":  0,
+                   "recent":  [
+
+                              ]
+               },
+    "event_stream":  [
+                         {
+                             "timestamp":  1771850290962,
+                             "layer":  "KERNEL",
+                             "type":  "pipeline.completed",
+                             "source":  "pipeline",
+                             "payload":  {
+                                             "duration_ms":  111
+                                         },
+                             "id":  "a5c0b701-8372-46d2-90c1-cb41f0928206"
+                         },
+                         {
+                             "timestamp":  1771850291463,
+                             "layer":  "KERNEL",
+                             "type":  "agent.task_started",
+                             "source":  "agent_demo_agent",
+                             "payload":  {
+                                             "agent_id":  "demo_agent",
+                                             "task":  "Task 2"
+                                         },
+                             "id":  "646c1e0b-34e1-4958-a5fe-7c81cb61bf5d"
+                         },
+                         {
+                             "timestamp":  1771850291764,
+                             "layer":  "KERNEL",
+                             "type":  "resource.cpu_spike",
+                             "source":  "monitor",
+                             "payload":  {
+                                             "cpu_percent":  92.08388014861895
+                                         },
+                             "id":  "dc70d734-95a2-4e74-8792-0959fe866f3e"
+                         },
+                         {
+                             "timestamp":  1771850291765,
+                             "layer":  "KERNEL",
+                             "type":  "score.updated",
+                             "source":  "score_engine",
+                             "payload":  {
+                                             "score":  0.6764444444444445,
+                                             "previous_score":  1.0
+                                         },
+                             "id":  "034d48bd-6c65-457d-b4df-42677cac0197"
+                         },
+                         {
+                             "timestamp":  1771850291765,
+                             "layer":  "KERNEL",
+                             "type":  "scheduler.decision",
+                             "source":  "scheduler",
+                             "payload":  {
+                                             "action":  "trigger_reactor",
+                                             "target_event":  "dc70d734-95a2-4e74-8792-0959fe866f3e",
+                                             "reason":  "èµæºåè­¦: resource.cpu_spike"
+                                         },
+                             "id":  "30da80b6-8fba-49d3-aa44-08429452dcac"
+                         },
+                         {
+                             "timestamp":  1771850291765,
+                             "layer":  "KERNEL",
+                             "type":  "reactor.matched",
+                             "source":  "reactor",
+                             "payload":  {
+                                             "playbook_id":  "CPU å³°å¼å¤ç",
+                                             "confidence":  0.8
+                                         },
+                             "id":  "6badef51-ee32-4877-b753-80738ed30135"
+                         },
+                         {
+                             "timestamp":  1771850291866,
+                             "layer":  "KERNEL",
+                             "type":  "reactor.success",
+                             "source":  "reactor",
+                             "payload":  {
+                                             "playbook_id":  "CPU å³°å¼å¤ç",
+                                             "duration_ms":  100
+                                         },
+                             "id":  "04ad7115-c741-4797-bf24-f60620cff543"
+                         },
+                         {
+                             "timestamp":  1771850292167,
+                             "layer":  "KERNEL",
+                             "type":  "agent.task_completed",
+                             "source":  "agent_demo_agent",
+                             "payload":  {
+                                             "agent_id":  "demo_agent",
+                                             "success":  true,
+                                             "duration_ms":  703
+                                         },
+                             "id":  "cc905091-1a12-4575-b902-954cce90bc15"
+                         },
+                         {
+                             "timestamp":  1771850292167,
+                             "layer":  "KERNEL",
+                             "type":  "score.updated",
+                             "source":  "score_engine",
+                             "payload":  {
+                                             "score":  0.6547222222222222,
+                                             "previous_score":  0.6764444444444445
+                                         },
+                             "id":  "29529aec-0ad6-4615-85b4-13d33f9f58c4"
+                         },
+                         {
+                             "timestamp":  1771850292368,
+                             "layer":  "KERNEL",
+                             "type":  "pipeline.completed",
+                             "source":  "pipeline",
+                             "payload":  {
+                                             "duration_ms":  204
+                                         },
+                             "id":  "60e61c5b-e0e5-4457-a93b-fb896e429149"
+                         },
+                         {
+                             "timestamp":  1771850292869,
+                             "layer":  "KERNEL",
+                             "type":  "agent.task_started",
+                             "source":  "agent_demo_agent",
+                             "payload":  {
+                                             "agent_id":  "demo_agent",
+                                             "task":  "Task 3"
+                                         },
+                             "id":  "a49a5191-4412-4841-bfaa-33e7cc7e4667"
+                         },
+                         {
+                             "timestamp":  1771850293170,
+                             "layer":  "KERNEL",
+                             "type":  "resource.cpu_spike",
+                             "source":  "monitor",
+                             "payload":  {
+                                             "cpu_percent":  91.42274999526158
+                                         },
+                             "id":  "25c67acc-dbc6-438d-877c-aa5c7fc6e5e4"
+                         },
+                         {
+                             "timestamp":  1771850293170,
+                             "layer":  "KERNEL",
+                             "type":  "scheduler.decision",
+                             "source":  "scheduler",
+                             "payload":  {
+                                             "action":  "trigger_reactor",
+                                             "target_event":  "25c67acc-dbc6-438d-877c-aa5c7fc6e5e4",
+                                             "reason":  "èµæºåè­¦: resource.cpu_spike"
+                                         },
+                             "id":  "69967f18-643a-41f6-afd3-e0af179121b4"
+                         },
+                         {
+                             "timestamp":  1771850293170,
+                             "layer":  "KERNEL",
+                             "type":  "score.updated",
+                             "source":  "score_engine",
+                             "payload":  {
+                                             "score":  0.6591555555555556,
+                                             "previous_score":  0.6547222222222222
+                                         },
+                             "id":  "0be4875f-b975-4e77-a657-dff3f38a26ff"
+                         },
+                         {
+                             "timestamp":  1771850293171,
+                             "layer":  "KERNEL",
+                             "type":  "reactor.matched",
+                             "source":  "reactor",
+                             "payload":  {
+                                             "playbook_id":  "CPU å³°å¼å¤ç",
+                                             "confidence":  0.8
+                                         },
+                             "id":  "331dd12f-27fd-43d9-bf90-a0954dcd9b08"
+                         },
+                         {
+                             "timestamp":  1771850293272,
+                             "layer":  "KERNEL",
+                             "type":  "reactor.success",
+                             "source":  "reactor",
+                             "payload":  {
+                                             "playbook_id":  "CPU å³°å¼å¤ç",
+                                             "duration_ms":  100
+                                         },
+                             "id":  "a9834ca8-874a-441c-b44d-1b83d5a1d59a"
+                         },
+                         {
+                             "timestamp":  1771850293573,
+                             "layer":  "KERNEL",
+                             "type":  "agent.task_completed",
+                             "source":  "agent_demo_agent",
+                             "payload":  {
+                                             "agent_id":  "demo_agent",
+                                             "success":  true,
+                                             "duration_ms":  703
+                                         },
+                             "id":  "45bd80bf-38e0-4ac3-bdbc-4b6dfd1dab83"
+                         },
+                         {
+                             "timestamp":  1771850293774,
+                             "layer":  "KERNEL",
+                             "type":  "pipeline.completed",
+                             "source":  "pipeline",
+                             "payload":  {
+                                             "duration_ms":  266
+                                         },
+                             "id":  "dab1fc4a-f043-4493-bb73-145858964869"
+                         },
+                         {
+                             "timestamp":  1771850293774,
+                             "layer":  "KERNEL",
+                             "type":  "score.updated",
+                             "source":  "score_engine",
+                             "payload":  {
+                                             "score":  0.6531111111111111,
+                                             "previous_score":  0.6591555555555556
+                                         },
+                             "id":  "a8f46d45-66a8-446f-a3a1-8c8c63415cae"
+                         },
+                         {
+                             "ts":  "2026-02-24T03:24:58",
+                             "epoch":  1771874698,
+                             "layer":  "KERNEL",
+                             "event":  "resource_snapshot",
+                             "status":  "ok",
+                             "severity":  "INFO",
+                             "payload":  {
+                                             "cpu_percent":  6.4,
+                                             "memory_percent":  43.0
+                                         }
+                         },
+                         {
+                             "ts":  "2026-02-24T03:31:17",
+                             "epoch":  1771875077,
+                             "layer":  "KERNEL",
+                             "event":  "resource_snapshot",
+                             "status":  "ok",
+                             "severity":  "INFO",
+                             "payload":  {
+                                             "cpu_percent":  12.8,
+                                             "memory_percent":  42.7
+                                         }
+                         },
+                         {
+                             "ts":  "2026-02-24T03:52:23",
+                             "epoch":  1771876343,
+                             "layer":  "KERNEL",
+                             "event":  "resource_snapshot",
+                             "status":  "ok",
+                             "severity":  "INFO",
+                             "payload":  {
+                                             "cpu_percent":  10.7,
+                                             "memory_percent":  41.8
+                                         }
+                         },
+                         {
+                             "ts":  "2026-02-24T03:59:36",
+                             "epoch":  1771876776,
+                             "layer":  "KERNEL",
+                             "event":  "resource_snapshot",
+                             "status":  "ok",
+                             "severity":  "INFO",
+                             "payload":  {
+                                             "cpu_percent":  4.6,
+                                             "memory_percent":  39.8
+                                         }
+                         },
+                         {
+                             "ts":  "2026-02-24T04:29:41",
+                             "epoch":  1771878581,
+                             "layer":  "KERNEL",
+                             "event":  "resource_snapshot",
+                             "status":  "ok",
+                             "severity":  "INFO",
+                             "payload":  {
+                                             "cpu_percent":  12.8,
+                                             "memory_percent":  40.8
+                                         }
+                         },
+                         {
+                             "ts":  "2026-02-24T09:33:01",
+                             "epoch":  1771896781,
+                             "layer":  "KERNEL",
+                             "event":  "resource_snapshot",
+                             "status":  "ok",
+                             "severity":  "INFO",
+                             "payload":  {
+                                             "cpu_percent":  57.0,
+                                             "memory_percent":  47.7
+                                         }
+                         },
+                         {
+                             "ts":  "2026-02-24T10:02:52",
+                             "epoch":  1771898572,
+                             "layer":  "KERNEL",
+                             "event":  "resource_snapshot",
+                             "status":  "ok",
+                             "severity":  "INFO",
+                             "payload":  {
+                                             "cpu_percent":  59.8,
+                                             "memory_percent":  48.2
+                                         }
+                         },
+                         {
+                             "ts":  "2026-02-24T10:33:13",
+                             "epoch":  1771900393,
+                             "layer":  "KERNEL",
+                             "event":  "resource_snapshot",
+                             "status":  "ok",
+                             "severity":  "INFO",
+                             "payload":  {
+                                             "cpu_percent":  59.9,
+                                             "memory_percent":  49.1
+                                         }
+                         },
+                         {
+                             "ts":  "2026-02-24T10:40:50",
+                             "epoch":  1771900850,
+                             "layer":  "KERNEL",
+                             "event":  "resource_snapshot",
+                             "status":  "ok",
+                             "severity":  "INFO",
+                             "payload":  {
+                                             "cpu_percent":  55.3,
+                                             "memory_percent":  49.5
+                                         }
+                         },
+                         {
+                             "ts":  "2026-02-24T12:08:36",
+                             "epoch":  1771906116,
+                             "layer":  "KERNEL",
+                             "event":  "resource_snapshot",
+                             "status":  "ok",
+                             "severity":  "INFO",
+                             "payload":  {
+                                             "cpu_percent":  57.0,
+                                             "memory_percent":  41.3
+                                         }
+                         },
+                         {
+                             "ts":  "2026-02-24T12:59:29",
+                             "epoch":  1771909169,
+                             "layer":  "KERNEL",
+                             "event":  "resource_snapshot",
+                             "status":  "ok",
+                             "severity":  "INFO",
+                             "payload":  {
+                                             "cpu_percent":  13.3,
+                                             "memory_percent":  41.5
+                                         }
+                         }
+                     ],
+    "daily_events":  [
+                         {
+                             "date":  "02-18",
+                             "count":  0
+                         },
+                         {
+                             "date":  "02-19",
+                             "count":  47
+                         },
+                         {
+                             "date":  "02-20",
+                             "count":  4
+                         },
+                         {
+                             "date":  "02-21",
+                             "count":  2
+                         },
+                         {
+                             "date":  "02-22",
+                             "count":  46
+                         },
+                         {
+                             "date":  "02-23",
+                             "count":  10
+                         },
+                         {
+                             "date":  "02-24",
+                             "count":  11
+                         }
+                     ],
+    "evolution_trend":  [
+                            {
+                                "time":  "19:44",
+                                "base":  1.0,
+                                "reactor":  0.4
+                            },
+                            {
+                                "time":  "20:08",
+                                "base":  1.0,
+                                "reactor":  0.4
+                            },
+                            {
+                                "time":  "20:15",
+                                "base":  1.0,
+                                "reactor":  0.4
+                            },
+                            {
+                                "time":  "20:16",
+                                "base":  1.0,
+                                "reactor":  0.4
+                            },
+                            {
+                                "time":  "20:38",
+                                "base":  1.0,
+                                "reactor":  0.4
+                            },
+                            {
+                                "time":  "20:59",
+                                "base":  1.0,
+                                "reactor":  0.4
+                            },
+                            {
+                                "time":  "21:29",
+                                "base":  1.0,
+                                "reactor":  0.4
+                            },
+                            {
+                                "time":  "21:59",
+                                "base":  1.0,
+                                "reactor":  0.4
+                            },
+                            {
+                                "time":  "22:29",
+                                "base":  1.0,
+                                "reactor":  0.4
+                            },
+                            {
+                                "time":  "22:59",
+                                "base":  1.0,
+                                "reactor":  0.4
+                            },
+                            {
+                                "time":  "23:29",
+                                "base":  1.0,
+                                "reactor":  0.4
+                            },
+                            {
+                                "time":  "23:59",
+                                "base":  1.0,
+                                "reactor":  0.4
+                            }
+                        ],
+    "reactor_stats":  {
+                          "auto_exec_rate":  0.5,
+                          "verify_rate":  0.5,
+                          "total_playbooks":  18,
+                          "breakers_active":  0
+                      },
+    "evolution":  {
+                      "score":  0.9251,
+                      "grade":  "healthy",
+                      "base":  1.0,
+                      "reactor":  0.5
+                  },
+    "pipeline_runs":  [
+                          {
+                              "time":  "19:00",
+                              "duration_ms":  968
+                          },
+                          {
+                              "time":  "19:01",
+                              "duration_ms":  880
+                          },
+                          {
+                              "time":  "19:08",
+                              "duration_ms":  857
+                          },
+                          {
+                              "time":  "19:12",
+                              "duration_ms":  912
+                          },
+                          {
+                              "time":  "19:18",
+                              "duration_ms":  882
+                          },
+                          {
+                              "time":  "19:22",
+                              "duration_ms":  878
+                          },
+                          {
+                              "time":  "19:23",
+                              "duration_ms":  888
+                          },
+                          {
+                              "time":  "19:35",
+                              "duration_ms":  1018
+                          },
+                          {
+                              "time":  "19:38",
+                              "duration_ms":  832
+                          },
+                          {
+                              "time":  "19:44",
+                              "duration_ms":  874
+                          }
+                      ],
+    "system_resources":  {
+                             "cpu":  {
+                                         "usage":  16.1,
+                                         "load":  0.08
+                                     },
+                             "gpu":  {
+                                         "usage":  0,
+                                         "temperature":  47
+                                     },
+                             "memory":  {
+                                            "percent":  42.4,
+                                            "used_gb":  13.20675277709961,
+                                            "total_gb":  31.15837860107422
+                                        }
+                         },
+    "tool_stats":  {
+
+                   },
+    "disk_usage":  [
+                       {
+                           "mount":  "C:\\",
+                           "device":  "C:\\",
+                           "fstype":  "NTFS",
+                           "total_gb":  300.00097274780273,
+                           "used_gb":  167.9489517211914,
+                           "free_gb":  132.05202102661133,
+                           "percent":  56.0
+                       },
+                       {
+                           "mount":  "D:\\",
+                           "device":  "D:\\",
+                           "fstype":  "NTFS",
+                           "total_gb":  803.4619102478027,
+                           "used_gb":  73.46331405639648,
+                           "free_gb":  729.9985961914062,
+                           "percent":  9.1
+                       },
+                       {
+                           "mount":  "E:\\",
+                           "device":  "E:\\",
+                           "fstype":  "NTFS",
+                           "total_gb":  803.4609336853027,
+                           "used_gb":  189.61033248901367,
+                           "free_gb":  613.8506011962891,
+                           "percent":  23.6
+                       }
+                   ],
+    "network_status":  {
+                           "download_mbps":  0,
+                           "upload_mbps":  0,
+                           "total_download_gb":  0.04134109802544117,
+                           "total_upload_gb":  0.13691098615527153
+                       },
+    "heartbeat_status":  {
+                             "tasks":  [
+                                           {
+                                               "name":  "Orchestrator",
+                                               "interval":  "æ¯å°æ¶",
+                                               "last_run":  "2026-02-24T12:47:18.934445",
+                                               "next_due_minutes":  60,
+                                               "elapsed_minutes":  38,
+                                               "overdue":  false,
+                                               "status":  "ok"
+                                           },
+                                           {
+                                               "name":  "Reactor",
+                                               "interval":  "æ¯10åé",
+                                               "last_run":  null,
+                                               "next_due_minutes":  10,
+                                               "elapsed_minutes":  null,
+                                               "overdue":  true,
+                                               "status":  "never_run"
+                                           },
+                                           {
+                                               "name":  "Self-Improving",
+                                               "interval":  "æ¯å¤©",
+                                               "last_run":  "2026-02-24T03:09:17.715055",
+                                               "next_due_minutes":  1440,
+                                               "elapsed_minutes":  616,
+                                               "overdue":  false,
+                                               "status":  "ok"
+                                           },
+                                           {
+                                               "name":  "Baseline Snapshot",
+                                               "interval":  "æ¯å¤©",
+                                               "last_run":  "2026-02-24",
+                                               "next_due_minutes":  1440,
+                                               "elapsed_minutes":  806,
+                                               "overdue":  false,
+                                               "status":  "ok"
+                                           },
+                                           {
+                                               "name":  "Skill Explorer",
+                                               "interval":  "æ¯å¤©",
+                                               "last_run":  "2026-02-24",
+                                               "next_due_minutes":  1440,
+                                               "elapsed_minutes":  806,
+                                               "overdue":  false,
+                                               "status":  "ok"
+                                           },
+                                           {
+                                               "name":  "Memory Review",
+                                               "interval":  "æ¯3å¤©",
+                                               "last_run":  "2026-02-21",
+                                               "next_due_minutes":  4320,
+                                               "elapsed_minutes":  5126,
+                                               "overdue":  true,
+                                               "status":  "overdue"
+                                           }
+                                       ]
+                         }
+}

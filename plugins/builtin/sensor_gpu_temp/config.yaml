@@ -1,0 +1,9 @@
+enabled: true
+interval: 300  # 5分钟检查一次
+
+# 阈值配置
+thresholds:
+  temperature_warn: 75      # 温度警告（℃）
+  temperature_critical: 85  # 温度危险（℃）
+  memory_warn: 85           # 显存使用率警告（%）
+  power_warn: 250           # 功率警告（W）

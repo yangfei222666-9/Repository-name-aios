@@ -1,0 +1,23 @@
+{
+  "phase1": {
+    "initial_cpu": 7.8,
+    "max_cpu": 18.6,
+    "final_cpu": 11.0,
+    "reactor_triggers": 0,
+    "escalations": 0,
+    "duration": 20,
+    "timestamp": "2026-02-23T23:41:29.093936"
+  },
+  "phase2": {
+    "spike_count": 3,
+    "melted": false,
+    "escalation_events": 0,
+    "timestamp": "2026-02-23T23:41:54.104895"
+  },
+  "phase3": {
+    "max_cpu": 13.9,
+    "reactor_triggers": 0,
+    "duration": 3,
+    "timestamp": "2026-02-23T23:42:05.113590"
+  }
+}

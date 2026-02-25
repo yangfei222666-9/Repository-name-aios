@@ -1,0 +1,11 @@
+enabled: true
+
+# Telegram Bot 配置
+bot_token: "8278846913:AAGX6omR8aXEOWgcMBX3Y0EsJUGI2b2BE0s"
+chat_id: "7986452220"
+
+# 通知级别
+min_severity: warn
+
+# 速率限制（秒）
+rate_limit: 5

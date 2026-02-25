@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-02-24T09:33:25.847210",
+  "results": {
+    "lessons_added": 0,
+    "user_updated": {
+      "status": "skip",
+      "reason": "no preferences or USER.md not found"
+    }
+  },
+  "new_lessons": [],
+  "preferences_count": 0
+}

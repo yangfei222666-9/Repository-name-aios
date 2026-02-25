@@ -1,0 +1,13 @@
+enabled: true
+interval: 600  # 10分钟检查一次
+
+# 监控的磁盘
+monitored_drives:
+  - "C:"
+  - "D:"
+  - "E:"
+
+# 阈值配置
+thresholds:
+  warn: 80       # 警告阈值（%）
+  critical: 90   # 危险阈值（%）

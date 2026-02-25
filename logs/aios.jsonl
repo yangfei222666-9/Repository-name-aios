@@ -1,0 +1,5 @@
+{"timestamp": "2026-02-25T08:06:20.346446+00:00", "level": "info", "logger": "smoke", "message": "hello", "trace_id": null, "span_id": null, "parent_span_id": null, "task_id": "smoke-1"}
+{"timestamp": "2026-02-25T08:06:31.032065+00:00", "level": "info", "logger": "smoke", "message": "hello", "trace_id": null, "span_id": null, "parent_span_id": null, "task_id": "smoke-1"}
+{"timestamp": "2026-02-25T08:06:49.564516+00:00", "level": "info", "logger": "debug", "message": "inside trace", "trace_id": null, "span_id": null, "parent_span_id": null, "task_id": "debug-1"}
+{"timestamp": "2026-02-25T08:07:03.028978+00:00", "level": "info", "logger": "debug", "message": "inside trace", "trace_id": "trace:d7058597dbc54ffb97d3a883c878ab97", "span_id": "span:cfce1357e6854c50bfb122462f801827", "parent_span_id": null, "task_id": "debug-1"}
+{"timestamp": "2026-02-25T08:07:19.865253+00:00", "level": "info", "logger": "smoke", "message": "hello", "trace_id": "trace:2f50ad4a6e5d46de928feb764fa2a1e9", "span_id": "span:2f4302ed1e284bcd9d6286ef5253e263", "parent_span_id": null, "task_id": "smoke-1"}

@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIOS Control Center - 智能 Agent 控制中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #e0e6ed;
+            overflow-x: hidden;
+        }
+
+        /* 顶部导航 */
+        .navbar {
+            background: rgba(15, 22, 41, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #2a3547;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo::before {
+            content: "🤖";
+            font-size: 32px;
+            -webkit-text-fill-color: initial;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 5px;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: #8b92a7;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .nav-tab:hover {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+        }
+
+        .nav-tab.active {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* 标签页内容 */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 指标卡片网格 */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, rgba(26, 35, 50, 0.8) 0%, rgba(15, 22, 41, 0.8) 100%);
+            border: 1px solid #2a3547;
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: #00d4ff;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .metric-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff, #0099ff);
+        }
+
+        .metric-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: #8b92a7;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 8px;
+        }
+
+        .metric-change {
+            font-size: 12px;
+            color: #4ade80;
+        }
+
+        .metric-change.negative {
+            color: #f87171;
+        }
+
+        /* Agent 列表 */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .agent-card {
+            background: rgba(15, 22, 41, 0.8);
+            border: 1px solid #2a3547;
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .agent-card:hover {
+            border-color: #00d4ff;
+            transform: translateY(-3px);
+        }
+
+        .agent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .agent-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .agent-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .agent-badge.coder {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+        }
+
+        .agent-badge.analyst {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+        }
+
+        .agent-badge.monitor {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .agent-badge.researcher {
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+        }
+
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .agent-stat {
+            text-align: center;
+        }
+
+        .agent-stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+
+        .agent-stat-label {
+            font-size: 12px;
+            color: #8b92a7;
+            margin-top: 4px;
+        }
+
+        /* 进化时间线 */
+        .evolution-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .evolution-timeline::before {
+            content: "";
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #00d4ff 0%, transparent 100%);
+        }
+
+        .evolution-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(15, 22, 41, 0.6);
+            border: 1px solid #2a3547;
+            border-radius: 12px;
+        }
+
+        .evolution-item::before {
+            content: "";
+            position: absolute;
+            left: -24px;
+            top: 20px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00d4ff;
+            border: 2px solid #0a0e27;
+        }
+
+        .evolution-time {
+            font-size: 12px;
+            color: #8b92a7;
+            margin-bottom: 5px;
+        }
+
+        .evolution-desc {
+            font-size: 14px;
+            color: #e0e6ed;
+        }
+
+        /* 按钮 */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(42, 53, 71, 0.8);
+            color: #e0e6ed;
+            border: 1px solid #2a3547;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(42, 53, 71, 1);
+            border-color: #00d4ff;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #8b92a7;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            font-size: 16px;
+        }
+
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #2a3547;
+            border-top-color: #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            .agent-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="navbar">
+        <div class="logo">AIOS Control Center</div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('overview')">📊 总览</button>
+            <button class="nav-tab" onclick="switchTab('agents')">🤖 Agents</button>
+            <button class="nav-tab" onclick="switchTab('scheduler')">📅 调度</button>
+            <button class="nav-tab" onclick="switchTab('evolution')">🧬 进化</button>
+            <button class="nav-tab" onclick="switchTab('performance')">⚡ 性能</button>
+        </div>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 总览标签页 -->
+        <div id="tab-overview" class="tab-content active">
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">🤖</div>
+                    <div class="metric-label">总 Agents</div>
+                    <div class="metric-value" id="total-agents">0</div>
+                    <div class="metric-change">+2 本周新增</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">⚡</div>
+                    <div class="metric-label">活跃 Agents</div>
+                    <div class="metric-value" id="active-agents">0</div>
+                    <div class="metric-change">实时运行中</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">📋</div>
+                    <div class="metric-label">今日任务</div>
+                    <div class="metric-value" id="today-tasks">0</div>
+                    <div class="metric-change">+15% 较昨日</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">💚</div>
+                    <div class="metric-label">系统健康</div>
+                    <div class="metric-value" id="health-score">0.00</div>
+                    <div class="metric-change" id="health-change">正常运行</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn btn-primary" onclick="createAgent()">
+                    ➕ 创建新 Agent
+                </button>
+                <button class="btn btn-secondary" onclick="switchTab('agents')">
+                    查看所有 Agents →
+                </button>
+            </div>
+        </div>
+
+        <!-- Agents 标签页 -->
+        <div id="tab-agents" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Agent 列表</h2>
+                <button class="btn btn-primary" onclick="createAgent()">➕ 创建 Agent</button>
+            </div>
+            <div id="agents-list" class="agent-grid">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🤖</div>
+                    <div class="empty-state-text">加载中...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 调度总览标签页 -->
+        <div id="tab-scheduler" class="tab-content">
+            <h2 style="margin-bottom: 20px;">📅 调度总览</h2>
+
+            <!-- 调度指标卡片 -->
+            <div class="metrics-grid" style="margin-bottom: 30px;">
+                <div class="metric-card">
+                    <div class="metric-icon">📋</div>
+                    <div class="metric-label">队列任务</div>
+                    <div class="metric-value" id="sched-queued">0</div>
+                    <div class="metric-change">当前排队中</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🔄</div>
+                    <div class="metric-label">运行中</div>
+                    <div class="metric-value" id="sched-running">0</div>
+                    <div class="metric-change">并发执行</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">✅</div>
+                    <div class="metric-label">已完成</div>
+                    <div class="metric-value" id="sched-completed">0</div>
+                    <div class="metric-change">最近 24h</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">❌</div>
+                    <div class="metric-label">失败/超时</div>
+                    <div class="metric-value" id="sched-failed">0</div>
+                    <div class="metric-change">最近 24h</div>
+                </div>
+            </div>
+
+            <!-- 优先级分布 -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                <div style="background: rgba(15, 22, 41, 0.8); border: 1px solid #2a3547; border-radius: 16px; padding: 24px;">
+                    <h3 style="margin-bottom: 20px;">🎯 优先级分布</h3>
+                    <div id="priority-distribution">
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="color: #f87171;">🔴 P0 紧急</span>
+                                <span id="sched-p0" style="font-weight: 700; color: #f87171;">0</span>
+                            </div>
+                            <div style="height: 8px; background: #1a2332; border-radius: 4px; overflow: hidden;">
+                                <div id="sched-p0-bar" style="height: 100%; background: #f87171; border-radius: 4px; width: 0%; transition: width 0.5s;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="color: #fbbf24;">🟡 P1 高优</span>
+                                <span id="sched-p1" style="font-weight: 700; color: #fbbf24;">0</span>
+                            </div>
+                            <div style="height: 8px; background: #1a2332; border-radius: 4px; overflow: hidden;">
+                                <div id="sched-p1-bar" style="height: 100%; background: #fbbf24; border-radius: 4px; width: 0%; transition: width 0.5s;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="color: #4ade80;">🟢 P2 普通</span>
+                                <span id="sched-p2" style="font-weight: 700; color: #4ade80;">0</span>
+                            </div>
+                            <div style="height: 8px; background: #1a2332; border-radius: 4px; overflow: hidden;">
+                                <div id="sched-p2-bar" style="height: 100%; background: #4ade80; border-radius: 4px; width: 0%; transition: width 0.5s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(15, 22, 41, 0.8); border: 1px solid #2a3547; border-radius: 16px; padding: 24px;">
+                    <h3 style="margin-bottom: 20px;">🤖 Agent 健康</h3>
+                    <div id="agent-health-summary">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div style="text-align: center; padding: 15px; background: rgba(74, 222, 128, 0.1); border-radius: 12px;">
+                                <div style="font-size: 28px; font-weight: 700; color: #4ade80;" id="sched-agents-active">0</div>
+                                <div style="font-size: 12px; color: #8b92a7; margin-top: 5px;">活跃</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: rgba(251, 191, 36, 0.1); border-radius: 12px;">
+                                <div style="font-size: 28px; font-weight: 700; color: #fbbf24;" id="sched-agents-degraded">0</div>
+                                <div style="font-size: 12px; color: #8b92a7; margin-top: 5px;">降级</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: rgba(248, 113, 113, 0.1); border-radius: 12px;">
+                                <div style="font-size: 28px; font-weight: 700; color: #f87171;" id="sched-agents-failed">0</div>
+                                <div style="font-size: 12px; color: #8b92a7; margin-top: 5px;">失败</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 12px;">
+                                <div style="font-size: 28px; font-weight: 700; color: #00d4ff;" id="sched-agents-rate">0%</div>
+                                <div style="font-size: 12px; color: #8b92a7; margin-top: 5px;">成功率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 最近调度决策 -->
+            <div style="background: rgba(15, 22, 41, 0.8); border: 1px solid #2a3547; border-radius: 16px; padding: 24px; margin-bottom: 30px;">
+                <h3 style="margin-bottom: 20px;">📜 最近调度决策</h3>
+                <div id="scheduler-decisions-list">
+                    <div class="empty-state">
+                        <div class="loading"></div>
+                        <div style="margin-top: 10px;">加载中...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pipeline 运行历史 -->
+            <div style="background: rgba(15, 22, 41, 0.8); border: 1px solid #2a3547; border-radius: 16px; padding: 24px;">
+                <h3 style="margin-bottom: 20px;">🔄 Pipeline 运行历史</h3>
+                <div id="pipeline-history-list">
+                    <div class="empty-state">
+                        <div class="loading"></div>
+                        <div style="margin-top: 10px;">加载中...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 进化标签页 -->
+        <div id="tab-evolution" class="tab-content">
+            <h2 style="margin-bottom: 20px;">Agent 进化系统</h2>
+            <div id="evolution-content">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🧬</div>
+                    <div class="empty-state-text">选择一个 Agent 查看进化历史</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 性能标签页 -->
+        <div id="tab-performance" class="tab-content">
+            <h2 style="margin-bottom: 20px;">系统性能监控</h2>
+            
+            <!-- 性能指标 -->
+            <div class="metrics-grid" style="margin-bottom: 30px;">
+                <div class="metric-card">
+                    <div class="metric-icon">⚡</div>
+                    <div class="metric-label">平均响应时间</div>
+                    <div class="metric-value" id="perf-avg-response">0.0s</div>
+                    <div class="metric-change">最近 24 小时</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">✅</div>
+                    <div class="metric-label">任务成功率</div>
+                    <div class="metric-value" id="perf-success-rate">0%</div>
+                    <div class="metric-change">最近 24 小时</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">📊</div>
+                    <div class="metric-label">总任务数</div>
+                    <div class="metric-value" id="perf-total-tasks">0</div>
+                    <div class="metric-change">最近 24 小时</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">🔥</div>
+                    <div class="metric-label">活跃 Agent</div>
+                    <div class="metric-value" id="perf-active-agents">0</div>
+                    <div class="metric-change">当前在线</div>
+                </div>
+            </div>
+
+            <!-- Agent 性能排行 -->
+            <div style="background: rgba(15, 22, 41, 0.8); border: 1px solid #2a3547; border-radius: 16px; padding: 24px; margin-bottom: 30px;">
+                <h3 style="margin-bottom: 20px;">Agent 性能排行</h3>
+                <div id="performance-ranking">
+                    <div class="empty-state">
+                        <div class="loading"></div>
+                        <div style="margin-top: 10px;">加载中...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 进化事件流 -->
+            <div style="background: rgba(15, 22, 41, 0.8); border: 1px solid #2a3547; border-radius: 16px; padding: 24px; margin-bottom: 30px;">
+                <h3 style="margin-bottom: 20px;">📜 最近进化事件</h3>
+                <div id="evolution-events-list">
+                    <div class="empty-state">
+                        <div class="loading"></div>
+                        <div style="margin-top: 10px;">加载中...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 手动触发进化 -->
+            <div style="background: rgba(15, 22, 41, 0.8); border: 1px solid #2a3547; border-radius: 16px; padding: 24px;">
+                <h3 style="margin-bottom: 20px;">🧬 手动触发进化</h3>
+                <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
+                    <select id="evolve-agent-select" style="flex: 1; padding: 10px; background: #1a2332; border: 1px solid #2a3547; border-radius: 8px; color: #e0e6ed; font-size: 14px;">
+                        <option value="">选择 Agent...</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="triggerEvolution()">
+                        🚀 触发进化
+                    </button>
+                </div>
+                <div id="evolution-result" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:9092';
+        let currentTab = 'overview';
+        let agents = [];
+
+        // XSS 防护：转义 HTML 特殊字符
+        function escapeHtml(str) {
+            if (typeof str !== 'string') return str;
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // Agent 类型中文映射
+        const AGENT_TYPE_MAP = {
+            'coder': '代码开发专员',
+            'analyst': '数据分析专员',
+            'monitor': '系统监控专员',
+            'researcher': '调研专家'
+        };
+
+        // 获取 Agent 类型中文名
+        function getAgentTypeName(template) {
+            return AGENT_TYPE_MAP[template] || template;
+        }
+
+        // 转换 Agent 名称（处理英文名称）
+        function getAgentDisplayName(agent) {
+            const name = agent.name || agent.id;
+            
+            // 如果名称是 "Xxx Agent" 格式，转换为中文
+            const match = name.match(/^(Coder|Analyst|Monitor|Researcher) Agent$/i);
+            if (match) {
+                const type = match[1].toLowerCase();
+                return AGENT_TYPE_MAP[type] || name;
+            }
+            
+            return name;
+        }
+
+        // 切换标签页
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // 更新导航
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 更新内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            // 加载对应数据
+            if (tab === 'agents') {
+                loadAgentsList();
+            } else if (tab === 'scheduler') {
+                loadSchedulerData();
+            } else if (tab === 'evolution') {
+                loadEvolutionData();
+            } else if (tab === 'performance') {
+                loadPerformanceData();
+            }
+        }
+
+        // 加载数据
+        async function loadDashboardData() {
+            try {
+                const [agentStats, health] = await Promise.all([
+                    fetch(`${API_BASE}/api/agents/stats`).then(r => r.json()),
+                    fetch(`${API_BASE}/api/system/health`).then(r => r.json())
+                ]);
+
+                // 更新指标
+                document.getElementById('total-agents').textContent = agentStats.total || 0;
+                document.getElementById('active-agents').textContent = agentStats.active || 0;
+                document.getElementById('today-tasks').textContent = 0; // TODO: 实现任务统计
+                
+                const score = health.evolution_score || 0;
+                document.getElementById('health-score').textContent = score.toFixed(2);
+                
+                const healthChange = document.getElementById('health-change');
+                if (score >= 0.6) {
+                    healthChange.textContent = '健康运行';
+                    healthChange.className = 'metric-change';
+                } else if (score >= 0.4) {
+                    healthChange.textContent = '轻微降级';
+                    healthChange.className = 'metric-change negative';
+                } else {
+                    healthChange.textContent = '需要关注';
+                    healthChange.className = 'metric-change negative';
+                }
+            } catch (error) {
+                console.error('加载数据失败:', error);
+            }
+        }
+
+        // 加载 Agents 列表
+        async function loadAgentsList() {
+            try {
+                const response = await fetch(`${API_BASE}/api/agents`);
+                const data = await response.json();
+                agents = data.agents || [];
+                
+                const container = document.getElementById('agents-list');
+                
+                if (agents.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🤖</div>
+                            <div class="empty-state-text">暂无 Agent，点击右上角创建</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = agents.map(agent => `
+                    <div class="agent-card" onclick="viewAgentDetail('${escapeHtml(agent.id)}')">
+                        <div class="agent-header">
+                            <div class="agent-name">${escapeHtml(getAgentDisplayName(agent))}</div>
+                            <div class="agent-badge ${escapeHtml(agent.template)}">${escapeHtml(getAgentTypeName(agent.template))}</div>
+                        </div>
+                        <div style="font-size: 12px; color: #8b92a7; margin-bottom: 10px;">
+                            ${escapeHtml(agent.description || '')}
+                        </div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">${agent.stats?.tasks_completed || 0}</div>
+                                <div class="agent-stat-label">已完成</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">${(agent.stats?.success_rate * 100 || 0).toFixed(0)}%</div>
+                                <div class="agent-stat-label">成功率</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">${agent.stats?.avg_duration_sec?.toFixed(1) || 0}s</div>
+                                <div class="agent-stat-label">平均耗时</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('加载 Agents 失败:', error);
+            }
+        }
+
+        // 查看 Agent 详情
+        function viewAgentDetail(agentId) {
+            alert(`Agent 详情页开发中...\n\nAgent ID: ${agentId}`);
+        }
+
+        // 加载进化数据
+        async function loadEvolutionData() {
+            const container = document.getElementById('evolution-content');
+            
+            if (agents.length === 0) {
+                const response = await fetch(`${API_BASE}/api/agents`);
+                const data = await response.json();
+                agents = data.agents || [];
+            }
+            
+            if (agents.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🧬</div>
+                        <div class="empty-state-text">暂无 Agent</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 显示 Agent 选择列表
+            container.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <select id="evolution-agent-select" onchange="loadAgentEvolution(this.value)" style="padding: 10px; background: #1a2332; border: 1px solid #2a3547; border-radius: 8px; color: #e0e6ed; font-size: 14px; width: 300px;">
+                        <option value="">选择 Agent...</option>
+                        ${agents.map(a => `<option value="${a.id}">${getAgentDisplayName(a)}</option>`).join('')}
+                    </select>
+                </div>
+                <div id="evolution-timeline"></div>
+            `;
+        }
+
+        // 加载 Agent 进化历史
+        async function loadAgentEvolution(agentId) {
+            if (!agentId) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/agents/${agentId}/evolution`);
+                const data = await response.json();
+                
+                const timeline = document.getElementById('evolution-timeline');
+                
+                if (!data.history || data.history.length === 0) {
+                    timeline.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📜</div>
+                            <div class="empty-state-text">暂无进化历史</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                timeline.innerHTML = `
+                    <div class="evolution-timeline">
+                        ${data.history.map(item => {
+                            const time = new Date(item.timestamp * 1000).toLocaleString('zh-CN');
+                            return `
+                                <div class="evolution-item">
+                                    <div class="evolution-time">${time}</div>
+                                    <div class="evolution-desc">
+                                        <strong>${item.evolution_type}</strong><br>
+                                        ${item.reason}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            } catch (error) {
+                console.error('加载进化历史失败:', error);
+            }
+        }
+
+        // 创建 Agent（复用之前的模态框）
+        async function createAgent() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: #0f1629; border: 1px solid #2a3547; border-radius: 12px; padding: 30px; max-width: 500px; width: 90%;">
+                    <h2 style="margin: 0 0 20px; font-size: 20px;">创建 Agent</h2>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: #8b92a7;">Agent 类型</label>
+                        <select id="agent-template" style="width: 100%; padding: 10px; background: #1a2332; border: 1px solid #2a3547; border-radius: 8px; color: #e0e6ed; font-size: 14px;">
+                            <option value="coder">🔧 代码开发专员</option>
+                            <option value="analyst">📊 数据分析专员</option>
+                            <option value="monitor">📈 系统监控专员</option>
+                            <option value="researcher">🔍 调研专家</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: #8b92a7;">任务描述（可选）</label>
+                        <textarea id="agent-task" rows="3" placeholder="输入任务描述..." style="width: 100%; padding: 10px; background: #1a2332; border: 1px solid #2a3547; border-radius: 8px; color: #e0e6ed; font-size: 14px; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button id="cancel-btn" class="btn btn-secondary">取消</button>
+                        <button id="create-btn" class="btn btn-primary">创建</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            modal.querySelector('#cancel-btn').onclick = () => {
+                document.body.removeChild(modal);
+            };
+            
+            modal.querySelector('#create-btn').onclick = async () => {
+                const template = modal.querySelector('#agent-template').value;
+                const task = modal.querySelector('#agent-task').value.trim();
+                
+                try {
+                    const response = await fetch(`${API_BASE}/api/agents/create`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ template, task })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        document.body.removeChild(modal);
+                        const displayName = getAgentDisplayName(result.agent);
+                        alert(`✅ Agent 创建成功!\n\nID: ${result.agent.id}\n名称: ${displayName}\n类型: ${getAgentTypeName(result.agent.template)}`);
+                        loadDashboardData();
+                        if (currentTab === 'agents') {
+                            loadAgentsList();
+                        }
+                    } else {
+                        alert('❌ 创建失败: ' + (result.error || '未知错误'));
+                    }
+                } catch (error) {
+                    alert('❌ 请求失败: ' + error.message);
+                }
+            };
+            
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            };
+        }
+
+        // 加载性能数据
+        async function loadPerformanceData() {
+            try {
+                // 加载 Agent 列表
+                if (agents.length === 0) {
+                    const response = await fetch(`${API_BASE}/api/agents`);
+                    const data = await response.json();
+                    agents = data.agents || [];
+                }
+
+                // 计算性能指标
+                let totalTasks = 0;
+                let successTasks = 0;
+                let totalDuration = 0;
+                let activeCount = 0;
+
+                agents.forEach(agent => {
+                    const stats = agent.stats || {};
+                    totalTasks += (stats.tasks_completed || 0) + (stats.tasks_failed || 0);
+                    successTasks += stats.tasks_completed || 0;
+                    totalDuration += stats.total_duration_sec || 0;
+                    if (agent.status === 'active') activeCount++;
+                });
+
+                // 更新指标
+                const avgResponse = totalTasks > 0 ? (totalDuration / totalTasks).toFixed(1) : 0;
+                const successRate = totalTasks > 0 ? ((successTasks / totalTasks) * 100).toFixed(0) : 0;
+
+                document.getElementById('perf-avg-response').textContent = avgResponse + 's';
+                document.getElementById('perf-success-rate').textContent = successRate + '%';
+                document.getElementById('perf-total-tasks').textContent = totalTasks;
+                document.getElementById('perf-active-agents').textContent = activeCount;
+
+                // 性能排行
+                const ranking = agents
+                    .filter(a => a.stats && a.stats.tasks_completed > 0)
+                    .sort((a, b) => (b.stats.success_rate || 0) - (a.stats.success_rate || 0))
+                    .slice(0, 10);
+
+                const rankingContainer = document.getElementById('performance-ranking');
+                
+                if (ranking.length === 0) {
+                    rankingContainer.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📊</div>
+                            <div class="empty-state-text">暂无性能数据</div>
+                        </div>
+                    `;
+                } else {
+                    rankingContainer.innerHTML = ranking.map((agent, index) => {
+                        const stats = agent.stats || {};
+                        const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+                        return `
+                            <div style="display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #2a3547;">
+                                <div style="font-size: 24px; width: 50px;">${medal}</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; margin-bottom: 5px;">${getAgentDisplayName(agent)}</div>
+                                    <div style="font-size: 12px; color: #8b92a7;">
+                                        ${stats.tasks_completed || 0} 任务 · ${(stats.success_rate * 100 || 0).toFixed(0)}% 成功率 · ${(stats.avg_duration_sec || 0).toFixed(1)}s 平均耗时
+                                    </div>
+                                </div>
+                                <div style="font-size: 20px; font-weight: 700; color: #00d4ff;">
+                                    ${(stats.success_rate * 100 || 0).toFixed(0)}%
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                // 填充进化 Agent 选择框
+                const evolveSelect = document.getElementById('evolve-agent-select');
+                evolveSelect.innerHTML = '<option value="">选择 Agent...</option>' +
+                    agents.map(a => `<option value="${a.id}">${getAgentDisplayName(a)}</option>`).join('');
+
+                // 加载进化事件
+                loadEvolutionEvents();
+
+            } catch (error) {
+                console.error('加载性能数据失败:', error);
+            }
+        }
+
+        // 加载调度总览数据
+        async function loadSchedulerData() {
+            try {
+                const [schedStats, agentHealth, pipelineHistory] = await Promise.allSettled([
+                    fetch(`${API_BASE}/api/scheduler/stats`).then(r => r.json()),
+                    fetch(`${API_BASE}/api/agents/health`).then(r => r.json()),
+                    fetch(`${API_BASE}/api/pipeline/history?limit=10`).then(r => r.json())
+                ]);
+
+                if (schedStats.status === 'fulfilled') {
+                    const stats = schedStats.value;
+                    document.getElementById('sched-queued').textContent = stats.queued || 0;
+                    document.getElementById('sched-running').textContent = stats.running || 0;
+                    document.getElementById('sched-completed').textContent = stats.completed || 0;
+                    document.getElementById('sched-failed').textContent = (stats.failed || 0) + (stats.timed_out || 0);
+
+                    const p0 = stats.p0 || 0, p1 = stats.p1 || 0, p2 = stats.p2 || 0;
+                    const total = p0 + p1 + p2 || 1;
+                    document.getElementById('sched-p0').textContent = p0;
+                    document.getElementById('sched-p1').textContent = p1;
+                    document.getElementById('sched-p2').textContent = p2;
+                    document.getElementById('sched-p0-bar').style.width = (p0 / total * 100) + '%';
+                    document.getElementById('sched-p1-bar').style.width = (p1 / total * 100) + '%';
+                    document.getElementById('sched-p2-bar').style.width = (p2 / total * 100) + '%';
+                }
+
+                if (agentHealth.status === 'fulfilled') {
+                    const hp = agentHealth.value;
+                    document.getElementById('sched-agents-active').textContent = hp.active || 0;
+                    document.getElementById('sched-agents-degraded').textContent = hp.degraded || 0;
+                    document.getElementById('sched-agents-failed').textContent = hp.failed || 0;
+                    document.getElementById('sched-agents-rate').textContent = (hp.overall_success_rate || 0).toFixed(0) + '%';
+                }
+
+                loadSchedulerDecisions();
+
+                if (pipelineHistory.status === 'fulfilled') {
+                    renderPipelineHistory(pipelineHistory.value.runs || []);
+                }
+            } catch (error) {
+                console.error('加载调度数据失败:', error);
+            }
+        }
+
+        async function loadSchedulerDecisions() {
+            try {
+                const response = await fetch(`${API_BASE}/api/scheduler/decisions?limit=20`);
+                const data = await response.json();
+                const decisions = data.decisions || [];
+
+                const container = document.getElementById('scheduler-decisions-list');
+
+                if (decisions.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <div class="empty-state-text">暂无调度决策</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = decisions.map(d => {
+                    const time = d.ts ? new Date(d.ts).toLocaleString('zh-CN') : '未知';
+                    const prio = d.priority;
+                    const prioIcon = prio === 0 ? '🔴' : prio === 1 ? '🟡' : '🟢';
+                    const prioLabel = prio === 0 ? 'P0' : prio === 1 ? 'P1' : 'P2';
+                    return `
+                        <div style="display: flex; gap: 15px; padding: 12px; border-bottom: 1px solid #2a3547; align-items: center;">
+                            <div style="font-size: 24px;">${prioIcon}</div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; margin-bottom: 3px;">${escapeHtml(d.action || 'unknown')}</div>
+                                <div style="font-size: 12px; color: #8b92a7;">${escapeHtml(d.reason || '')}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 12px; color: #8b92a7;">${time}</div>
+                                <div style="font-size: 11px; color: #667eea;">${prioLabel}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                document.getElementById('scheduler-decisions-list').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <div class="empty-state-text">无法加载决策数据</div>
+                    </div>
+                `;
+            }
+        }
+
+        function renderPipelineHistory(runs) {
+            const container = document.getElementById('pipeline-history-list');
+
+            if (runs.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔄</div>
+                        <div class="empty-state-text">暂无运行记录</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = runs.map(run => {
+                const ts = run.ts ? new Date(run.ts).toLocaleString('zh-CN') : '未知';
+                const ms = run.total_ms || 0;
+                const errCount = (run.errors || []).length;
+                const evo = (run.stages || {}).evolution || {};
+                const grade = (evo.result || {}).grade || '?';
+                const gradeIcon = grade === 'healthy' ? '🟢' : grade === 'degraded' ? '🟡' : grade === 'critical' ? '🔴' : '⚪';
+                const stageCount = Object.keys(run.stages || {}).length;
+                const okCount = Object.values(run.stages || {}).filter(s => s.ok).length;
+
+                return `
+                    <div style="display: flex; gap: 15px; padding: 12px; border-bottom: 1px solid #2a3547; align-items: center;">
+                        <div style="font-size: 24px;">${gradeIcon}</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; margin-bottom: 3px;">${ts}</div>
+                            <div style="font-size: 12px; color: #8b92a7;">
+                                ${okCount}/${stageCount} 阶段成功 · ${ms}ms${errCount > 0 ? ` · <span style="color: #f87171;">${errCount} 错误</span>` : ''}
+                            </div>
+                        </div>
+                        <div style="font-size: 14px; font-weight: 600; color: #00d4ff;">${grade}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 加载进化事件
+        async function loadEvolutionEvents() {
+            try {
+                const response = await fetch(`${API_BASE}/api/evolution/events`);
+                const data = await response.json();
+                const events = data.events || [];
+
+                const container = document.getElementById('evolution-events-list');
+
+                if (events.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📜</div>
+                            <div class="empty-state-text">暂无进化事件</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // 按时间倒序
+                events.reverse();
+
+                container.innerHTML = events.slice(0, 20).map(event => {
+                    const time = new Date(event.timestamp * 1000).toLocaleString('zh-CN');
+                    const payload = event.payload || {};
+                    
+                    let icon = '🧬';
+                    let color = '#00d4ff';
+                    let title = event.type;
+                    let desc = '';
+
+                    if (event.type === 'evolution.candidate') {
+                        icon = '💡';
+                        color = '#fbbf24';
+                        title = '候选进化';
+                        desc = `${payload.strategies?.length || 0} 个策略匹配（需审核）`;
+                    } else if (event.type === 'evolution.applied') {
+                        icon = '✅';
+                        color = '#4ade80';
+                        title = '进化应用';
+                        desc = `应用了 ${payload.count || 0} 个改进`;
+                    } else if (event.type === 'evolution.evaluation') {
+                        icon = '📊';
+                        color = '#8b5cf6';
+                        title = '进化评估';
+                        const delta = payload.delta || 0;
+                        desc = `成功率变化 ${delta > 0 ? '+' : ''}${(delta * 100).toFixed(1)}%`;
+                    } else if (event.type === 'evolution.rolled_back') {
+                        icon = '🔄';
+                        color = '#f87171';
+                        title = '进化回滚';
+                        desc = payload.reason || '效果不佳';
+                    } else if (event.type === 'evolution.blocked') {
+                        icon = '🚫';
+                        color = '#8b92a7';
+                        title = '进化阻止';
+                        desc = payload.reason || '熔断/冷却期';
+                    }
+
+                    return `
+                        <div style="display: flex; gap: 15px; padding: 15px; border-bottom: 1px solid #2a3547;">
+                            <div style="font-size: 32px;">${icon}</div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; color: ${color}; margin-bottom: 5px;">${title}</div>
+                                <div style="font-size: 12px; color: #8b92a7; margin-bottom: 5px;">${time}</div>
+                                <div style="font-size: 14px; color: #e0e6ed;">${desc}</div>
+                                <div style="font-size: 12px; color: #8b92a7; margin-top: 5px;">Agent: ${payload.agent_id || 'unknown'}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('加载进化事件失败:', error);
+            }
+        }
+
+        // 手动触发进化
+        async function triggerEvolution() {
+            const agentId = document.getElementById('evolve-agent-select').value;
+            
+            if (!agentId) {
+                alert('请先选择一个 Agent');
+                return;
+            }
+
+            const resultDiv = document.getElementById('evolution-result');
+            resultDiv.innerHTML = '<div class="loading"></div> 正在分析和进化...';
+
+            try {
+                // 调用进化 API（需要添加到 API Server）
+                const response = await fetch(`${API_BASE}/api/agents/${agentId}/evolve`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+
+                if (result.status === 'applied') {
+                    resultDiv.innerHTML = `
+                        <div style="padding: 15px; background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.3); border-radius: 8px; color: #4ade80;">
+                            ✅ ${result.message}<br>
+                            ${result.plans ? result.plans.map(p => `<div style="margin-top: 5px;">• ${p.description}</div>`).join('') : ''}
+                        </div>
+                    `;
+                } else if (result.status === 'pending_review') {
+                    resultDiv.innerHTML = `
+                        <div style="padding: 15px; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 8px; color: #fbbf24;">
+                            ⏳ 需要人工审核<br>
+                            ${result.strategies ? result.strategies.map(s => `<div style="margin-top: 5px;">• ${s.reason}</div>`).join('') : ''}
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div style="padding: 15px; background: rgba(139, 146, 167, 0.1); border: 1px solid rgba(139, 146, 167, 0.3); border-radius: 8px; color: #8b92a7;">
+                            ℹ️ ${result.reason || '无需进化'}
+                        </div>
+                    `;
+                }
+
+                // 3 秒后刷新数据
+                setTimeout(() => {
+                    loadPerformanceData();
+                    loadDashboardData();
+                }, 3000);
+
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div style="padding: 15px; background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3); border-radius: 8px; color: #f87171;">
+                        ❌ 进化失败: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // 初始化
+        loadDashboardData();
+        setInterval(loadDashboardData, 5000);
+    </script>
+</body>
+</html>

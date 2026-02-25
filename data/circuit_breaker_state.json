@@ -1,0 +1,69 @@
+{
+  "states": {
+    "resource.memory_high:memory_handler": "open",
+    "event1:playbook1": "closed",
+    "event2:playbook2": "open",
+    "资源告警: resource.cpu_spike": "open",
+    "Agent 执行失败:Agent 错误处理": "closed",
+    "资源告警: resource.memory_high": "closed",
+    "资源告警: resource.cpu_spike:CPU 峰值处理": "open",
+    "资源告警: resource.memory_high:内存高占用处理": "closed"
+  },
+  "open_time": {
+    "resource.memory_high:memory_handler": 1771861705.1751168,
+    "event2:playbook2": 1771861705.1821215,
+    "资源告警: resource.cpu_spike": 1771873438.1968513,
+    "资源告警: resource.cpu_spike:CPU 峰值处理": 1771873556.2826176
+  },
+  "trigger_history": {
+    "resource.memory_high:memory_handler": [
+      1771861700.1723943,
+      1771861700.1723943
+    ],
+    "event1:playbook1": [
+      1771861705.1821215
+    ],
+    "event2:playbook2": [
+      1771861705.1821215,
+      1771861705.1821215,
+      1771861705.1821215
+    ],
+    "资源告警: resource.cpu_spike": [
+      1771873436.8818645,
+      1771873437.290147,
+      1771873438.0955336
+    ],
+    "Agent 执行失败:Agent 错误处理": [
+      1771873555.6814208
+    ],
+    "资源告警: resource.memory_high": [
+      1771873437.391616
+    ],
+    "资源告警: resource.cpu_spike:CPU 峰值处理": [
+      1771873555.0719805,
+      1771873555.4790704,
+      1771873556.2826176
+    ],
+    "资源告警: resource.memory_high:内存高占用处理": [
+      1771873555.5802307
+    ]
+  },
+  "failure_history": {
+    "resource.memory_high:memory_handler": [
+      1771861700.1723943,
+      1771861700.1723943,
+      1771861705.1751168
+    ],
+    "资源告警: resource.cpu_spike": [
+      1771873437.3911083,
+      1771873438.1968513
+    ],
+    "Agent 执行失败:Agent 错误处理": [
+      1771873555.7817721
+    ],
+    "资源告警: resource.memory_high": [],
+    "资源告警: resource.cpu_spike:CPU 峰值处理": [],
+    "资源告警: resource.memory_high:内存高占用处理": []
+  },
+  "updated_at": "2026-02-24T03:05:56.283640"
+}

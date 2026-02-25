@@ -1,0 +1,360 @@
+﻿{
+    "meta":  {
+                 "version":  "v2.1",
+                 "generated_at":  "2026-02-24T14:15:23.321710",
+                 "timezone":  "+0800",
+                 "uptime_sec":  86400
+             },
+    "system":  {
+                   "mode":  "NORMAL",
+                   "health":  "idle",
+                   "run_state":  "idle",
+                   "provider":  {
+                                    "current":  "claude-sonnet-4-6",
+                                    "status":  "OK",
+                                    "last_error":  null,
+                                    "circuit":  {
+                                                    "state":  "CLOSED",
+                                                    "opened_count_24h":  0,
+                                                    "open_until":  null
+                                                }
+                                },
+                   "heartbeat":  {
+                                     "last_seen_sec_ago":  null,
+                                     "last_ok_at":  "2026-02-24T14:15:23.321710"
+                                 }
+               },
+    "scheduler":  {
+                      "queue":  {
+                                    "ready":  0,
+                                    "running":  0,
+                                    "retrying":  0,
+                                    "dlq":  0,
+                                    "concurrency":  {
+                                                        "used":  0,
+                                                        "max":  5
+                                                    }
+                                },
+                      "last_completed":  {
+                                             "ts":  "2026-02-24T13:58:02",
+                                             "task":  "resource_snapshot",
+                                             "duration_ms":  0
+                                         }
+                  },
+    "events_tail":  {
+                        "items":  [
+                                      {
+                                          "ts":  "",
+                                          "layer":  "KERNEL",
+                                          "event":  "unknown",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  "69967f18"
+                                      },
+                                      {
+                                          "ts":  "",
+                                          "layer":  "KERNEL",
+                                          "event":  "unknown",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  "0be4875f"
+                                      },
+                                      {
+                                          "ts":  "",
+                                          "layer":  "KERNEL",
+                                          "event":  "unknown",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  "331dd12f"
+                                      },
+                                      {
+                                          "ts":  "",
+                                          "layer":  "KERNEL",
+                                          "event":  "unknown",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  100,
+                                          "trace_id":  "a9834ca8"
+                                      },
+                                      {
+                                          "ts":  "",
+                                          "layer":  "KERNEL",
+                                          "event":  "unknown",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  703,
+                                          "trace_id":  "45bd80bf"
+                                      },
+                                      {
+                                          "ts":  "",
+                                          "layer":  "KERNEL",
+                                          "event":  "unknown",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  266,
+                                          "trace_id":  "dab1fc4a"
+                                      },
+                                      {
+                                          "ts":  "",
+                                          "layer":  "KERNEL",
+                                          "event":  "unknown",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  "a8f46d45"
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T03:24:58",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T03:31:17",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T03:52:23",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T03:59:36",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T04:29:41",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T09:33:01",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T10:02:52",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T10:33:13",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T10:40:50",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T12:08:36",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T12:59:29",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T13:29:20",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      },
+                                      {
+                                          "ts":  "2026-02-24T13:58:02",
+                                          "layer":  "KERNEL",
+                                          "event":  "resource_snapshot",
+                                          "status":  "ok",
+                                          "severity":  "INFO",
+                                          "latency_ms":  0,
+                                          "trace_id":  ""
+                                      }
+                                  ]
+                    },
+    "alerts":  {
+                   "crit":  0,
+                   "warn":  0,
+                   "info":  0,
+                   "unacked":  0
+               },
+    "skills":  {
+                   "top_calls_1h":  [
+
+                                    ]
+               },
+    "summary":  {
+                    "scheduler":  {
+                                      "table":  {
+                                                    "columns":  [
+                                                                    "current",
+                                                                    "1h",
+                                                                    "24h",
+                                                                    "7d"
+                                                                ],
+                                                    "rows":  [
+                                                                 {
+                                                                     "key":  "decisions",
+                                                                     "label":  "å³ç­æ¬¡æ°",
+                                                                     "unit":  "count",
+                                                                     "values":  "@{current=; 1h=; 24h=; 7d=}",
+                                                                     "empty_hint":  "ææ è°åº¦ï¼è¿å»1å°æ¶ï¼"
+                                                                 },
+                                                                 {
+                                                                     "key":  "success_rate",
+                                                                     "label":  "æ§è¡æåç",
+                                                                     "unit":  "pct",
+                                                                     "values":  "@{current=; 1h=; 24h=; 7d=}"
+                                                                 },
+                                                                 {
+                                                                     "key":  "latency_avg_ms",
+                                                                     "label":  "å¹³åå»¶è¿",
+                                                                     "unit":  "ms",
+                                                                     "values":  "@{current=; 1h=; 24h=; 7d=}"
+                                                                 },
+                                                                 {
+                                                                     "key":  "failed",
+                                                                     "label":  "å¤±è´¥æ¬¡æ°",
+                                                                     "unit":  "count",
+                                                                     "values":  "@{current=; 1h=; 24h=; 7d=}"
+                                                                 }
+                                                             ]
+                                                }
+                                  },
+                    "reactor":  {
+                                    "table":  {
+                                                  "columns":  [
+                                                                  "current",
+                                                                  "1h",
+                                                                  "24h",
+                                                                  "7d"
+                                                              ],
+                                                  "rows":  [
+                                                               {
+                                                                   "key":  "triggers",
+                                                                   "label":  "è§¦åæ¬¡æ°",
+                                                                   "unit":  "count",
+                                                                   "values":  "@{current=; 1h=; 24h=; 7d=}",
+                                                                   "empty_hint":  "ææ è§¦åï¼è¿å»1å°æ¶ï¼"
+                                                               },
+                                                               {
+                                                                   "key":  "verify_pass_rate",
+                                                                   "label":  "éªè¯éè¿ç",
+                                                                   "unit":  "pct",
+                                                                   "values":  "@{current=; 1h=; 24h=; 7d=}"
+                                                               },
+                                                               {
+                                                                   "key":  "fix_time_avg_ms",
+                                                                   "label":  "å¹³åä¿®å¤èæ¶",
+                                                                   "unit":  "ms",
+                                                                   "values":  "@{current=; 1h=; 24h=; 7d=}"
+                                                               },
+                                                               {
+                                                                   "key":  "circuit_opened",
+                                                                   "label":  "çæ­æ¬¡æ°",
+                                                                   "unit":  "count",
+                                                                   "values":  "@{current=; 1h=0; 24h=0; 7d=0}"
+                                                               }
+                                                           ]
+                                              },
+                                    "rules":  {
+                                                  "total":  18,
+                                                  "enabled":  18
+                                              }
+                                }
+                },
+    "activity":  {
+                     "reactor_runs":  {
+                                          "title":  "æè¿10æ¬¡ Reactor æ§è¡",
+                                          "window":  "last_10",
+                                          "items":  [
+
+                                                    ],
+                                          "empty_hint":  "ææ  Reactor æ§è¡ï¼è¿å»24å°æ¶ï¼"
+                                      },
+                     "scheduler_top_decisions":  {
+                                                     "title":  "Scheduler æè¿å³ç­ Top5",
+                                                     "window":  "24h",
+                                                     "items":  [
+
+                                                               ],
+                                                     "empty_hint":  "ææ å³ç­ç»è®¡ï¼è¿å»24å°æ¶ï¼"
+                                                 },
+                     "circuit_history":  {
+                                             "title":  "çæ­åå²ï¼æè¿7å¤©ï¼",
+                                             "window":  "7d",
+                                             "items":  [
+
+                                                       ],
+                                             "empty_hint":  "æè¿7å¤©æ çæ­è®°å½"
+                                         }
+                 },
+    "trends":  {
+                   "window":  "7d",
+                   "series":  [
+
+                              ]
+               },
+    "ui_hints":  {
+                     "zero_policy":  "use_null_for_no_data_show_dash",
+                     "dash_for_null":  "--",
+                     "time_windows":  [
+                                          "1h",
+                                          "24h",
+                                          "7d"
+                                      ]
+                 }
+}

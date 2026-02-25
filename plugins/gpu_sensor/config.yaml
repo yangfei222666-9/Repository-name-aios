@@ -1,0 +1,12 @@
+# GPU Sensor 配置
+enabled: true
+interval: 30  # 采集间隔（秒）
+
+# 阈值配置
+thresholds:
+  temperature: 85  # 温度阈值（℃）
+  memory_usage: 90  # 显存使用率阈值（%）
+  utilization: 95  # GPU 使用率阈值（%）
+
+# 是否在超过阈值时发送通知
+notify_on_threshold: true

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "browser_screenshot",
+    "type": "browser",
+    "description": "使用 browser 工具截图指定 URL",
+    "config": {
+      "default_url": "https://example.com",
+      "output_dir": "screenshots"
+    },
+    "health_check_cmd": "echo OK"
+  },
+  {
+    "name": "system_info",
+    "type": "cli",
+    "description": "收集系统信息（CPU/RAM/Disk/GPU）",
+    "config": {},
+    "health_check_cmd": "systeminfo | findstr /C:\"OS Name\" /C:\"Total Physical Memory\""
+  },
+  {
+    "name": "git_status",
+    "type": "cli",
+    "description": "检查 workspace git 状态",
+    "config": {
+      "workspace_path": "C:\\Users\\A\\.openclaw\\workspace"
+    },
+    "health_check_cmd": "git --version"
+  },
+  {
+    "name": "test_integration",
+    "type": "cli",
+    "description": "测试集成",
+    "config": {},
+    "health_check_cmd": "echo test"
+  },
+  {
+    "name": "custom_test",
+    "type": "cli",
+    "description": "自定义测试集成",
+    "config": {},
+    "health_check_cmd": "echo OK"
+  }
+]

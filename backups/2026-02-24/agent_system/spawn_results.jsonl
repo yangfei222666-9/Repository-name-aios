@@ -1,0 +1,4 @@
+{"task_id": "1771818543826", "label": "coder", "model": "claude-opus-4-5", "status": "spawned", "spawned_at": "2026-02-23T11:49:18.655054", "note": "This is a placeholder - actual sessions_spawn will be called by main agent"}
+{"task_id": "test_001", "label": "coder", "model": "claude-opus-4-5", "spawned_at": "2026-02-23T16:28:04.493109", "session_key": "session_coder_1771835284", "status": "spawned", "error": null}
+{"task_id": "test_002", "label": "analyst", "model": "claude-sonnet-4-5", "spawned_at": "2026-02-23T16:28:04.594028", "session_key": "session_analyst_1771835284", "status": "spawned", "error": null}
+{"task_id": "test_003", "label": "researcher", "model": "claude-sonnet-4-5", "spawned_at": "2026-02-23T16:28:04.694921", "session_key": "session_researcher_1771835284", "status": "spawned", "error": null}

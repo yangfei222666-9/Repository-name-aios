@@ -1,0 +1,44 @@
+{
+  "timestamp": "2026-02-25T16:03:31.234289",
+  "uptime_sec": 7.12,
+  "counters": {
+    "tasks.created{scenario=reactor,type=monitor}": 3.0,
+    "tasks.failed{error=FileNotFoundError}": 3.0,
+    "reactor.fixes{playbook=file-not-found}": 1.0,
+    "tasks.created{scenario=self_improving,type=code}": 3.0,
+    "tasks.timeout{agent=coder}": 3.0,
+    "improvements.generated{type=timeout_adjustment}": 1.0,
+    "improvements.applied{agent=coder}": 1.0,
+    "prompt.gaps_found": 2.0,
+    "prompt.patches_generated": 2.0,
+    "evolution.applied{agent=coder}": 1.0,
+    "knowledge.transfers": 3.0
+  },
+  "gauges": {
+    "reactor.success_rate": 1.0,
+    "agent.success_rate{agent=coder}": 1.0,
+    "traces.collected": 15
+  },
+  "histograms": {
+    "reactor.fix_duration_ms": {
+      "count": 1,
+      "sum": 500,
+      "min": 500,
+      "max": 500,
+      "avg": 500.0,
+      "p50": 500,
+      "p95": 500,
+      "p99": 500
+    },
+    "task.duration_sec": {
+      "count": 3,
+      "sum": 195,
+      "min": 65,
+      "max": 65,
+      "avg": 65.0,
+      "p50": 65,
+      "p95": 65,
+      "p99": 65
+    }
+  }
+}

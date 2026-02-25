@@ -1,0 +1,5 @@
+{
+  "daily_token_budget": 150000,
+  "weekly_token_budget": 800000,
+  "heartbeat_time_limit_seconds": 30
+}

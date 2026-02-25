@@ -1,0 +1,49 @@
+{
+  "playbooks": [
+    {
+      "id": "pb_restart_service",
+      "name": "重启服务",
+      "enabled": true,
+      "trigger": {
+        "severity": ["ERR", "CRIT"],
+        "keywords": ["service_down", "service_failed"]
+      },
+      "action": {
+        "type": "auto",
+        "command": "systemctl restart myservice",
+        "verify_command": "systemctl is-active myservice",
+        "timeout": 30
+      }
+    },
+    {
+      "id": "pb_clear_cache",
+      "name": "清理缓存",
+      "enabled": true,
+      "trigger": {
+        "severity": ["WARN"],
+        "keywords": ["memory_high", "cache_full"]
+      },
+      "action": {
+        "type": "auto",
+        "command": "rm -rf /tmp/cache/*",
+        "verify_command": "test $(du -s /tmp/cache | cut -f1) -lt 1000",
+        "timeout": 10
+      }
+    },
+    {
+      "id": "pb_kill_zombie",
+      "name": "清理僵尸进程",
+      "enabled": true,
+      "trigger": {
+        "severity": ["WARN"],
+        "keywords": ["zombie_process"]
+      },
+      "action": {
+        "type": "auto",
+        "command": "ps aux | grep defunct | awk '{print $2}' | xargs kill -9",
+        "verify_command": "! ps aux | grep defunct",
+        "timeout": 5
+      }
+    }
+  ]
+}

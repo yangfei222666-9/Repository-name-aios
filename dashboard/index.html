@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIOS Dashboard - 实时监控</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            color: #667eea;
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card .value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .metrics-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .metrics-section h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .metric-item:last-child {
+            border-bottom: none;
+        }
+        
+        .metric-name {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .metric-value {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>🚀 AIOS Dashboard</h1>
+                <p style="color: #666; margin-top: 5px;">实时监控 - 自动更新</p>
+            </div>
+            <div class="status">
+                <div class="status-dot"></div>
+                <span style="color: #10b981; font-weight: bold;">LIVE</span>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>总任务数</h3>
+                <div class="value" id="total-tasks">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>成功任务</h3>
+                <div class="value" id="success-tasks" style="color: #10b981;">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>失败任务</h3>
+                <div class="value" id="failed-tasks" style="color: #ef4444;">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>成功率</h3>
+                <div class="value" id="success-rate">0%</div>
+            </div>
+        </div>
+        
+        <div class="metrics-section">
+            <h2>📊 实时指标</h2>
+            <div id="counters-list">
+                <div class="empty-state">等待数据...</div>
+            </div>
+        </div>
+        
+        <div class="metrics-section">
+            <h2>📈 系统状态</h2>
+            <div id="gauges-list">
+                <div class="empty-state">等待数据...</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 连接 SSE
+        const eventSource = new EventSource('/api/metrics/stream');
+        
+        eventSource.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            updateDashboard(data);
+        };
+        
+        eventSource.onerror = function(error) {
+            console.error('SSE 连接错误:', error);
+        };
+        
+        function updateDashboard(data) {
+            // 更新统计卡片
+            let totalTasks = 0;
+            let successTasks = 0;
+            let failedTasks = 0;
+            
+            for (const [key, value] of Object.entries(data.counters)) {
+                if (key.includes('tasks.started') || key.includes('tasks.completed')) {
+                    totalTasks += value;
+                }
+                if (key.includes('success')) {
+                    successTasks += value;
+                }
+                if (key.includes('failure') || key.includes('failed')) {
+                    failedTasks += value;
+                }
+            }
+            
+            document.getElementById('total-tasks').textContent = Math.round(totalTasks);
+            document.getElementById('success-tasks').textContent = Math.round(successTasks);
+            document.getElementById('failed-tasks').textContent = Math.round(failedTasks);
+            
+            const successRate = totalTasks > 0 ? (successTasks / totalTasks * 100).toFixed(1) : 0;
+            document.getElementById('success-rate').textContent = successRate + '%';
+            
+            // 更新 Counters
+            const countersList = document.getElementById('counters-list');
+            if (Object.keys(data.counters).length > 0) {
+                countersList.innerHTML = Object.entries(data.counters)
+                    .map(([key, value]) => `
+                        <div class="metric-item">
+                            <span class="metric-name">${key}</span>
+                            <span class="metric-value">${Math.round(value)}</span>
+                        </div>
+                    `).join('');
+            } else {
+                countersList.innerHTML = '<div class="empty-state">暂无数据</div>';
+            }
+            
+            // 更新 Gauges
+            const gaugesList = document.getElementById('gauges-list');
+            if (Object.keys(data.gauges).length > 0) {
+                gaugesList.innerHTML = Object.entries(data.gauges)
+                    .map(([key, value]) => `
+                        <div class="metric-item">
+                            <span class="metric-name">${key}</span>
+                            <span class="metric-value">${value.toFixed(2)}</span>
+                        </div>
+                    `).join('');
+            } else {
+                gaugesList.innerHTML = '<div class="empty-state">暂无数据</div>';
+            }
+        }
+    </script>
+</body>
+</html>

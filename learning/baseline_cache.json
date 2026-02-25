@@ -1,0 +1,58 @@
+{
+  "score": {
+    "cached_at": 1771564898.6750534,
+    "data": {
+      "score": 0.4,
+      "grade": "healthy",
+      "breakdown": {
+        "tool_success_rate": {
+          "value": 1.0,
+          "weight": 0.4
+        },
+        "correction_rate": {
+          "value": 0.0,
+          "weight": -0.2
+        },
+        "http_502_rate": {
+          "value": 0.0,
+          "weight": -0.2
+        },
+        "p95_slow_ratio": {
+          "value": 0.0,
+          "weight": -0.2
+        }
+      },
+      "snapshot_ts": "2026-02-20T12:00:12"
+    }
+  },
+  "snapshot": {
+    "cached_at": 1771984944.349943,
+    "data": {
+      "ts": "2026-02-25T10:02:24",
+      "period_days": 1,
+      "correction_rate": 0,
+      "tool_success_rate": 1.0,
+      "tool_p95_ms": {
+        "?": 900
+      },
+      "http_error_count": 0,
+      "http_502_rate": 0.0,
+      "http_404_rate": 0.0,
+      "total_events": 266,
+      "severity_counts": {
+        "CRIT": 0,
+        "WARN": 0,
+        "INFO": 266,
+        "ERR": 0
+      },
+      "resource": {
+        "avg_cpu_percent": 8.51,
+        "avg_memory_percent": 44.55,
+        "peak_cpu_percent": 100.0,
+        "peak_memory_percent": 50.0
+      },
+      "evolution_score": 0.37,
+      "grade": "healthy"
+    }
+  }
+}

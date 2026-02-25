@@ -1,0 +1,35 @@
+config:
+  name: "AIOS"
+  version: "0.6.0"
+  description: "个人 AI 操作系统 — 主动感知 + 任务追踪 + 决策审计 + 资源管理 + 并发编排 + 外部集成 + Action Engine"
+
+paths:
+  events: "%USERPROFILE%\\.openclaw\\workspace\\aios\\events\\events.jsonl"
+  suggestions: "%USERPROFILE%\\.openclaw\\workspace\\aios\\learning\\suggestions.json"
+  applied_log: "%USERPROFILE%\\.openclaw\\workspace\\aios\\learning\\applied_log.json"
+  alias: "%USERPROFILE%\\.openclaw\\workspace\\autolearn\\data\\learned_aliases.json"
+  metrics_history: "%USERPROFILE%\\.openclaw\\workspace\\aios\\learning\\baseline.jsonl"
+  tickets: "%USERPROFILE%\\.openclaw\\workspace\\aios\\learning\\tickets.jsonl"
+
+policy:
+  alias_min_confidence: 0.80
+  alias_no_overwrite: true
+
+analysis:
+  correction_threshold: 3
+  low_score_threshold: 0.80
+  report_schedule: "daily"
+
+modules:
+  aram:
+    enabled: true
+    data_dir: "C:\\Users\\A\\Desktop\\ARAM-Helper"
+  autolearn:
+    enabled: true
+    data_dir: "C:\\Users\\A\\.openclaw\\workspace\\autolearn"
+
+action_engine:
+  hourly_exec_limit: 20
+  same_action_cooldown_sec: 600
+  consecutive_fail_circuit_breaker: 3
+  budget_pressure_threshold: 0.8

@@ -1,0 +1,72 @@
+{
+  "builtin/sensor_resource": {
+    "enabled": true,
+    "config": {
+      "enabled": true,
+      "interval": 60,
+      "thresholds": {
+        "cpu_percent": 80,
+        "memory_percent": 85,
+        "disk_percent": 90
+      }
+    }
+  },
+  "builtin/notifier_console": {
+    "enabled": true,
+    "config": {
+      "enabled": true,
+      "show_timestamp": true,
+      "color_enabled": true
+    }
+  },
+  "builtin/reactor_demo": {
+    "enabled": true,
+    "config": {
+      "enabled": true,
+      "target_categories": [
+        "resource_error",
+        "gpu_error",
+        "network_error"
+      ]
+    }
+  },
+  "builtin/notifier_telegram": {
+    "enabled": true,
+    "config": {
+      "enabled": true,
+      "bot_token": "8278846913:AAGX6omR8aXEOWgcMBX3Y0EsJUGI2b2BE0s",
+      "chat_id": "7986452220",
+      "min_severity": "warn",
+      "rate_limit": 5
+    }
+  },
+  "builtin/sensor_gpu_temp": {
+    "enabled": true,
+    "config": {
+      "enabled": true,
+      "interval": 300,
+      "thresholds": {
+        "temperature_warn": 75,
+        "temperature_critical": 85,
+        "memory_warn": 85,
+        "power_warn": 250
+      }
+    }
+  },
+  "builtin/sensor_disk_space": {
+    "enabled": true,
+    "config": {
+      "enabled": true,
+      "interval": 600,
+      "monitored_drives": [
+        "C:",
+        "D:",
+        "E:"
+      ],
+      "thresholds": {
+        "warn": 80,
+        "critical": 90
+      }
+    }
+  }
+}

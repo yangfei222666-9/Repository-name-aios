@@ -1,0 +1,19 @@
+{
+  "recent_actions": [
+    {
+      "action_id": "test-001",
+      "action_type": "suggestion",
+      "category": "habit_suggestion",
+      "message": "测试建议",
+      "timestamp": 1771830327.6640055
+    },
+    {
+      "action_id": "test-001",
+      "action_type": "suggestion",
+      "category": "habit_suggestion",
+      "message": "测试建议",
+      "timestamp": 1771830334.1569586
+    }
+  ],
+  "last_feedback_id": 2
+}

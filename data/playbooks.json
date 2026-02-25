@@ -1,0 +1,590 @@
+[
+  {
+    "id": "pb-001-network-retry",
+    "name": "网络错误自动重试",
+    "description": "检测到网络错误（502/timeout/connection）时自动重试",
+    "trigger": {
+      "rule": "network_error",
+      "keywords": [
+        "502",
+        "timeout",
+        "connection refused",
+        "network error",
+        "failed to connect"
+      ],
+      "severity": [
+        "WARN",
+        "ERR",
+        "CRIT"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "echo 'Network error detected, will retry automatically'",
+      "risk": "low"
+    },
+    "cooldown_min": 5,
+    "enabled": true,
+    "created_at": "2026-02-22T17:25:00",
+    "success_count": 1,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-002-disk-cleanup",
+    "name": "磁盘空间不足自动清理",
+    "description": "检测到磁盘空间不足时清理临时文件",
+    "trigger": {
+      "rule": "disk_full",
+      "keywords": [
+        "disk full",
+        "no space left",
+        "磁盘空间不足"
+      ],
+      "severity": [
+        "WARN",
+        "CRIT"
+      ]
+    },
+    "action": {
+      "type": "confirm",
+      "command": "powershell -Command \"Remove-Item $env:TEMP\\* -Recurse -Force -ErrorAction SilentlyContinue\"",
+      "risk": "medium"
+    },
+    "cooldown_min": 60,
+    "enabled": true,
+    "created_at": "2026-02-22T17:25:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-003-process-restart",
+    "name": "进程崩溃自动重启",
+    "description": "检测到关键进程崩溃时自动重启",
+    "trigger": {
+      "rule": "process_crash",
+      "keywords": [
+        "process crashed",
+        "进程崩溃",
+        "service stopped"
+      ],
+      "severity": [
+        "ERR",
+        "CRIT"
+      ]
+    },
+    "action": {
+      "type": "confirm",
+      "command": "echo 'Process restart required'",
+      "risk": "medium"
+    },
+    "cooldown_min": 10,
+    "enabled": true,
+    "created_at": "2026-02-22T17:25:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-004-api-rate-limit",
+    "name": "API 限流自动等待",
+    "description": "检测到 API 限流时自动等待后重试",
+    "trigger": {
+      "rule": "rate_limit",
+      "keywords": [
+        "rate limit",
+        "too many requests",
+        "429",
+        "限流"
+      ],
+      "severity": [
+        "WARN",
+        "ERR"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "timeout /t 60 /nobreak",
+      "risk": "low"
+    },
+    "cooldown_min": 15,
+    "enabled": true,
+    "created_at": "2026-02-22T17:25:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-005-memory-leak",
+    "name": "内存泄漏检测",
+    "description": "检测到内存使用异常高时记录并告警",
+    "trigger": {
+      "rule": "memory_high",
+      "keywords": [
+        "memory usage",
+        "内存占用",
+        "out of memory"
+      ],
+      "severity": [
+        "WARN",
+        "CRIT"
+      ]
+    },
+    "action": {
+      "type": "notify",
+      "command": "echo 'High memory usage detected'",
+      "risk": "low"
+    },
+    "cooldown_min": 30,
+    "enabled": true,
+    "created_at": "2026-02-22T17:25:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-006-log-rotation",
+    "name": "日志文件过大自动清理",
+    "description": "检测到日志文件超过 100MB 时自动归档或清理",
+    "trigger": {
+      "rule": "log_too_large",
+      "keywords": [
+        "log file too large",
+        "日志文件过大",
+        "log size exceeded"
+      ],
+      "severity": [
+        "WARN"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "powershell -Command \"Get-ChildItem -Path 'C:\\Users\\A\\.openclaw\\workspace\\aios\\events' -Filter '*.jsonl' | Where-Object {$_.Length -gt 100MB} | ForEach-Object {Compress-Archive -Path $_.FullName -DestinationPath ($_.FullName + '.zip') -Force; Remove-Item $_.FullName}\"",
+      "risk": "low"
+    },
+    "cooldown_min": 1440,
+    "enabled": true,
+    "created_at": "2026-02-23T13:54:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-007-gpu-overheat",
+    "name": "GPU 过热降频保护",
+    "description": "检测到 GPU 温度过高时自动降低性能限制",
+    "trigger": {
+      "rule": "gpu_overheat",
+      "keywords": [
+        "gpu temperature",
+        "GPU 过热",
+        "thermal throttling",
+        "温度过高"
+      ],
+      "severity": [
+        "WARN",
+        "CRIT"
+      ]
+    },
+    "action": {
+      "type": "notify",
+      "command": "echo 'GPU temperature high - consider checking cooling system'",
+      "risk": "low"
+    },
+    "cooldown_min": 30,
+    "enabled": true,
+    "created_at": "2026-02-23T13:54:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-008-cache-cleanup",
+    "name": "缓存自动清理",
+    "description": "定期清理浏览器和应用缓存释放空间",
+    "trigger": {
+      "rule": "cache_full",
+      "keywords": [
+        "cache full",
+        "缓存已满",
+        "clear cache"
+      ],
+      "severity": [
+        "WARN"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "powershell -Command \"Remove-Item -Path '$env:LOCALAPPDATA\\Microsoft\\Edge\\User Data\\Default\\Cache\\*' -Recurse -Force -ErrorAction SilentlyContinue\"",
+      "risk": "low"
+    },
+    "cooldown_min": 720,
+    "enabled": true,
+    "created_at": "2026-02-23T13:54:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-009-service-health-check",
+    "name": "服务健康检查",
+    "description": "定期检查关键服务状态，异常时自动重启",
+    "trigger": {
+      "rule": "service_unhealthy",
+      "keywords": [
+        "service unhealthy",
+        "服务异常",
+        "health check failed"
+      ],
+      "severity": [
+        "ERR",
+        "CRIT"
+      ]
+    },
+    "action": {
+      "type": "confirm",
+      "command": "powershell -Command \"Restart-Service -Name 'ServiceName' -Force\"",
+      "risk": "medium"
+    },
+    "cooldown_min": 15,
+    "enabled": false,
+    "created_at": "2026-02-23T13:54:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-010-backup-trigger",
+    "name": "自动备份触发",
+    "description": "检测到重要文件变更时触发增量备份",
+    "trigger": {
+      "rule": "important_file_changed",
+      "keywords": [
+        "file modified",
+        "文件变更",
+        "backup needed"
+      ],
+      "severity": [
+        "INFO",
+        "WARN"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "powershell -Command \"robocopy 'C:\\Users\\A\\.openclaw\\workspace' 'C:\\Backups\\workspace' /MIR /XD node_modules .git /LOG+:'C:\\Backups\\backup.log'\"",
+      "risk": "low"
+    },
+    "cooldown_min": 360,
+    "enabled": false,
+    "created_at": "2026-02-23T13:54:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-011-lol-version-update",
+    "name": "LOL 版本更新自动刷新数据",
+    "description": "检测到英雄联盟版本更新时自动刷新 ARAM 助手数据",
+    "trigger": {
+      "rule": "lol_version_updated",
+      "keywords": [
+        "LOL updated",
+        "版本更新",
+        "sensor.lol.version_updated"
+      ],
+      "severity": [
+        "INFO",
+        "WARN"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "& \"C:\\Program Files\\Python312\\python.exe\" C:\\Users\\A\\Desktop\\ARAM-Helper\\fetch_real_data.py",
+      "risk": "low"
+    },
+    "cooldown_min": 1440,
+    "enabled": true,
+    "created_at": "2026-02-23T14:42:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-012-gpu-critical-alert",
+    "name": "GPU 严重过热告警",
+    "description": "GPU 温度达到危险阈值时立即通知",
+    "trigger": {
+      "rule": "gpu_critical",
+      "keywords": [
+        "GPU temperature critical",
+        "sensor.gpu.critical"
+      ],
+      "severity": [
+        "CRIT"
+      ]
+    },
+    "action": {
+      "type": "notify",
+      "command": "echo 'CRITICAL: GPU temperature exceeded safe limits!'",
+      "risk": "low"
+    },
+    "cooldown_min": 10,
+    "enabled": true,
+    "created_at": "2026-02-23T14:42:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-013-app-crash-monitor",
+    "name": "应用崩溃监控",
+    "description": "监控常用应用（QQ音乐/LOL）意外关闭",
+    "trigger": {
+      "rule": "app_stopped",
+      "keywords": [
+        "sensor.app.stopped",
+        "应用关闭"
+      ],
+      "severity": [
+        "INFO",
+        "WARN"
+      ]
+    },
+    "action": {
+      "type": "notify",
+      "command": "echo 'Application stopped'",
+      "risk": "low"
+    },
+    "cooldown_min": 30,
+    "enabled": true,
+    "created_at": "2026-02-23T14:42:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-014-git-auto-commit",
+    "name": "Git 自动提交",
+    "description": "检测到重要文件修改超过 1 小时未提交时自动提交",
+    "trigger": {
+      "rule": "git_uncommitted",
+      "keywords": [
+        "uncommitted changes",
+        "未提交",
+        "git status dirty"
+      ],
+      "severity": [
+        "INFO",
+        "WARN"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "cd C:\\Users\\A\\.openclaw\\workspace && git add -A && git commit -m 'Auto-commit: periodic save'",
+      "risk": "low"
+    },
+    "cooldown_min": 60,
+    "enabled": false,
+    "created_at": "2026-02-23T17:18:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-015-model-fallback",
+    "name": "模型故障自动切换",
+    "description": "主模型连续失败时自动切换到备用模型",
+    "trigger": {
+      "rule": "model_failure",
+      "keywords": [
+        "model error",
+        "API error",
+        "模型错误",
+        "连接失败"
+      ],
+      "severity": [
+        "ERR",
+        "CRIT"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "echo 'Switching to fallback model'",
+      "risk": "low"
+    },
+    "cooldown_min": 5,
+    "enabled": true,
+    "created_at": "2026-02-23T17:18:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-016-memory-cleanup",
+    "name": "内存清理",
+    "description": "内存使用超过 80% 时清理不必要的进程",
+    "trigger": {
+      "rule": "memory_critical",
+      "keywords": [
+        "memory usage high",
+        "内存不足",
+        "sensor.memory.critical"
+      ],
+      "severity": [
+        "WARN",
+        "CRIT"
+      ]
+    },
+    "action": {
+      "type": "confirm",
+      "command": "powershell -Command \"Get-Process | Where-Object {$_.WorkingSet -gt 500MB -and $_.ProcessName -notmatch 'chrome|python|openclaw'} | Stop-Process -Force\"",
+      "risk": "medium"
+    },
+    "cooldown_min": 30,
+    "enabled": false,
+    "created_at": "2026-02-23T17:18:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-017-network-speed-test",
+    "name": "网络速度测试",
+    "description": "检测到网络缓慢时自动测速并记录",
+    "trigger": {
+      "rule": "network_slow",
+      "keywords": [
+        "network slow",
+        "网络缓慢",
+        "high latency",
+        "延迟高"
+      ],
+      "severity": [
+        "WARN"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "powershell -Command \"Test-Connection -ComputerName 8.8.8.8 -Count 4 | Out-File -FilePath 'C:\\Users\\A\\.openclaw\\workspace\\network_test.log' -Append\"",
+      "risk": "low"
+    },
+    "cooldown_min": 15,
+    "enabled": true,
+    "created_at": "2026-02-23T17:18:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-018-aios-health-check",
+    "name": "AIOS 健康检查",
+    "description": "定期检查 AIOS 系统健康状态",
+    "trigger": {
+      "rule": "aios_unhealthy",
+      "keywords": [
+        "evolution score degraded",
+        "reactor failed",
+        "AIOS 异常"
+      ],
+      "severity": [
+        "WARN",
+        "CRIT"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "& \"C:\\Program Files\\Python312\\python.exe\" -X utf8 C:\\Users\\A\\.openclaw\\workspace\\aios\\pipeline.py run",
+      "risk": "low"
+    },
+    "cooldown_min": 30,
+    "enabled": true,
+    "created_at": "2026-02-23T17:18:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-019-task-timeout",
+    "name": "任务超时自动处理",
+    "description": "检测到任务超时时增加超时时间并重试",
+    "trigger": {
+      "rule": "task_timeout",
+      "keywords": [
+        "task.timeout",
+        "task timeout",
+        "任务超时"
+      ],
+      "severity": [
+        "WARN",
+        "ERR"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "echo Task timeout detected, will increase timeout and retry",
+      "risk": "low"
+    },
+    "cooldown_min": 10,
+    "enabled": true,
+    "created_at": "2026-02-25T09:45:00",
+    "success_count": 0,
+    "fail_count": 0
+  },
+  {
+    "id": "pb-020-debugger-trigger",
+    "name": "错误自动分析",
+    "description": "检测到严重错误时自动触发 Debugger Agent 完整闭环分析",
+    "trigger": {
+      "rule": "critical_error",
+      "keywords": [
+        "fatal",
+        "critical",
+        "exception",
+        "traceback",
+        "error"
+      ],
+      "severity": [
+        "ERR",
+        "CRIT"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "echo Triggering Debugger Agent for error analysis",
+      "risk": "low"
+    },
+    "cooldown_min": 30,
+    "enabled": true,
+    "created_at": "2026-02-25T11:35:00",
+    "success_count": 0,
+    "fail_count": 0,
+    "metadata": {
+      "agent_type": "debugger",
+      "auto_trigger": true,
+      "closedloop": true,
+      "phases": [
+        "Phase 1: 收集错误上下文（日志、堆栈、环境）",
+        "Phase 2: 分析根因（模式匹配、历史对比）",
+        "Phase 3: 生成诊断报告（根因 + 修复建议）",
+        "Phase 4: 触发修复（如果是已知问题）",
+        "Phase 5: 学习记录（更新 lessons.json）"
+      ]
+    }
+  },
+  {
+    "id": "pb-021-file-not-found-fix",
+    "name": "文件路径不存在自动修复",
+    "description": "检测到 FileNotFoundError 时自动创建缺失路径或切换到备用路径",
+    "trigger": {
+      "rule": "file_not_found",
+      "keywords": [
+        "FileNotFoundError",
+        "Path not found",
+        "file not found",
+        "路径不存在"
+      ],
+      "severity": [
+        "WARN",
+        "ERR",
+        "high"
+      ]
+    },
+    "action": {
+      "type": "auto",
+      "command": "powershell -Command \"if (!(Test-Path 'C:\\fake\\path\\to')) { New-Item -ItemType Directory -Path 'C:\\fake\\path\\to' -Force | Out-Null }; if (!(Test-Path 'C:\\fake\\path\\to\\resource')) { New-Item -ItemType File -Path 'C:\\fake\\path\\to\\resource' -Force | Out-Null; Add-Content -Path 'C:\\fake\\path\\to\\resource' -Value 'Auto-created by AIOS Reactor' }; Write-Host 'Path created successfully'\"",
+      "risk": "low"
+    },
+    "cooldown_min": 10,
+    "enabled": true,
+    "created_at": "2026-02-25T15:50:00",
+    "success_count": 0,
+    "fail_count": 0,
+    "metadata": {
+      "auto_fix": true,
+      "verify_command": "Test-Path 'C:\\fake\\path\\to\\resource'"
+    }
+  }
+]

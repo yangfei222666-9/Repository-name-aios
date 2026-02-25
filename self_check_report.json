@@ -1,0 +1,158 @@
+{
+  "timestamp": "2026-02-24T12:11:46.402442",
+  "total": 30,
+  "passed": 30,
+  "failed": 0,
+  "results": [
+    {
+      "name": "EventBus",
+      "status": "pass",
+      "message": "存在 (5472 bytes)"
+    },
+    {
+      "name": "Scheduler",
+      "status": "pass",
+      "message": "存在 (4313 bytes)"
+    },
+    {
+      "name": "Reactor",
+      "status": "pass",
+      "message": "存在 (19470 bytes)"
+    },
+    {
+      "name": "ScoreEngine",
+      "status": "pass",
+      "message": "存在 (8022 bytes)"
+    },
+    {
+      "name": "Maintenance Agent",
+      "status": "pass",
+      "message": "存在 (7613 bytes)"
+    },
+    {
+      "name": "Analyst Agent",
+      "status": "pass",
+      "message": "存在 (14157 bytes)"
+    },
+    {
+      "name": "Monitor Agent",
+      "status": "pass",
+      "message": "存在 (10205 bytes)"
+    },
+    {
+      "name": "Orchestrator",
+      "status": "pass",
+      "message": "存在 (9328 bytes)"
+    },
+    {
+      "name": "Health Check Skill",
+      "status": "pass",
+      "message": "存在 (4255 bytes)"
+    },
+    {
+      "name": "Cleanup Skill",
+      "status": "pass",
+      "message": "存在 (5128 bytes)"
+    },
+    {
+      "name": "Backup Skill",
+      "status": "pass",
+      "message": "存在 (2323 bytes)"
+    },
+    {
+      "name": "告警文件",
+      "status": "pass",
+      "message": "存在 (579 bytes)"
+    },
+    {
+      "name": "洞察文件",
+      "status": "pass",
+      "message": "存在 (506 bytes)"
+    },
+    {
+      "name": "优化计划",
+      "status": "pass",
+      "message": "存在 (240 bytes)"
+    },
+    {
+      "name": "执行日志",
+      "status": "pass",
+      "message": "存在 (492 bytes)"
+    },
+    {
+      "name": "Orchestrator 日志",
+      "status": "pass",
+      "message": "存在 (2559 bytes)"
+    },
+    {
+      "name": "Maintenance 日志",
+      "status": "pass",
+      "message": "存在 (5325 bytes)"
+    },
+    {
+      "name": "Analyst 日志",
+      "status": "pass",
+      "message": "存在 (10469 bytes)"
+    },
+    {
+      "name": "Monitor 日志",
+      "status": "pass",
+      "message": "存在 (2496 bytes)"
+    },
+    {
+      "name": "今日备份",
+      "status": "pass",
+      "message": "存在 (6 个文件)"
+    },
+    {
+      "name": "ARCHITECTURE.md",
+      "status": "pass",
+      "message": "存在 (14900 bytes)"
+    },
+    {
+      "name": "TUTORIAL.md",
+      "status": "pass",
+      "message": "存在 (11744 bytes)"
+    },
+    {
+      "name": "API.md",
+      "status": "pass",
+      "message": "存在 (17569 bytes)"
+    },
+    {
+      "name": "CONTRIBUTING.md",
+      "status": "pass",
+      "message": "存在 (8956 bytes)"
+    },
+    {
+      "name": "setup.py",
+      "status": "pass",
+      "message": "存在 (2557 bytes)"
+    },
+    {
+      "name": ".gitignore",
+      "status": "pass",
+      "message": "存在 (1940 bytes)"
+    },
+    {
+      "name": "README.md",
+      "status": "pass",
+      "message": "存在 (8198 bytes)"
+    },
+    {
+      "name": "测试文件",
+      "status": "pass",
+      "message": "30 个测试文件"
+    },
+    {
+      "name": "Orchestrator 集成",
+      "status": "pass",
+      "message": "已集成"
+    },
+    {
+      "name": "Maintenance 集成",
+      "status": "pass",
+      "message": "已集成"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{"id": "test_alert_1771919128", "severity": "WARN", "message": "测试告警 - 系统负载较高", "state": "OPEN", "created_at": "2026-02-24T15:45:28.068708", "signature": "test.high_load"}
+{"id": "test_alert_1771919134", "severity": "WARN", "message": "测试告警 - 系统负载较高", "state": "OPEN", "created_at": "2026-02-24T15:45:34.828349", "signature": "test.high_load"}
+{"id": "test_alert_1771919217", "severity": "WARN", "message": "测试告警 - 系统负载较高", "state": "OPEN", "created_at": "2026-02-24T15:46:57.467655", "signature": "test.high_load"}
+{"id": "test_alert_1771921052", "severity": "WARN", "message": "测试告警 - 系统负载较高", "state": "OPEN", "created_at": "2026-02-24T16:17:32.921248", "signature": "test.high_load"}
+{"id": "test_alert_1771994310", "severity": "WARN", "message": "测试告警 - 系统负载较高", "state": "OPEN", "created_at": "2026-02-25T12:38:30.924424", "signature": "test.high_load"}
+{"id": "test_alert_1771996068", "severity": "WARN", "message": "测试告警 - 系统负载较高", "state": "OPEN", "created_at": "2026-02-25T13:07:48.022440", "signature": "test.high_load"}

@@ -1,0 +1,3 @@
+enabled: true
+show_timestamp: true  # 是否显示时间戳
+color_enabled: true   # 是否启用颜色

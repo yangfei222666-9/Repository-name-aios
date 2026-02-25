@@ -1,0 +1,7 @@
+{"playbook_id": "pb-001-network-retry", "playbook_name": "网络错误自动重试", "event_id": 1771847255, "timestamp": "2026-02-23T19:47:42.399793", "status": "success", "verified": true}
+{"playbook_id": "pb-004-api-rate-limit", "playbook_name": "API 限流自动等待", "event_id": 1771847255, "timestamp": "2026-02-23T19:47:42.408828", "status": "failed", "verified": false, "error": "'NoneType' object is not subscriptable"}
+{"playbook_id": "pb-001-network-retry", "playbook_name": "网络错误自动重试", "event_id": 1771848171, "timestamp": "2026-02-23T20:02:57.398128", "status": "success", "verified": true}
+{"playbook_id": "pb-004-api-rate-limit", "playbook_name": "API 限流自动等待", "event_id": 1771848171, "timestamp": "2026-02-23T20:02:57.407151", "status": "failed", "verified": false, "error": "'NoneType' object is not subscriptable"}
+{"playbook_id": "pb-021-file-not-found-fix", "playbook_name": "文件路径不存在自动修复", "event_id": 0, "timestamp": "2026-02-25T15:49:43.901833", "status": "success", "verified": true, "retry_attempt": 0}
+{"playbook_id": "pb-021-file-not-found-fix", "playbook_name": "文件路径不存在自动修复", "event_id": 0, "timestamp": "2026-02-25T15:49:43.901833", "status": "success", "verified": true, "retry_attempt": 0}
+{"playbook_id": "pb-021-file-not-found-fix", "playbook_name": "文件路径不存在自动修复", "event_id": 0, "timestamp": "2026-02-25T15:49:43.901833", "status": "success", "verified": true, "retry_attempt": 0}

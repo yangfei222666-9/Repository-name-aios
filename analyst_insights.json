@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-02-25T15:33:27.257822",
+  "insights": [
+    {
+      "type": "evolution_score",
+      "avg_score": 0.41,
+      "min_score": 0.38,
+      "max_score": 0.45,
+      "trend": "stable",
+      "data_points": 3,
+      "recommendation": "平均分偏低，建议优化 Playbook 或增加资源"
+    },
+    {
+      "type": "resource_usage",
+      "avg_cpu": 31.6,
+      "avg_memory": 45.0,
+      "max_cpu": 68.1,
+      "max_memory": 52.4,
+      "data_points": 3
+    }
+  ]
+}

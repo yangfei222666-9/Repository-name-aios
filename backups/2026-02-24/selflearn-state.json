@@ -1,0 +1,16 @@
+{
+  "lol_version": "16.4.1",
+  "last_lol_refresh": "2026-02-19",
+  "last_memory_review": "2026-02-21",
+  "last_skill_explore": "2026-02-24",
+  "last_baseline": "2026-02-24",
+  "lessons_learned": [
+    "不要编造游戏数据名称，必须从真实数据源获取",
+    "腾讯服英雄名字可能跟DDragon不一致，优先用本地数据",
+    "PowerShell heredoc写中文Python文件容易出编码问题，用write工具更可靠",
+    "cherry-augments是斗魂竞技场的，不是海克斯大乱斗的",
+    "掌盟APP数据接口需要登录认证，外部无法直接访问"
+  ],
+  "last_self_improving": "2026-02-24T03:09:17.715055",
+  "last_keyword_index": 0
+}

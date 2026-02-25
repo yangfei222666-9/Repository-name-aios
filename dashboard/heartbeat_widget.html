@@ -1,0 +1,114 @@
+<!-- Heartbeat Tasks Widget -->
+<div class="heartbeat-widget" style="
+    background: linear-gradient(135deg, #1e2847 0%, #151b33 100%);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #2a3555;
+    margin-bottom: 20px;
+">
+    <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #e0e6ed;">
+        ⏱️ 心跳任务状态
+    </h3>
+    <div id="heartbeat-tasks" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+        <!-- Tasks will be inserted here -->
+    </div>
+</div>
+
+<style>
+.heartbeat-task {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 12px;
+    border-left: 3px solid #3b82f6;
+}
+
+.heartbeat-task.overdue {
+    border-left-color: #ef4444;
+}
+
+.heartbeat-task.never-run {
+    border-left-color: #f59e0b;
+}
+
+.heartbeat-task-name {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.heartbeat-task-interval {
+    font-size: 12px;
+    color: #8b92a7;
+    margin-bottom: 8px;
+}
+
+.heartbeat-task-status {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.heartbeat-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+}
+
+.heartbeat-status-dot.overdue {
+    background: #ef4444;
+}
+
+.heartbeat-status-dot.never-run {
+    background: #f59e0b;
+}
+</style>
+
+<script>
+async function updateHeartbeatStatus() {
+    try {
+        const response = await fetch('/api/heartbeat/status');
+        const data = await response.json();
+        
+        const container = document.getElementById('heartbeat-tasks');
+        if (!container) return;
+        
+        container.innerHTML = data.tasks.map(task => {
+            const statusClass = task.status === 'overdue' ? 'overdue' : 
+                               task.status === 'never_run' ? 'never-run' : '';
+            
+            let statusText = '';
+            if (task.status === 'never_run') {
+                statusText = '从未运行';
+            } else if (task.status === 'overdue') {
+                statusText = `超时 ${task.elapsed_minutes}分钟`;
+            } else if (task.elapsed_minutes !== null) {
+                statusText = `${task.elapsed_minutes}分钟前`;
+            } else {
+                statusText = '未知';
+            }
+            
+            return `
+                <div class="heartbeat-task ${statusClass}">
+                    <div class="heartbeat-task-name">${task.name}</div>
+                    <div class="heartbeat-task-interval">${task.interval}</div>
+                    <div class="heartbeat-task-status">
+                        <span class="heartbeat-status-dot ${statusClass}"></span>
+                        <span>${statusText}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+    } catch (error) {
+        console.error('Failed to update heartbeat status:', error);
+    }
+}
+
+// 初始加载
+updateHeartbeatStatus();
+
+// 每30秒更新一次
+setInterval(updateHeartbeatStatus, 30000);
+</script>

@@ -1,0 +1,15 @@
+{
+  "gpu_sensor": {
+    "enabled": true,
+    "config": {
+      "enabled": true,
+      "interval": 30,
+      "thresholds": {
+        "temperature": 85,
+        "memory_usage": 90,
+        "utilization": 95
+      },
+      "notify_on_threshold": true
+    }
+  }
+}

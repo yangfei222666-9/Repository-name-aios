@@ -1,0 +1,58 @@
+{
+  "id": "pb-incident-triage",
+  "name": "事故分诊自动触发",
+  "version": "1.0",
+  "enabled": true,
+  "trigger": {
+    "conditions": [
+      {
+        "type": "error_spike",
+        "window": "1h",
+        "threshold": 10,
+        "description": "1小时内错误 ≥10 次"
+      },
+      {
+        "type": "timeout_spike",
+        "window": "1h",
+        "threshold": 10,
+        "description": "1小时内超时 ≥10 次"
+      },
+      {
+        "type": "failure_rate_high",
+        "window": "1h",
+        "threshold": 0.3,
+        "description": "失败率 ≥30%"
+      },
+      {
+        "type": "circuit_breaker_open",
+        "count": 3,
+        "description": "熔断器打开 ≥3 次"
+      }
+    ],
+    "match": "any"
+  },
+  "actions": [
+    {
+      "type": "run_agent",
+      "agent": "incident_triage_agent",
+      "command": "python C:\\Users\\A\\.openclaw\\workspace\\aios\\agent_system\\incident_triage_agent.py",
+      "timeout": 300,
+      "priority": "high"
+    },
+    {
+      "type": "notify",
+      "channel": "telegram",
+      "message": "🚨 检测到异常，正在执行事故分诊..."
+    }
+  ],
+  "cooldown": 600,
+  "max_retries": 2,
+  "risk": "low",
+  "auto_apply": true,
+  "metadata": {
+    "created_at": "2026-02-24T19:18:00",
+    "created_by": "system",
+    "category": "incident_response",
+    "tags": ["triage", "auto-healing", "critical"]
+  }
+}

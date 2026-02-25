@@ -1,0 +1,98 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aios-framework"
+version = "0.5.0"
+description = "Memory-driven, self-healing, production-ready AI agent framework"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+    {name = "Shanhuhai"}
+]
+keywords = ["ai", "agent", "framework", "self-learning", "autonomous", "multi-agent"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "pyyaml>=6.0",
+    "watchdog>=3.0.0",
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+    "websockets>=12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yangfei222666-9/aios"
+Repository = "https://github.com/yangfei222666-9/aios"
+Issues = "https://github.com/yangfei222666-9/aios/issues"
+
+[project.scripts]
+aios = "aios.__main__:main"
+
+[tool.setuptools]
+packages = [
+    "aios",
+    "aios.agent_system",
+    "aios.agent_system.core",
+    "aios.collaboration",
+    "aios.core",
+    "aios.dashboard",
+    "aios.learning",
+    "aios.learning.feedback",
+    "aios.learning.habits",
+    "aios.plugins",
+    "aios.plugins.aram",
+    "aios.plugins.gateway",
+    "aios.scripts",
+    "aios.tests",
+]
+
+[tool.setuptools.package-dir]
+"aios" = "."
+"aios.agent_system" = "agent_system"
+"aios.agent_system.core" = "agent_system/core"
+"aios.collaboration" = "collaboration"
+"aios.core" = "core"
+"aios.dashboard" = "dashboard"
+"aios.learning" = "learning"
+"aios.learning.feedback" = "learning/feedback"
+"aios.learning.habits" = "learning/habits"
+"aios.plugins" = "plugins"
+"aios.plugins.aram" = "plugins/aram"
+"aios.plugins.gateway" = "plugins/gateway"
+"aios.scripts" = "scripts"
+"aios.tests" = "tests"
+
+[tool.setuptools.package-data]
+"*" = [
+    "config.yaml",
+    "data/*.json",
+    "data/*.jsonl",
+    "dashboard/templates/*.html",
+    "dashboard/static/*.css",
+    "dashboard/static/*.js",
+]

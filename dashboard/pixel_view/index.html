@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIOS Pixel Agents</title>
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 AIOS Pixel Agents</h1>
+            <div class="header-actions">
+                <a href="../" class="btn">← Dashboard</a>
+                <button id="refresh-btn" class="btn">🔄 刷新</button>
+            </div>
+        </header>
+
+        <main>
+            <div class="office-container">
+                <canvas id="office-canvas" width="800" height="600"></canvas>
+                <div id="agent-tooltips"></div>
+            </div>
+
+            <aside class="sidebar">
+                <section class="agents-list">
+                    <h2>📋 Agent 列表</h2>
+                    <div id="agents-list-content">
+                        <p class="loading">加载中...</p>
+                    </div>
+                </section>
+
+                <section class="events-log">
+                    <h2>📝 最近事件</h2>
+                    <div id="events-log-content">
+                        <p class="loading">加载中...</p>
+                    </div>
+                </section>
+            </aside>
+        </main>
+
+        <footer>
+            <p>AIOS v0.5 | Pixel Agents 可视化 | 实时更新</p>
+            <p id="connection-status" class="status-disconnected">● 未连接</p>
+        </footer>
+    </div>
+
+    <script src="app.js?v=3"></script>
+</body>
+</html>
