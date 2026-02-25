@@ -132,14 +132,27 @@ class AIOSCLI:
             cwd=str(self.aios_root / "dashboard")
         )
         
-        time.sleep(1)
+        # 等待服务器启动（最多5秒）
+        import socket
+        url = "http://127.0.0.1:9091"
+        for i in range(50):  # 5秒，每次100ms
+            try:
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                sock.settimeout(0.1)
+                result = sock.connect_ex(("127.0.0.1", 9091))
+                sock.close()
+                if result == 0:
+                    break
+            except:
+                pass
+            time.sleep(0.1)
         
         # 打开浏览器
         import webbrowser
-        webbrowser.open("http://127.0.0.1:9091")
+        webbrowser.open(url)
         
         print("   ✅ Dashboard 已启动")
-        print("   访问: http://127.0.0.1:9091")
+        print(f"   访问: {url}")
         print("   实时推送: 已启用")
         print("\n   按 Ctrl+C 停止服务器")
     
