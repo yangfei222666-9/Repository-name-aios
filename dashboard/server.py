@@ -75,9 +75,8 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Access-Control-Allow-Origin", "*")
             self.end_headers()
             
-            # 模拟数据计数器
-            demo_counter = 0
             shared_metrics_file = Path(__file__).parent.parent / "data" / "metrics_shared.json"
+            aios_events_file = Path(__file__).parent.parent / "data" / "events.jsonl"
             
             while True:
                 try:
@@ -85,10 +84,12 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
                         "timestamp": int(time.time() * 1000),
                         "counters": {},
                         "gauges": {},
-                        "histograms": {}
+                        "histograms": {},
+                        "_source": "aios"
                     }
                     
-                    # 优先读取共享文件（真实数据）
+                    # 优先读取共享文件（Demo 真实数据）
+                    demo_data_loaded = False
                     if shared_metrics_file.exists():
                         try:
                             with open(shared_metrics_file, "r", encoding="utf-8") as f:
@@ -118,51 +119,63 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
                                             key += f"[{','.join(f'{k}={v}' for k, v in hist['labels'].items())}]"
                                         data["histograms"][key] = hist["value"]
                                     
-                                    # 添加数据来源标记
                                     data["_source"] = "demo"
                                     data["_age"] = int(age)
-                                else:
-                                    # 文件过期（>30秒），使用模拟数据
-                                    demo_counter += 1
-                                    data["counters"] = {
-                                        "demo.heartbeats": demo_counter,
-                                        "demo.requests": demo_counter * 3,
-                                        "demo.events": demo_counter * 2
-                                    }
-                                    data["gauges"] = {
-                                        "demo.cpu": 35 + (demo_counter % 20),
-                                        "demo.memory": 60 + (demo_counter % 15),
-                                        "demo.connections": 5 + (demo_counter % 10)
-                                    }
-                                    data["_source"] = "mock"
+                                    demo_data_loaded = True
                         except:
-                            # 读取失败，使用模拟数据
-                            demo_counter += 1
+                            pass
+                    
+                    # 如果没有 Demo 数据，显示 AIOS 系统数据
+                    if not demo_data_loaded:
+                        # 读取 AIOS 事件统计
+                        if aios_events_file.exists():
+                            try:
+                                with open(aios_events_file, "r", encoding="utf-8") as f:
+                                    lines = f.readlines()
+                                    total_events = len(lines)
+                                    
+                                    # 统计最近1小时的事件
+                                    recent_events = 0
+                                    error_events = 0
+                                    success_events = 0
+                                    
+                                    current_time = time.time()
+                                    for line in lines[-1000:]:  # 最近1000条
+                                        try:
+                                            event = json.loads(line.strip())
+                                            event_time = event.get("timestamp", 0)
+                                            if current_time - event_time < 3600:  # 1小时内
+                                                recent_events += 1
+                                                if event.get("level") == "error":
+                                                    error_events += 1
+                                                else:
+                                                    success_events += 1
+                                        except:
+                                            pass
+                                    
+                                    data["counters"] = {
+                                        "aios.events.total": total_events,
+                                        "aios.events.recent_1h": recent_events,
+                                        "aios.events.errors": error_events,
+                                        "aios.events.success": success_events
+                                    }
+                                    
+                                    # 计算成功率
+                                    if recent_events > 0:
+                                        success_rate = (success_events / recent_events) * 100
+                                        data["gauges"]["aios.success_rate"] = round(success_rate, 1)
+                            except:
+                                pass
+                        
+                        # 如果连 AIOS 数据都没有，显示提示
+                        if not data["counters"]:
                             data["counters"] = {
-                                "demo.heartbeats": demo_counter,
-                                "demo.requests": demo_counter * 3,
-                                "demo.events": demo_counter * 2
+                                "aios.status": 1
                             }
                             data["gauges"] = {
-                                "demo.cpu": 35 + (demo_counter % 20),
-                                "demo.memory": 60 + (demo_counter % 15),
-                                "demo.connections": 5 + (demo_counter % 10)
+                                "aios.uptime": int(time.time() % 86400)
                             }
-                            data["_source"] = "mock"
-                    else:
-                        # 没有共享文件，使用模拟数据
-                        demo_counter += 1
-                        data["counters"] = {
-                            "demo.heartbeats": demo_counter,
-                            "demo.requests": demo_counter * 3,
-                            "demo.events": demo_counter * 2
-                        }
-                        data["gauges"] = {
-                            "demo.cpu": 35 + (demo_counter % 20),
-                            "demo.memory": 60 + (demo_counter % 15),
-                            "demo.connections": 5 + (demo_counter % 10)
-                        }
-                        data["_source"] = "mock"
+                            data["_source"] = "system"
                     
                     message = f"data: {json.dumps(data, ensure_ascii=False)}\n\n"
                     self.wfile.write(message.encode('utf-8'))
