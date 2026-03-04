@@ -1,0 +1,149 @@
+{
+  "lessons": [
+    {
+      "date": "2026-02-18",
+      "category": "data_integrity",
+      "mistake": "编造了海克斯强化名称（趁热打铁、灵能弹幕等），游戏里根本不存在",
+      "lesson": "绝对不要编造游戏数据。没有真实数据源就老实说没有，不要用模板凑数",
+      "severity": "high",
+      "verified": true,
+      "verified_date": "2026-02-19",
+      "verified_note": "获取大乱斗出装()已改为无数据返回None，UI显示'暂无该英雄ARAM数据'。ID 9999/0/-1/99999全部返回None，废话兜底已切除"
+    },
+    {
+      "date": "2026-02-18",
+      "category": "data_integrity",
+      "mistake": "把斗魂竞技场(Cherry)的531个强化当成海克斯大乱斗的强化来用",
+      "lesson": "不同游戏模式的数据不能混用，即使看起来类似。先确认数据来源对应的模式",
+      "severity": "high",
+      "verified": true,
+      "verified_date": "2026-02-19",
+      "verified_note": "fetch_real_data.py排位数据已隔离到ranked_data字段，ARAM的items/runes不再被覆盖。盖伦实测：fetch后ARAM出装不变，排位数据写入ranked_data"
+    },
+    {
+      "date": "2026-02-18",
+      "category": "version",
+      "mistake": "DDragon版本写死15.3.1，导致新英雄904(亚恒)显示为未知",
+      "lesson": "版本号要跟国服同步更新，不能写死。优先从本地数据读取英雄名",
+      "severity": "medium",
+      "verified": true,
+      "verified_date": "2026-02-19",
+      "verified_note": "build_aram_db.py和aram_helper.py已改为动态获取versions.json，实测自动拉到16.4.1，172英雄全部构建成功"
+    },
+    {
+      "date": "2026-02-18",
+      "category": "localization",
+      "mistake": "用DDragon的翻译(暗裔魔后-扎恩)，但国服实际叫不落魔峰-亚恒",
+      "lesson": "腾讯服的英雄名字可能跟国际服完全不同，需要以国服客户端为准",
+      "severity": "medium",
+      "verified": true,
+      "verified_date": "2026-02-19",
+      "verified_note": "zh_CN数据源+动态版本，英雄904显示为'不落魔锋'（国服名），本地化正确"
+    },
+    {
+      "date": "2026-02-18",
+      "category": "ui",
+      "mistake": "用户说删掉紫色那段，我删错了——删了海克斯推荐（用户想保留的），留了符文推荐（用户想删的）",
+      "lesson": "用户说的'紫色'指的是UI颜色，不是功能名。先确认用户指的是哪个具体元素再动手",
+      "severity": "medium",
+      "verified": true,
+      "verified_date": "2026-02-19",
+      "verified_note": "行为准则已内化到rules_derived：修改UI前先跟用户确认具体指哪个元素"
+    },
+    {
+      "date": "2026-02-18",
+      "category": "encoding",
+      "mistake": "Python通过PowerShell输出中文到终端显示GBK乱码，误以为数据写错了",
+      "lesson": "终端乱码≠文件内容错误。用read工具直接读文件验证，不要信终端输出",
+      "severity": "low",
+      "verified": true,
+      "verified_date": "2026-02-19"
+    },
+    {
+      "date": "2026-02-19",
+      "category": "mindset",
+      "mistake": null,
+      "lesson": "珊瑚海的人生哲学：翻身两条路——干和学。不会就学，有想法就干。要么成功要么成长，没有失败。",
+      "severity": "core",
+      "verified": true,
+      "verified_date": "2026-02-19",
+      "verified_note": "出厂设置，核心信条无需测试验证"
+    },
+    {
+      "date": "2026-02-19",
+      "category": "powershell",
+      "mistake": "执行 `dir \"C:\\Users\\A\\Downloads\" /O-D /B` 报错",
+      "lesson": "用 `Get-ChildItem ... | Sort-Object LastWriteTime -Descending`",
+      "severity": "low",
+      "source": "autolearn_triage",
+      "verified": true,
+      "verified_date": "2026-02-19"
+    },
+    {
+      "date": "2026-02-19",
+      "category": "path",
+      "mistake": "脚本路径用 `~\\.openclaw\\workspace\\scripts\\health_check.ps1`，执行失败",
+      "lesson": "始终使用绝对路径或 `$env:USERPROFILE` 变量",
+      "severity": "medium",
+      "source": "autolearn_triage",
+      "verified": true,
+      "verified_date": "2026-02-19"
+    },
+    {
+      "date": "2026-02-19",
+      "category": "tool_limitation",
+      "mistake": "搜索包含中文的查询时报 ByteString 编码错误",
+      "lesson": "用英文关键词搜索，或用 web_fetch 直接访问已知 URL",
+      "severity": "medium (工具限制，非代码错误)",
+      "source": "autolearn_triage",
+      "verified": true,
+      "verified_date": "2026-02-19"
+    },
+    {
+      "date": "2026-02-19",
+      "category": "permission",
+      "mistake": "尝试 `Stop-Process -Name \"L-Connect-Service\" -Force` 被拒绝",
+      "lesson": "用 `Start-Process powershell -Verb RunAs` 提权执行",
+      "severity": "low",
+      "source": "autolearn_triage",
+      "verified": true,
+      "verified_date": "2026-02-19"
+    },
+    {
+      "id": "manual_intervention_1771878155",
+      "category": "manual_intervention",
+      "pattern": "emergency_stop",
+      "lesson": "人工介入：紧急停止",
+      "timestamp": "2026-02-24T04:22:35.717552",
+      "confidence": "draft",
+      "reason": "human_override"
+    },
+    {
+      "id": "cascade_failure_1771878163",
+      "category": "cascade_failure",
+      "pattern": "cpu_memory_high",
+      "lesson": "CPU和内存同时高时，优先清理内存",
+      "timestamp": "2026-02-24T04:22:43.323225",
+      "confidence": "draft",
+      "severity": "high"
+    },
+    {
+      "id": "network_error_1771878163",
+      "category": "network_error",
+      "pattern": "disconnect",
+      "lesson": "网络断开时使用重试机制",
+      "timestamp": "2026-02-24T04:22:43.625181",
+      "confidence": "draft",
+      "task_id": "task_001"
+    }
+  ],
+  "rules_derived": [
+    "没有真实数据源时，宁可留空也不编造",
+    "修改UI前先跟用户确认具体指哪个元素",
+    "不同游戏模式的数据严格隔离",
+    "验证数据用read工具读文件，不看终端输出",
+    "不会就学，有想法就干，别犹豫",
+    "语音转写消息（🎙️标记）自动识别意图并执行，不回显错词，不等用户提醒",
+    "内部思考过程不要发给用户，直接执行+简短回复"
+  ]
+}

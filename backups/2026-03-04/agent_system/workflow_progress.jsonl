@@ -1,0 +1,35 @@
+{"execution_id": "test-exec-001", "stage_id": "1_understand", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T03:33:42.850359"}
+{"execution_id": "test-exec-001", "stage_id": "1_understand", "status": "in_progress", "progress": 0.5, "message": "正在分析需求...", "timestamp": "2026-02-26T03:33:42.850359"}
+{"execution_id": "test-exec-001", "stage_id": "1_understand", "status": "completed", "output": {"requirements": ["支持TTL", "支持LRU", "线程安全"]}, "metrics": {"duration_sec": 5.2}, "timestamp": "2026-02-26T03:33:42.850359"}
+{"execution_id": "test-exec-001", "stage_id": "2_design", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T03:33:42.850858"}
+{"execution_id": "test-exec-001", "stage_id": "2_design", "status": "failed", "error": "设计方案不完整", "retry_count": 1, "timestamp": "2026-02-26T03:33:42.850858"}
+{"execution_id": "coder-dispatcher-20260226033620", "stage_id": "1_understand", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T03:36:20.426044"}
+{"execution_id": "coder-dispatcher-20260226033620", "stage_id": "1_understand", "status": "in_progress", "progress": 0.5, "message": "正在分析需求...", "timestamp": "2026-02-26T03:36:20.426547"}
+{"execution_id": "coder-dispatcher-20260226033620", "stage_id": "1_understand", "status": "completed", "output": {"requirements": ["支持TTL", "支持LRU", "线程安全"]}, "metrics": {"duration_sec": 5.2}, "timestamp": "2026-02-26T03:36:20.426547"}
+{"execution_id": "coder-dispatcher-20260226033653", "stage_id": "1_understand", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T03:36:53.177803"}
+{"execution_id": "coder-dispatcher-20260226033653", "stage_id": "1_understand", "status": "in_progress", "progress": 0.5, "message": "正在分析需求...", "timestamp": "2026-02-26T03:36:53.178302"}
+{"execution_id": "coder-dispatcher-20260226033653", "stage_id": "1_understand", "status": "completed", "output": {"requirements": ["支持TTL", "支持LRU", "线程安全"]}, "metrics": {"duration_sec": 5.2}, "timestamp": "2026-02-26T03:36:53.178302"}
+{"execution_id": "coder-dispatcher-20260226033653", "stage_id": "2_design", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T03:36:53.178302"}
+{"execution_id": "coder-dispatcher-20260226033653", "stage_id": "2_design", "status": "completed", "output": {"design": "使用 functools.lru_cache + TTL 扩展"}, "metrics": {"duration_sec": 8.5}, "timestamp": "2026-02-26T03:36:53.178302"}
+{"execution_id": "coder-dispatcher-20260226033653", "stage_id": "3_implement", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T03:36:53.178803"}
+{"execution_id": "coder-dispatcher-20260226033653", "stage_id": "3_implement", "status": "completed", "output": {"code": "def cache_with_ttl(ttl=60): ..."}, "metrics": {"duration_sec": 15.3, "lines_of_code": 45}, "timestamp": "2026-02-26T03:36:53.178803"}
+{"execution_id": "coder-dispatcher-20260226033653", "stage_id": "4_test", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T03:36:53.178803"}
+{"execution_id": "coder-dispatcher-20260226033653", "stage_id": "4_test", "status": "completed", "output": {"tests": "test_cache.py"}, "metrics": {"duration_sec": 12.1, "test_coverage": 0.85, "complexity": 8, "security_issues": 0}, "timestamp": "2026-02-26T03:36:53.178803"}
+{"execution_id": "coder-dispatcher-20260226033653", "stage_id": "5_review", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T03:36:53.179302"}
+{"execution_id": "coder-dispatcher-20260226033653", "stage_id": "5_review", "status": "completed", "output": {"review": "代码质量良好，建议添加更多边界测试"}, "metrics": {"duration_sec": 6.8}, "timestamp": "2026-02-26T03:36:53.179302"}
+{"execution_id": "coder-dispatcher-20260226041058", "stage_id": "1_understand", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T04:10:58.337513"}
+{"execution_id": "coder-dispatcher-20260226041058", "stage_id": "1_understand", "status": "completed", "output": {"requirements": ["LRU算法", "get/put操作", "容量限制"]}, "metrics": {}, "timestamp": "2026-02-26T04:10:58.338013"}
+{"execution_id": "coder-dispatcher-20260226041058", "stage_id": "2_design", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T04:10:58.338013"}
+{"execution_id": "coder-dispatcher-20260226041058", "stage_id": "2_design", "status": "completed", "output": {"design": "使用OrderedDict实现"}, "metrics": {}, "timestamp": "2026-02-26T04:10:58.338013"}
+{"execution_id": "coder-dispatcher-20260226041058", "stage_id": "3_implement", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T04:10:58.338013"}
+{"execution_id": "coder-dispatcher-20260226041058", "stage_id": "3_implement", "status": "completed", "output": {"code": "class LRUCache: ..."}, "metrics": {}, "timestamp": "2026-02-26T04:10:58.338013"}
+{"execution_id": "coder-dispatcher-20260226041058", "stage_id": "4_test", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T04:10:58.338013"}
+{"execution_id": "coder-dispatcher-20260226041058", "stage_id": "4_test", "status": "completed", "output": {"tests": "test_lru_cache.py"}, "metrics": {}, "timestamp": "2026-02-26T04:10:58.338013"}
+{"execution_id": "coder-dispatcher-20260226041058", "stage_id": "5_review", "agent_id": "coder-dispatcher", "status": "started", "timestamp": "2026-02-26T04:10:58.339016"}
+{"execution_id": "coder-dispatcher-20260226041058", "stage_id": "5_review", "status": "completed", "output": {"review": "代码质量良好"}, "metrics": {}, "timestamp": "2026-02-26T04:10:58.339520"}
+{"execution_id": "analyst-dispatcher-20260226041058", "stage_id": "1_collect", "agent_id": "analyst-dispatcher", "status": "started", "timestamp": "2026-02-26T04:10:58.339520"}
+{"execution_id": "analyst-dispatcher-20260226041058", "stage_id": "1_collect", "status": "completed", "output": {"data_points": 150}, "metrics": {}, "timestamp": "2026-02-26T04:10:58.339520"}
+{"execution_id": "analyst-dispatcher-20260226041058", "stage_id": "2_clean", "agent_id": "analyst-dispatcher", "status": "started", "timestamp": "2026-02-26T04:10:58.339520"}
+{"execution_id": "analyst-dispatcher-20260226041058", "stage_id": "2_clean", "status": "completed", "output": {"cleaned_records": 145}, "metrics": {}, "timestamp": "2026-02-26T04:10:58.340020"}
+{"execution_id": "analyst-dispatcher-20260226041058", "stage_id": "3_analyze", "agent_id": "analyst-dispatcher", "status": "started", "timestamp": "2026-02-26T04:10:58.340020"}
+{"execution_id": "analyst-dispatcher-20260226041058", "stage_id": "3_analyze", "status": "completed", "output": {"top_errors": ["ConnectionTimeout", "FileNotFound"]}, "metrics": {}, "timestamp": "2026-02-26T04:10:58.340020"}

@@ -1,0 +1,79 @@
+{
+  "timestamp": "2026-03-03T19:07:25.449626",
+  "status": "success",
+  "data_points": 55,
+  "time_range_hours": 24,
+  "trends": {
+    "success_rate": {
+      "trend": "stable",
+      "confidence": 0.0,
+      "current_value": 1.0,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "data_points": 2,
+      "window_size": 10
+    },
+    "avg_duration": {
+      "trend": "stable",
+      "confidence": 0.0,
+      "current_value": 7.756,
+      "mean": 7.756,
+      "std_dev": 0.0,
+      "data_points": 2,
+      "window_size": 10
+    },
+    "error_rate": {
+      "trend": "stable",
+      "confidence": 0.0,
+      "current_value": 0.0,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "data_points": 2,
+      "window_size": 10
+    },
+    "cost": {
+      "trend": "stable",
+      "confidence": 0.0,
+      "current_value": 0.011,
+      "mean": 0.011,
+      "std_dev": 0.0,
+      "data_points": 2,
+      "window_size": 10
+    }
+  },
+  "system_metrics": {
+    "success_rate": 1.0,
+    "growth_rate": 0.0,
+    "stability": 0.8,
+    "resource_usage": 0.3396333333333333
+  },
+  "primary_pattern": {
+    "name": "比卦",
+    "number": 8,
+    "description": "地上有水，比；先王以建万国，亲诸侯",
+    "confidence": 0.799,
+    "risk_level": "low"
+  },
+  "alternative_patterns": [
+    {
+      "name": "屯卦",
+      "number": 3,
+      "confidence": 0.785
+    },
+    {
+      "name": "贲卦",
+      "number": 22,
+      "confidence": 0.71
+    }
+  ],
+  "recommended_strategy": {
+    "priority": "alliance",
+    "actions": [
+      "strengthen_agent_bonds",
+      "share_resources",
+      "mutual_support"
+    ],
+    "model_preference": "sonnet",
+    "risk_tolerance": "low"
+  }
+}

@@ -1,0 +1,144 @@
+# AIOS Production Configuration
+# Generated: 2026-03-03
+# Environment: Production (stable, cost-optimized)
+
+version: "1.0"
+environment: production
+
+# === Core Settings ===
+core:
+  workspace: "C:\\Users\\A\\.openclaw\\workspace\\aios"
+  log_level: "INFO"  # Production: INFO (not DEBUG)
+  max_workers: 4
+  timeout_seconds: 300
+
+# === Model Configuration ===
+models:
+  default: "claude-sonnet-4-6"  # Cost-optimized default
+  thinking:
+    enabled: false  # Disabled in prod (cost control)
+    model: "claude-opus-4-6"
+  fallback: "claude-haiku-4-5"  # Fast fallback
+  api_key_env: "OPENCLAW_API_KEY"  # Explicit env var name
+
+# === Agent System ===
+agents:
+  max_concurrent: 3  # Conservative limit
+  retry_limit: 2
+  health_check_interval: 3600  # 1 hour
+  
+  # Agent-specific timeouts
+  timeouts:
+    coder: 180
+    analyst: 120
+    monitor: 60
+    default: 120
+
+# === Task Queue ===
+queue:
+  max_pending: 50
+  priority_levels: ["critical", "high", "normal", "low"]
+  auto_cleanup_days: 7
+
+# === Self-Improving Loop ===
+self_improving:
+  enabled: true
+  min_samples: 5  # Require more data before improving
+  confidence_threshold: 0.75  # Higher confidence required
+  auto_apply: false  # Manual approval in prod
+  rollback_enabled: true
+  backup_retention_days: 30
+
+# === Quality Gates ===
+quality_gates:
+  L0:
+    enabled: true
+    timeout: 30
+  L1:
+    enabled: true
+    timeout: 300
+    min_success_rate: 0.85  # Stricter in prod
+  L2:
+    enabled: true
+    require_approval: true
+
+# === Monitoring & Alerts ===
+monitoring:
+  health_check_interval: 3600  # 1 hour
+  alert_threshold:
+    error_rate: 0.15  # Alert if >15% errors
+    latency_p95: 10.0  # Alert if p95 > 10s
+    cost_daily: 5.0  # Alert if daily cost > $5
+  
+  metrics_retention_days: 90
+
+# === Storage ===
+storage:
+  backend: "sqlite"
+  path: "C:\\Users\\A\\.openclaw\\workspace\\aios\\data\\aios.db"
+  backup:
+    enabled: true
+    interval_hours: 24
+    retention_days: 30
+    path: "C:\\Users\\A\\.openclaw\\workspace\\aios\\backups"
+
+# === Cron Jobs (Production Schedule) ===
+cron:
+  heartbeat:
+    enabled: true
+    schedule: "*/30 * * * *"  # Every 30 minutes
+    
+  learning:
+    enabled: true
+    schedule: "50 8 * * *"  # 08:50 daily (off-peak from reports)
+    
+  health_check:
+    enabled: true
+    schedule: "0 */6 * * *"  # Every 6 hours
+    
+  cleanup:
+    enabled: true
+    schedule: "0 2 * * *"  # 02:00 daily (low-traffic time)
+    
+  backup:
+    enabled: true
+    schedule: "0 3 * * *"  # 03:00 daily
+    
+  reports:
+    enabled: true
+    schedule: "0 9 * * *"  # 09:00 daily (after learning)
+
+# === Cost Control ===
+cost_control:
+  daily_limit: 5.0  # $5/day
+  monthly_limit: 100.0  # $100/month
+  alert_at_percent: 80  # Alert at 80% of limit
+  
+  # Model cost tracking (USD per 1M tokens)
+  model_costs:
+    input:
+      "claude-opus-4-6": 15.0
+      "claude-sonnet-4-6": 3.0
+      "claude-haiku-4-5": 0.8
+    output:
+      "claude-opus-4-6": 75.0
+      "claude-sonnet-4-6": 15.0
+      "claude-haiku-4-5": 4.0
+
+# === Notifications ===
+notifications:
+  telegram:
+    enabled: true
+    chat_id_env: "TELEGRAM_CHAT_ID"
+    
+  channels:
+    critical: ["telegram"]  # Critical alerts
+    warning: ["telegram"]   # Warnings
+    info: []                # Info (no notifications in prod)
+
+# === Feature Flags ===
+features:
+  auto_recovery: true
+  parallel_execution: true
+  cost_optimization: true
+  experimental_agents: false  # Disabled in prod

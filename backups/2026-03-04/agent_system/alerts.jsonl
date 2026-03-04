@@ -1,0 +1,5 @@
+{"timestamp": "2026-02-27T17:27:36.003440", "level": "info", "title": "Test Alert", "body": "This is a test alert from AIOS notifier system.", "sent": true}
+{"timestamp": "2026-02-28T01:56:26.672580", "level": "warning", "title": "AIOS 健康度告警 (50/100)", "body": "Document_Agent Agent: 成功率低于 50% (0.0%)\nSkill_Creator Agent: 成功率低于 50% (0.0%)\nAios_Health_Check Agent: 成功率低于 50% (0.0%)", "sent": true}
+{"timestamp": "2026-03-03T12:45:00", "level": "info", "title": "Test Info Alert (Should NOT notify)", "body": "This is a test info alert. Should be recorded but not sent.", "sent": true}
+{"timestamp": "2026-03-03T12:45:00", "level": "info", "title": "Test Info Alert (Should NOT notify)", "body": "This is a test info alert. Should be recorded but not sent.", "sent": true}
+{"timestamp": "2026-03-03T19:17:41.278519", "level": "critical", "title": "大过卦危机 (置信度 88.0%)", "body": "成功率: 33.3%\n已激活紧急自愈:\n1. 暂停任务生成15分钟\n2. 清理重复任务\n3. 扩容+1 Worker", "sent": true}

@@ -1,0 +1,24 @@
+# AIOS v2.0 - Prometheus Configuration
+# 统一Metrics Exporter，所有Agent指标从一个端点采集
+
+global:
+  scrape_interval: 15s      # 每15秒采集一次
+  evaluation_interval: 15s  # 每15秒评估一次规则
+
+# 采集配置
+scrape_configs:
+  # AIOS统一指标端点
+  - job_name: 'aios-runtime'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: '/metrics'
+    scrape_interval: 10s  # 更频繁采集（10秒）
+    
+  # 可选：如果有其他服务需要监控
+  # - job_name: 'runtime-services'
+  #   static_configs:
+  #     - targets: ['localhost:8010']
+
+# 告警规则（可选，需要Alertmanager）
+# rule_files:
+#   - 'alerts.yml'

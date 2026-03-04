@@ -1,0 +1,14 @@
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "System_Monitor", "task": "检查AIOS系统健康度，生成报告", "priority": "high", "status": "pending", "frequency": "hourly", "estimated_duration": 60}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "Pattern_Monitor", "task": "检查当前系统卦象，记录变化", "priority": "normal", "status": "pending", "frequency": "hourly", "estimated_duration": 30}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "GitHub_Researcher", "task": "搜索GitHub最新的AIOS、Agent System、Self-Improving相关项目", "priority": "normal", "status": "pending", "frequency": "daily", "estimated_duration": 300}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "Code_Reviewer", "task": "审查最近修改的代码，提出改进建议", "priority": "normal", "status": "pending", "frequency": "daily", "estimated_duration": 600}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "Disk_Monitor", "task": "检查磁盘空间使用率，清理临时文件", "priority": "low", "status": "pending", "frequency": "daily", "estimated_duration": 120}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "Backup_Agent", "task": "备份重要数据（events.jsonl, agents.json等）", "priority": "high", "status": "pending", "frequency": "daily", "estimated_duration": 180}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "Error_Analyzer", "task": "分析错误日志，识别高频问题", "priority": "normal", "status": "pending", "frequency": "daily", "estimated_duration": 300}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "Cost_Tracker", "task": "统计每日API成本，生成报告", "priority": "normal", "status": "pending", "frequency": "daily", "estimated_duration": 60}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "Agent_Monitor", "task": "检查所有Agent的运行状态，识别异常", "priority": "high", "status": "pending", "frequency": "daily", "estimated_duration": 120}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "Performance_Analyzer", "task": "分析系统性能，识别瓶颈", "priority": "normal", "status": "pending", "frequency": "weekly", "estimated_duration": 900}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "Tech_Learner", "task": "搜索和学习AI领域的最新技术", "priority": "low", "status": "pending", "frequency": "weekly", "estimated_duration": 1800}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "Architecture_Reviewer", "task": "审查AIOS架构，提出优化建议", "priority": "normal", "status": "pending", "frequency": "weekly", "estimated_duration": 1200}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "Doc_Writer", "task": "更新项目文档，保持同步", "priority": "low", "status": "pending", "frequency": "weekly", "estimated_duration": 600}
+{"timestamp": "2026-03-03T18:26:54.051343", "agent": "Security_Auditor", "task": "检查系统安全性，识别潜在风险", "priority": "high", "status": "pending", "frequency": "weekly", "estimated_duration": 900}

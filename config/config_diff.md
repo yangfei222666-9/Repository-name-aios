@@ -1,0 +1,200 @@
+# AIOS Configuration Changes: Dev → Prod
+# Generated: 2026-03-03
+
+## Summary
+
+Transitioning from **development** to **production** configuration with focus on:
+- ✅ Cost optimization (Sonnet default, Opus for complex tasks)
+- ✅ Stability (conservative limits, manual approval)
+- ✅ Safety (rollback enabled, stricter quality gates)
+- ✅ Monitoring (alerts, health checks, cost tracking)
+
+---
+
+## Key Changes
+
+### 1. Model Configuration
+```diff
+- default: "claude-opus-4-6"  # Dev: always use best model
++ default: "claude-sonnet-4-6"  # Prod: cost-optimized default
+
+- thinking.enabled: true  # Dev: always enabled
++ thinking.enabled: false  # Prod: disabled (cost control)
+
+- api_key: "auto"  # Dev: implicit
++ api_key_env: "OPENCLAW_API_KEY"  # Prod: explicit env var
+```
+
+**Impact:** ~70% cost reduction (Sonnet vs Opus for routine tasks)
+
+---
+
+### 2. Agent System
+```diff
+- max_concurrent: 5  # Dev: aggressive
++ max_concurrent: 3  # Prod: conservative
+
+- retry_limit: 3  # Dev: more retries
++ retry_limit: 2  # Prod: fail faster
+
+- health_check_interval: 1800  # Dev: 30 min
++ health_check_interval: 3600  # Prod: 1 hour (reduce overhead)
+```
+
+**Impact:** Lower resource usage, faster failure detection
+
+---
+
+### 3. Self-Improving Loop
+```diff
+- min_samples: 3  # Dev: quick iteration
++ min_samples: 5  # Prod: require more data
+
+- confidence_threshold: 0.65  # Dev: lower bar
++ confidence_threshold: 0.75  # Prod: higher confidence required
+
+- auto_apply: true  # Dev: automatic
++ auto_apply: false  # Prod: manual approval (safety)
+
+- backup_retention_days: 7  # Dev: short retention
++ backup_retention_days: 30  # Prod: longer retention
+```
+
+**Impact:** Safer improvements, less risk of breaking changes
+
+---
+
+### 4. Quality Gates
+```diff
+- L1.min_success_rate: 0.80  # Dev: 80%
++ L1.min_success_rate: 0.85  # Prod: 85% (stricter)
+
+- L2.require_approval: false  # Dev: auto-approve
++ L2.require_approval: true  # Prod: manual approval
+```
+
+**Impact:** Higher quality bar, fewer regressions
+
+---
+
+### 5. Monitoring & Alerts
+```diff
+- health_check_interval: 1800  # Dev: 30 min
++ health_check_interval: 3600  # Prod: 1 hour
+
+- alert_threshold.error_rate: 0.20  # Dev: 20%
++ alert_threshold.error_rate: 0.15  # Prod: 15% (stricter)
+
+- alert_threshold.cost_daily: 10.0  # Dev: $10/day
++ alert_threshold.cost_daily: 5.0  # Prod: $5/day (tighter budget)
+
+- metrics_retention_days: 30  # Dev: 1 month
++ metrics_retention_days: 90  # Prod: 3 months (longer history)
+```
+
+**Impact:** Tighter cost control, longer data retention
+
+---
+
+### 6. Cron Schedule (Off-peak Optimization)
+```diff
+- learning: "0 9 * * *"  # Dev: 09:00
++ learning: "50 8 * * *"  # Prod: 08:50 (off-peak from reports)
+
+- reports: "0 9 * * *"  # Dev: 09:00 (conflict!)
++ reports: "0 9 * * *"  # Prod: 09:00 (after learning)
+```
+
+**Impact:** Avoid concurrent execution, reduce peak load
+
+---
+
+### 7. Cost Control
+```diff
+- daily_limit: 10.0  # Dev: $10/day
++ daily_limit: 5.0  # Prod: $5/day
+
+- monthly_limit: 200.0  # Dev: $200/month
++ monthly_limit: 100.0  # Prod: $100/month
+
+- alert_at_percent: 90  # Dev: 90%
++ alert_at_percent: 80  # Prod: 80% (earlier warning)
+```
+
+**Impact:** Tighter budget, earlier cost alerts
+
+---
+
+### 8. Feature Flags
+```diff
+- experimental_agents: true  # Dev: enabled
++ experimental_agents: false  # Prod: disabled (stability)
+```
+
+**Impact:** Only stable agents in production
+
+---
+
+## Risk Assessment
+
+### Low Risk ✅
+- Model switch (Sonnet default) - well-tested
+- Cron schedule changes - off-peak optimization
+- Monitoring thresholds - tighter control
+
+### Medium Risk ⚠️
+- max_concurrent: 5 → 3 - may slow down parallel tasks
+- auto_apply: true → false - requires manual approval (slower iteration)
+
+### High Risk ❌
+- None (all changes are conservative)
+
+---
+
+## Rollback Plan
+
+If issues occur after applying prod config:
+
+1. **Immediate rollback:**
+   ```bash
+   cp aios/config/dev.yaml aios/config/active.yaml
+   openclaw gateway restart
+   ```
+
+2. **Selective rollback:**
+   - Revert specific settings in prod.yaml
+   - Restart gateway
+
+3. **Cron rollback:**
+   - Remove new cron jobs: `cron list` → `cron remove --jobId <id>`
+   - Re-add old jobs from backup
+
+---
+
+## Validation Checklist
+
+Before applying prod config:
+
+- [x] Configuration file generated: `prod.yaml`
+- [x] Configuration validated: `validate_config.py` ✅
+- [x] Cron commands prepared: `cron_update_commands.md`
+- [ ] Environment variables set: `OPENCLAW_API_KEY`, `TELEGRAM_CHAT_ID`
+- [ ] Backup current config: `cp active.yaml dev.yaml.backup`
+- [ ] Test cron jobs: Add one job, verify execution
+- [ ] Monitor first 24h: Check logs, metrics, costs
+
+---
+
+## Next Steps
+
+1. **Review this diff** - Confirm all changes are acceptable
+2. **Set environment variables** - `OPENCLAW_API_KEY`, `TELEGRAM_CHAT_ID`
+3. **Update cron jobs** - Execute commands from `cron_update_commands.md`
+4. **Monitor** - Watch logs, metrics, and costs for 24-48 hours
+5. **Restart gateway** (after confirming cron jobs work)
+
+---
+
+**Generated by:** AIOS Config Manager  
+**Date:** 2026-03-03  
+**Config:** prod.yaml v1.0

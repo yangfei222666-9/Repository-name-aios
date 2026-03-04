@@ -59,8 +59,8 @@ class TaskExecutor:
             Execution result
         """
         task_id = task.get("task_id") or task.get("id", "unknown")
-        task_type = task["type"]
-        description = task["description"]
+        task_type = task.get("type", "code")
+        description = task.get("description", "No description")
         
         # Update status to running
         if retry_count == 0:
@@ -100,6 +100,16 @@ class TaskExecutor:
             # Add retry info to result
             result["total_attempts"] = retry_count + 1
             update_task_status(task_id, "failed", result=result)
+            
+            # 🔄 触发Bootstrapped Regeneration（任务失败时）
+            print(f"  [REGEN] Triggering Bootstrapped Regeneration...")
+            try:
+                from low_success_regeneration import regenerate_failed_task
+                regenerated = regenerate_failed_task(limit=1)  # 只处理当前失败任务
+                if regenerated > 0:
+                    print(f"  [OK] Task regenerated successfully")
+            except Exception as e:
+                print(f"  [WARN] Regeneration failed: {e}")
         
         # Log execution
         self._log_execution(task, result, retry_count)
@@ -170,8 +180,8 @@ class TaskExecutor:
         log_entry = {
             "timestamp": time.time(),
             "task_id": task.get("task_id") or task.get("id", "unknown"),
-            "task_type": task["type"],
-            "description": task["description"],
+            "task_type": task.get("type", "unknown"),
+            "description": task.get("description", "No description"),
             "result": result,
             "retry_count": retry_count,
             "total_attempts": retry_count + 1,
@@ -196,8 +206,8 @@ class TaskExecutor:
         for i, task in enumerate(tasks[:max_tasks]):
             task_id = task.get('task_id') or task.get('id', 'unknown')
             print(f"[{i+1}/{min(len(tasks), max_tasks)}] Executing task: {task_id}")
-            print(f"  Type: {task['type']}")
-            print(f"  Description: {task['description']}")
+            print(f"  Type: {task.get('type', 'unknown')}")
+            print(f"  Description: {task.get('description', 'No description')}")
             
             result = self.execute_task(task)
             results.append(result)

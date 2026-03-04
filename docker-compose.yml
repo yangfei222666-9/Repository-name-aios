@@ -1,0 +1,77 @@
+version: '3.9'
+
+services:
+  # AIOS Metrics Exporter (核心监控服务)
+  aios-metrics:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aios-metrics
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./:/app
+      - ./logs:/app/logs
+      - ./data:/app/data
+    environment:
+      - ENV=production
+      - LOG_LEVEL=INFO
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9090/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - aios-network
+
+  # Prometheus (指标存储和查询)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: aios-prometheus
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    depends_on:
+      aios-metrics:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - aios-network
+
+  # Grafana (可视化仪表盘)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: aios-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./observability/grafana_dashboard.json:/etc/grafana/provisioning/dashboards/aios.json
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/etc/grafana/provisioning/dashboards/aios.json
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    networks:
+      - aios-network
+
+volumes:
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  aios-network:
+    driver: bridge

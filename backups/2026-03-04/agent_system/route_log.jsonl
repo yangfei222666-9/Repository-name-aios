@@ -1,0 +1,11 @@
+{"ts": "2026-02-26T16:58:13.765659+00:00", "input": "检查系统CPU和内存使用率", "agent": "monitor", "type": "monitor", "confidence": 1.0, "reason": "task_type=monitor → 系统监控专员（系统健康检查、性能监控、资源告警）"}
+{"ts": "2026-02-26T16:58:20.148524+00:00", "input": "分析AIOS事件日志趋势", "agent": "analyst", "type": "analysis", "confidence": 1.0, "reason": "task_type=analysis → 数据分析专员（数据分析、根因分析、报告生成）"}
+{"ts": "2026-02-26T16:58:20.212269+00:00", "input": "修复learner_agent.py的语法错误", "agent": "reactor", "type": "fix", "confidence": 1.0, "reason": "task_type=fix → 自动修复专员（自动修复失败、执行 Playbook、熔断恢复）"}
+{"ts": "2026-02-26T17:05:33.512190+00:00", "input": "搜索 GitHub 上的 AIOS 项目，", "agent": "researcher", "type": "research", "confidence": 1.0, "reason": "task_type=research → 信息研究专员（GitHub 学习、技术调研、知识积累）"}
+{"ts": "2026-02-26T17:05:33.513195+00:00", "input": "分析架构，", "agent": "analyst", "type": "analysis", "confidence": 1.0, "reason": "task_type=analysis → 数据分析专员（数据分析、根因分析、报告生成）"}
+{"ts": "2026-02-26T17:05:33.513195+00:00", "input": "写报告", "agent": "analyst", "type": "analysis", "confidence": 1.0, "reason": "task_type=analysis → 数据分析专员（数据分析、根因分析、报告生成）"}
+{"ts": "2026-02-26T17:05:33.514210+00:00", "input": "搜索 GitHub 上的 AIOS 项目，然后分析架构，最后写报告", "agent": "planner", "type": "plan", "confidence": 0.9, "reason": "拆解为 3 个子任务 (strategy=sequential)"}
+{"ts": "2026-02-26T17:05:33.516239+00:00", "input": "设计 一个新的调度算法 的架构", "agent": "coder", "type": "code", "confidence": 1.0, "reason": "task_type=code → 代码开发专员（编写、调试、重构代码）"}
+{"ts": "2026-02-26T17:05:33.516239+00:00", "input": "实现 一个新的调度算法 的核心功能", "agent": "coder", "type": "code", "confidence": 1.0, "reason": "task_type=code → 代码开发专员（编写、调试、重构代码）"}
+{"ts": "2026-02-26T17:05:33.516739+00:00", "input": "测试 一个新的调度算法", "agent": "coder", "type": "code", "confidence": 1.0, "reason": "task_type=code → 代码开发专员（编写、调试、重构代码）"}
+{"ts": "2026-02-26T17:05:33.516739+00:00", "input": "实现一个新的调度算法", "agent": "planner", "type": "plan", "confidence": 0.9, "reason": "拆解为 3 个子任务 (strategy=sequential)"}

@@ -26,9 +26,9 @@
     }
   },
   "snapshot": {
-    "cached_at": 1772155205.588429,
+    "cached_at": 1772500838.0921383,
     "data": {
-      "ts": "2026-02-27T09:20:05",
+      "ts": "2026-03-03T09:20:38",
       "period_days": 1,
       "correction_rate": 0,
       "tool_success_rate": 1.0,

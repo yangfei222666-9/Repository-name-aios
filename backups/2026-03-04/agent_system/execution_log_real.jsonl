@@ -1,0 +1,10 @@
+{"task_type": "code", "description": "帮我写一个简单的 Flask API，返回当前服务器时间", "priority": "normal", "status": "failed", "filepath": null, "executed_at": "2026-02-26T05:11:49.394369"}
+{"task_type": "code", "description": "写一个函数计算斐波那契数列前n项", "priority": "normal", "status": "failed", "filepath": null, "executed_at": "2026-02-26T05:16:48.672301"}
+{"task_type": "code", "description": "写一个函数，输入n，返回1到n的和", "priority": "normal", "status": "failed", "filepath": null, "executed_at": "2026-02-26T05:18:35.702575"}
+{"task_type": "code", "description": "写一个函数，输入n，返回斐波那契数列前n项", "priority": "normal", "status": "failed", "filepath": null, "executed_at": "2026-02-26T05:20:54.453552"}
+{"task_type": "code", "description": "写一个函数计算1到100的和", "priority": "normal", "status": "failed", "filepath": null, "executed_at": "2026-02-26T05:21:22.537636"}
+{"task_type": "code", "description": "写一个简单的 Hello World 程序", "priority": "normal", "status": "failed", "filepath": null, "executed_at": "2026-02-26T05:22:55.768945"}
+{"task_type": "code", "description": "写一个函数计算1到10的和", "priority": "normal", "status": "success", "filepath": "C:\\Users\\A\\.openclaw\\workspace\\aios\\agent_system\\workspace\\generated_code\\generated_20260226_052615.py", "executed_at": "2026-02-26T05:26:15.668175"}
+{"task_type": "code", "description": "写一个爬虫，抓取 Hacker News 首页的前10条新闻标题和链接", "priority": "normal", "status": "failed", "filepath": "C:\\Users\\A\\.openclaw\\workspace\\aios\\agent_system\\workspace\\generated_code\\generated_20260226_052758.py", "executed_at": "2026-02-26T05:27:58.285926"}
+{"task_type": "code", "description": "写一个简单的 Flask API，有两个接口：1. GET /time 返回当前服务器时间，2. POST /calculate 接收两个数字并返回它们的和", "priority": "normal", "status": "failed", "filepath": "C:\\Users\\A\\.openclaw\\workspace\\aios\\agent_system\\workspace\\generated_code\\generated_20260226_052935.py", "executed_at": "2026-02-26T05:29:35.297628"}
+{"task_type": "code", "description": "写一个函数判断一个数是否为质数", "priority": "normal", "status": "success", "filepath": "C:\\Users\\A\\.openclaw\\workspace\\aios\\agent_system\\workspace\\generated_code\\generated_20260226_053206.py", "executed_at": "2026-02-26T05:32:07.039717"}

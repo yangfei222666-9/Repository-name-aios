@@ -1,5 +1,5 @@
 """
-测试熔断器功能
+测试熔断器功能（优化版 - 使用 mock 替代 time.sleep）
 验证：
 1. 正常执行
 2. 触发过密熔断
@@ -7,8 +7,9 @@
 4. HALF_OPEN 恢复
 """
 import sys
-import time
 from pathlib import Path
+from unittest.mock import patch
+import time
 
 # 添加路径
 project_root = Path(__file__).parent.parent.parent
@@ -57,7 +58,7 @@ def test_normal_execution():
 
 
 def test_frequency_circuit_open():
-    """测试2：触发过密熔断"""
+    """测试2：触发过密熔断（使用 mock 替代 time.sleep）"""
     print("\n" + "="*60)
     print("测试2：触发过密熔断")
     print("="*60)
@@ -87,9 +88,11 @@ def test_frequency_circuit_open():
     assert breaker.check(event_type, playbook_id) == False
     print("✅ 第4次被熔断（预期行为）")
     
-    # 等待冷却
-    print("等待 5 秒冷却...")
-    time.sleep(5)
+    # 模拟冷却时间过去（修改 open_time 而不是真的等待）
+    print("模拟 5 秒冷却...")
+    key = (event_type, playbook_id)
+    if key in breaker.open_time:
+        breaker.open_time[key] = time.time() - 6  # 设置为 6 秒前（超过 5 秒冷却期）
     
     # 应该进入 HALF_OPEN
     assert breaker.check(event_type, playbook_id) == True
@@ -100,7 +103,6 @@ def test_frequency_circuit_open():
     breaker.record_success(event_type, playbook_id)
     
     # 检查状态
-    key = (event_type, playbook_id)
     state = breaker.states[key]
     print(f"当前状态: {state}")
     assert state == breaker.CLOSED, f"预期 CLOSED，实际 {state}"
@@ -112,7 +114,7 @@ def test_frequency_circuit_open():
 
 
 def test_failure_circuit_open():
-    """测试3：失败次数熔断"""
+    """测试3：失败次数熔断（使用 mock 替代 time.sleep）"""
     print("\n" + "="*60)
     print("测试3：失败次数熔断")
     print("="*60)
@@ -148,9 +150,11 @@ def test_failure_circuit_open():
     assert breaker.check(event_type, playbook_id) == False
     print("✅ 第3次被熔断（预期行为）")
     
-    # 等待冷却
-    print("等待 5 秒冷却...")
-    time.sleep(5)
+    # 模拟冷却时间过去
+    print("模拟 5 秒冷却...")
+    key = (event_type, playbook_id)
+    if key in breaker.open_time:
+        breaker.open_time[key] = time.time() - 6
     
     # 应该进入 HALF_OPEN
     assert breaker.check(event_type, playbook_id) == True
@@ -198,7 +202,7 @@ def test_status():
 def main():
     """运行所有测试"""
     print("="*60)
-    print("熔断器测试套件")
+    print("熔断器测试套件（优化版）")
     print("="*60)
     
     try:

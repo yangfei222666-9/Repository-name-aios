@@ -1,0 +1,4 @@
+{"timestamp": "2026-02-27T17:06:15.529502", "type": "process.check", "name": "AIOS Dashboard", "details": {"alive": false, "port": 8888, "process_name": null}}
+{"timestamp": "2026-02-27T17:06:15.530003", "type": "process.down", "name": "AIOS Dashboard", "details": {}}
+{"timestamp": "2026-02-27T17:06:17.552575", "type": "process.restart", "name": "AIOS Dashboard", "details": {"success": true}}
+{"timestamp": "2026-02-27T17:14:10.300939", "type": "process.check", "name": "AIOS Dashboard", "details": {"alive": true, "port": 8888, "process_name": null}}

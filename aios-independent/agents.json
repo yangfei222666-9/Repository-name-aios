@@ -1,0 +1,54 @@
+{
+  "agents": [
+    {
+      "id": "demo_agent_v2",
+      "name": "Demo Agent V2",
+      "description": "从市场下载的 demo_agent_v2",
+      "version": "1.0.0",
+      "capabilities": [
+        "demo"
+      ],
+      "downloaded_from": "ClawdHub Demo"
+    },
+    {
+      "id": "smart_researcher",
+      "name": "Smart Researcher",
+      "description": "从市场下载的 smart_researcher",
+      "version": "1.0.0",
+      "capabilities": [
+        "demo"
+      ],
+      "downloaded_from": "ClawdHub Demo"
+    },
+    {
+      "id": "bug_hunter",
+      "name": "Bug Hunter",
+      "description": "从市场下载的 bug_hunter",
+      "version": "1.0.0",
+      "capabilities": [
+        "demo"
+      ],
+      "downloaded_from": "ClawdHub Demo"
+    },
+    {
+      "id": "code_optimizer",
+      "name": "Code Optimizer",
+      "description": "从市场下载的 code_optimizer",
+      "version": "1.0.0",
+      "capabilities": [
+        "demo"
+      ],
+      "downloaded_from": "ClawdHub Demo"
+    },
+    {
+      "id": "self_heal_agent",
+      "name": "Self Heal Agent",
+      "description": "从市场下载的 self_heal_agent",
+      "version": "1.0.0",
+      "capabilities": [
+        "demo"
+      ],
+      "downloaded_from": "ClawdHub Demo"
+    }
+  ]
+}

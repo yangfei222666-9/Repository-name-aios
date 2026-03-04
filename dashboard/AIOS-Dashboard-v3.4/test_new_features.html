@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard 新功能测试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-900 text-white p-8">
+    <div class="max-w-4xl mx-auto space-y-8">
+        <h1 class="text-4xl font-bold mb-8">🧪 Dashboard 新功能测试</h1>
+        
+        <!-- 测试 1: Agent 市场 API -->
+        <div class="bg-zinc-800 p-6 rounded-xl">
+            <h2 class="text-2xl font-bold mb-4">1️⃣ Agent 市场 API</h2>
+            <button onclick="testSkillsAPI()" class="px-6 py-3 bg-purple-600 hover:bg-purple-500 rounded-xl font-bold">
+                测试 /api/skills
+            </button>
+            <pre id="skills-result" class="mt-4 bg-black p-4 rounded-xl text-sm overflow-x-auto"></pre>
+        </div>
+        
+        <!-- 测试 2: 实时日志流 API -->
+        <div class="bg-zinc-800 p-6 rounded-xl">
+            <h2 class="text-2xl font-bold mb-4">2️⃣ 实时日志流 API</h2>
+            <button onclick="testLogsAPI()" class="px-6 py-3 bg-orange-600 hover:bg-orange-500 rounded-xl font-bold">
+                测试 /api/logs
+            </button>
+            <pre id="logs-result" class="mt-4 bg-black p-4 rounded-xl text-sm overflow-x-auto"></pre>
+        </div>
+        
+        <!-- 测试 3: Skill 升级 -->
+        <div class="bg-zinc-800 p-6 rounded-xl">
+            <h2 class="text-2xl font-bold mb-4">3️⃣ Skill 升级为 Agent</h2>
+            <input type="text" id="skill-path" placeholder="输入 Skill 路径..." class="w-full bg-zinc-900 p-3 rounded-xl mb-4">
+            <button onclick="testUpgrade()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 rounded-xl font-bold">
+                测试升级
+            </button>
+            <pre id="upgrade-result" class="mt-4 bg-black p-4 rounded-xl text-sm overflow-x-auto"></pre>
+        </div>
+        
+        <!-- 测试 4: 完整 Dashboard -->
+        <div class="bg-zinc-800 p-6 rounded-xl">
+            <h2 class="text-2xl font-bold mb-4">4️⃣ 完整 Dashboard</h2>
+            <a href="/" target="_blank" class="inline-block px-6 py-3 bg-cyan-600 hover:bg-cyan-500 rounded-xl font-bold">
+                打开完整 Dashboard
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        async function testSkillsAPI() {
+            const result = document.getElementById('skills-result');
+            result.textContent = '加载中...';
+            
+            try {
+                const res = await fetch('/api/skills');
+                const data = await res.json();
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (e) {
+                result.textContent = '❌ 错误: ' + e.message;
+            }
+        }
+        
+        async function testLogsAPI() {
+            const result = document.getElementById('logs-result');
+            result.textContent = '加载中...';
+            
+            try {
+                const res = await fetch('/api/logs');
+                const data = await res.json();
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (e) {
+                result.textContent = '❌ 错误: ' + e.message;
+            }
+        }
+        
+        async function testUpgrade() {
+            const skillPath = document.getElementById('skill-path').value;
+            const result = document.getElementById('upgrade-result');
+            
+            if (!skillPath) {
+                result.textContent = '❌ 请输入 Skill 路径';
+                return;
+            }
+            
+            result.textContent = '升级中...';
+            
+            try {
+                const res = await fetch('/api/skill/upgrade', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ skill_path: skillPath })
+                });
+                const data = await res.json();
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (e) {
+                result.textContent = '❌ 错误: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>

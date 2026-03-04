@@ -1,0 +1,67 @@
+{
+  "current_hex": "比卦",
+  "confidence": 0.799,
+  "success_rate": 1.0,
+  "actions": [
+    {
+      "step": 1,
+      "action": "strengthen_agent_bonds",
+      "detail": "启用资源共享模式，推送高价值中间结果到共享内存",
+      "priority": "high",
+      "command": "python agents/context_manager.py enable-sharing --mode aggressive"
+    },
+    {
+      "step": 1,
+      "action": "bigua_heartbeat",
+      "detail": "每5分钟广播Agent负载和可用资源",
+      "priority": "high",
+      "command": "python agents/collaboration_agent.py heartbeat --interval 300"
+    },
+    {
+      "step": 2,
+      "action": "recruit_new_agents",
+      "detail": "招募1-2个新专项Agent（复盘/监控/创意）",
+      "priority": "medium",
+      "command": "python agents/agent_manager.py recruit --types retrospective,monitor,creative --max 2"
+    },
+    {
+      "step": 2,
+      "action": "reward_collaboration",
+      "detail": "实施亲密度积分奖励机制",
+      "priority": "medium",
+      "command": "python agents/collaboration_agent.py enable-intimacy-scoring"
+    },
+    {
+      "step": 3,
+      "action": "monitor_confidence",
+      "detail": "监控置信度和任务数突增",
+      "priority": "normal",
+      "command": "python agents/pattern_monitor.py watch --confidence-threshold 0.65 --task-surge 30"
+    },
+    {
+      "step": 3,
+      "action": "generate_bigua_report",
+      "detail": "生成比卦日报（Top3最默契Agent）",
+      "priority": "normal",
+      "command": "python agents/collaboration_agent.py daily-report --top 3"
+    },
+    {
+      "step": 4,
+      "action": "record_trajectory",
+      "detail": "记录从危机到协作的完整轨迹",
+      "priority": "low",
+      "command": "python agents/knowledge_base_manager.py record --pattern daguo-to-bigua"
+    }
+  ],
+  "new_agents_recommended": [
+    "复盘Agent",
+    "监控Agent",
+    "创意Agent"
+  ],
+  "collaboration_score": 100.0,
+  "learning_points": [
+    "滑动窗口统计避免假警报，实时反映系统状态",
+    "大过卦报警机制触发自愈，系统主动从危机中恢复",
+    "比卦状态下主动扩张生态，强化Agent协作"
+  ]
+}

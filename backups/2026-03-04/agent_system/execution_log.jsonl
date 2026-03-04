@@ -1,0 +1,20 @@
+{"task_type": "code", "description": "重构 scheduler.py，提取重复逻辑", "priority": "high", "status": "success", "executed_at": "2026-02-26T04:53:12.860068", "duration_sec": 0.5}
+{"task_type": "analysis", "description": "分析最近7天失败事件，找出根因", "priority": "normal", "status": "success", "executed_at": "2026-02-26T04:53:13.361100", "duration_sec": 0.5}
+{"task_type": "monitor", "description": "检查磁盘使用率，清理临时文件", "priority": "low", "status": "success", "executed_at": "2026-02-26T04:53:13.861868", "duration_sec": 0.5}
+{"task_type": "code", "description": "优化 EventBus 性能", "priority": "high", "status": "success", "executed_at": "2026-02-26T04:56:05.774003", "duration_sec": 0.5}
+{"task_type": "analysis", "description": "分析 Agent 成功率趋势", "priority": "normal", "status": "success", "executed_at": "2026-02-26T04:56:06.274846", "duration_sec": 0.5}
+{"task_type": "code", "description": "帮我重构 scheduler.py，提取重复逻辑", "priority": "normal", "status": "success", "executed_at": "2026-02-26T05:00:08.011443", "duration_sec": 0.5}
+{"task_type": "analysis", "description": "！分析最近7天的失败事件，找出根因", "priority": "high", "status": "success", "executed_at": "2026-02-26T05:00:08.512168", "duration_sec": 0.5}
+{"task_type": "monitor", "description": "的时候检查一下磁盘使用率", "priority": "low", "status": "success", "executed_at": "2026-02-26T05:00:09.012785", "duration_sec": 0.5}
+{"task_type": "code", "description": "帮我写一个 Python 爬虫", "priority": "normal", "status": "success", "executed_at": "2026-02-26T05:00:33.918981", "duration_sec": 0.5}
+{"task_type": "code", "description": "帮我写一个爬虫", "priority": "normal", "status": "success", "executed_at": "2026-02-26T05:03:00.719478", "duration_sec": 0.5}
+{"task_type": "code", "description": "帮我写一个爬虫 + 加上错误重试机制", "priority": "normal", "status": "success", "executed_at": "2026-02-26T05:03:01.220166", "duration_sec": 0.5}
+{"task_type": "design", "description": "设计数据库结构（用户、文章、评论表）", "priority": "high", "status": "success", "executed_at": "2026-02-26T05:03:01.721097", "duration_sec": 0.5}
+{"task_type": "code", "description": "实现后端 API（用户认证、文章 CRUD、评论）", "priority": "high", "status": "success", "executed_at": "2026-02-26T05:03:02.221555", "duration_sec": 0.5}
+{"task_type": "code", "description": "实现前端界面（首页、文章详情、编辑器）", "priority": "normal", "status": "success", "executed_at": "2026-02-26T05:03:02.722067", "duration_sec": 0.5}
+{"task_type": "monitor", "description": "部署上线并配置监控", "priority": "normal", "status": "success", "executed_at": "2026-02-26T05:03:03.222739", "duration_sec": 0.5}
+{"task_type": "code", "description": "写一个函数计算1到10的和", "priority": "normal", "status": "success", "executed_at": "2026-02-26T05:19:13.821514", "duration_sec": 0.5}
+{"task_type": "code", "description": "写一个计算器程序，支持加减乘除", "priority": "normal", "status": "success", "executed_at": "2026-02-26T05:23:39.644180", "duration_sec": 0.5}
+{"task_type": "code", "description": "", "priority": "normal", "status": "success", "executed_at": "2026-02-27T10:01:55.944040", "duration_sec": 0.5}
+{"task_type": "monitor", "description": "", "priority": "low", "status": "success", "executed_at": "2026-02-27T10:01:56.444861", "duration_sec": 0.5}
+{"task_type": "code", "description": "测试任务：计算斐波那契数列前10项", "priority": "normal", "status": "success", "executed_at": "2026-02-27T10:01:56.945463", "duration_sec": 0.5}

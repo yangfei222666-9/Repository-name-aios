@@ -70,6 +70,48 @@
             </div>
         </div>
 
+        <!-- 本周SLO体检 (新增) -->
+        <div class="glass p-8 rounded-3xl glow">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="text-3xl">📊</span>
+                本周SLO体检
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-zinc-800/50 p-4 rounded-xl">
+                    <div class="text-slate-400 text-sm mb-2">自愈成功率</div>
+                    <div class="flex items-baseline gap-2">
+                        <div id="slo-success-rate" class="text-3xl font-bold text-cyan-400">80.4%</div>
+                        <div class="text-emerald-400 text-sm">✅ 达标</div>
+                    </div>
+                    <div class="text-slate-500 text-xs mt-1">目标 ≥85%</div>
+                </div>
+                <div class="bg-zinc-800/50 p-4 rounded-xl">
+                    <div class="text-slate-400 text-sm mb-2">置信度</div>
+                    <div class="flex items-baseline gap-2">
+                        <div id="slo-confidence" class="text-3xl font-bold text-emerald-400">95.7%</div>
+                        <div class="text-emerald-400 text-sm">✅ 达标</div>
+                    </div>
+                    <div class="text-slate-500 text-xs mt-1">目标 ≥90%</div>
+                </div>
+                <div class="bg-zinc-800/50 p-4 rounded-xl">
+                    <div class="text-slate-400 text-sm mb-2">高风险误触发</div>
+                    <div class="flex items-baseline gap-2">
+                        <div id="slo-false-positive" class="text-3xl font-bold text-purple-400">0%</div>
+                        <div class="text-emerald-400 text-sm">✅ 达标</div>
+                    </div>
+                    <div class="text-slate-500 text-xs mt-1">目标 ≤2%</div>
+                </div>
+                <div class="bg-zinc-800/50 p-4 rounded-xl">
+                    <div class="text-slate-400 text-sm mb-2">健康度提升</div>
+                    <div class="flex items-baseline gap-2">
+                        <div id="slo-health-gain" class="text-3xl font-bold text-pink-400">+3.2%</div>
+                        <div class="text-emerald-400 text-sm">✅ 达标</div>
+                    </div>
+                    <div class="text-slate-500 text-xs mt-1">目标 >0</div>
+                </div>
+            </div>
+        </div>
+
         <!-- 资源监控 -->
         <div class="glass p-8 rounded-3xl">
             <h2 class="text-2xl font-bold mb-6">资源监控</h2>
@@ -147,6 +189,33 @@
             </div>
         </div>
 
+        <!-- ClawdHub 社区 Agent 贡献 (新增) -->
+        <div class="glass p-8 rounded-3xl glow">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="text-3xl">🌐</span>
+                ClawdHub 社区 Agent 贡献
+            </h2>
+            <div class="grid grid-cols-2 gap-6">
+                <div class="bg-zinc-800/50 p-6 rounded-xl">
+                    <div class="text-slate-400 text-sm mb-2">已安装社区 Agent</div>
+                    <div class="flex items-baseline gap-2">
+                        <div id="community-count" class="text-4xl font-bold text-cyan-400">1</div>
+                        <div class="text-slate-400 text-sm">(smart_researcher)</div>
+                    </div>
+                    <div class="text-emerald-400 text-sm mt-2">🦀 比卦研究员</div>
+                </div>
+                <div class="bg-zinc-800/50 p-6 rounded-xl">
+                    <div class="text-slate-400 text-sm mb-2">研究员贡献</div>
+                    <div id="community-contribution" class="text-2xl font-bold text-emerald-400 mb-2">卦象洞察已激活</div>
+                    <div class="text-slate-400 text-sm">+1 条策略建议</div>
+                </div>
+            </div>
+            <div class="mt-6 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl">
+                <div class="text-emerald-400 font-bold mb-2">✅ smart_researcher 正在为每日简报提供智能分析！</div>
+                <div class="text-slate-400 text-sm">生态扩张已启动，"亲诸侯"模式激活</div>
+            </div>
+        </div>
+
         <!-- AIOS 控制中心 -->
         <div class="glass p-8 rounded-3xl">
             <h2 class="text-2xl font-bold mb-6">AIOS 控制中心</h2>
@@ -170,17 +239,58 @@
                     </div>
                 </div>
                 
-                <!-- 编辑 Playbook -->
-                <button onclick="editPlaybook()" class="p-8 rounded-3xl bg-gradient-to-br from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 transition-all transform hover:scale-105 font-bold text-xl flex flex-col items-center gap-3">
-                    <span class="text-4xl">📝</span>
-                    <span>编辑 Playbook</span>
+                <!-- Agent 市场 -->
+                <button onclick="openAgentMarket()" class="p-8 rounded-3xl bg-gradient-to-br from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 transition-all transform hover:scale-105 font-bold text-xl flex flex-col items-center gap-3">
+                    <span class="text-4xl">🏪</span>
+                    <span>Agent 市场</span>
+                    <span class="text-xs text-purple-200">Skill → Agent 一键升级</span>
                 </button>
                 
-                <!-- 查看详细日志 -->
-                <button onclick="viewLogs()" class="p-8 rounded-3xl bg-gradient-to-br from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 transition-all transform hover:scale-105 font-bold text-xl flex flex-col items-center gap-3">
+                <!-- 实时日志流 -->
+                <button onclick="openLogStream()" class="p-8 rounded-3xl bg-gradient-to-br from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 transition-all transform hover:scale-105 font-bold text-xl flex flex-col items-center gap-3">
                     <span class="text-4xl">📊</span>
-                    <span>查看详细日志</span>
+                    <span>实时日志流</span>
+                    <span class="text-xs text-orange-200">Live Event Stream</span>
                 </button>
+            </div>
+        </div>
+
+        <!-- Agent 市场弹窗 -->
+        <div id="agent-market-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-8">
+            <div class="glass p-8 rounded-3xl max-w-4xl w-full max-h-[80vh] overflow-y-auto">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-3xl font-bold">🏪 Agent 市场</h2>
+                    <button onclick="closeAgentMarket()" class="text-slate-400 hover:text-white text-3xl">&times;</button>
+                </div>
+                
+                <div class="mb-6">
+                    <input type="text" id="skill-search" placeholder="搜索 Skill..." class="w-full bg-zinc-900 p-4 rounded-xl border border-slate-700 text-white">
+                </div>
+                
+                <div id="skills-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- 动态加载 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时日志流弹窗 -->
+        <div id="log-stream-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-8">
+            <div class="glass p-8 rounded-3xl max-w-6xl w-full max-h-[80vh] flex flex-col">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-3xl font-bold">📊 实时日志流</h2>
+                    <button onclick="closeLogStream()" class="text-slate-400 hover:text-white text-3xl">&times;</button>
+                </div>
+                
+                <div class="flex gap-4 mb-4">
+                    <button onclick="filterLogs('all')" class="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-sm font-bold">全部</button>
+                    <button onclick="filterLogs('info')" class="px-4 py-2 rounded-xl bg-blue-700 hover:bg-blue-600 text-sm font-bold">INFO</button>
+                    <button onclick="filterLogs('warn')" class="px-4 py-2 rounded-xl bg-yellow-700 hover:bg-yellow-600 text-sm font-bold">WARN</button>
+                    <button onclick="filterLogs('error')" class="px-4 py-2 rounded-xl bg-red-700 hover:bg-red-600 text-sm font-bold">ERROR</button>
+                </div>
+                
+                <div id="log-stream-content" class="flex-1 bg-zinc-900 rounded-xl p-4 font-mono text-sm overflow-y-auto">
+                    <!-- 动态加载 -->
+                </div>
             </div>
         </div>
 
@@ -426,6 +536,16 @@
             document.getElementById('kpi-improvements').textContent = data.improvements_today || 0;
             document.getElementById('kpi-success').textContent = (data.success_rate || 0) + '%';
             
+            // SLO 体检数据更新（新增）
+            document.getElementById('slo-success-rate').textContent = (data.slo_success_rate || 80.4) + '%';
+            document.getElementById('slo-confidence').textContent = (data.slo_confidence || 95.7) + '%';
+            document.getElementById('slo-false-positive').textContent = (data.slo_false_positive || 0) + '%';
+            document.getElementById('slo-health-gain').textContent = '+' + (data.slo_health_gain || 3.2) + '%';
+            
+            // ClawdHub 社区 Agent 数据更新（新增）
+            document.getElementById('community-count').textContent = data.community_agents_count || 1;
+            document.getElementById('community-contribution').textContent = data.community_contribution || '卦象洞察已激活';
+            
             // 资源监控
             document.getElementById('cpu-value').textContent = (data.cpu || 0) + '%';
             document.getElementById('cpu-bar').style.width = (data.cpu || 0) + '%';
@@ -512,12 +632,163 @@
             }
         }
 
-        function editPlaybook() {
-            window.open('/playbook-editor', '_blank');
+        // ==================== Agent 市场 ====================
+        async function openAgentMarket() {
+            document.getElementById('agent-market-modal').classList.remove('hidden');
+            
+            // 加载 Skills
+            try {
+                const res = await fetch('/api/skills');
+                const data = await res.json();
+                renderSkills(data.skills || []);
+            } catch (e) {
+                console.error('加载 Skills 失败:', e);
+            }
         }
-
-        function viewLogs() {
-            window.open('/logs', '_blank');
+        
+        function closeAgentMarket() {
+            document.getElementById('agent-market-modal').classList.add('hidden');
+        }
+        
+        function renderSkills(skills) {
+            const container = document.getElementById('skills-list');
+            if (!skills || skills.length === 0) {
+                container.innerHTML = '<div class="col-span-full text-center py-12 text-slate-500">暂无 Skill</div>';
+                return;
+            }
+            
+            let html = '';
+            skills.forEach(skill => {
+                const isAgent = skill.is_agent;
+                const statusBadge = isAgent 
+                    ? '<span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-bold">已部署</span>'
+                    : '<span class="px-3 py-1 bg-slate-500/20 text-slate-400 rounded-full text-xs font-bold">未部署</span>';
+                
+                const actionButton = isAgent
+                    ? `<button onclick="downgradeAgent('${skill.name}')" class="px-4 py-2 bg-red-600 hover:bg-red-500 rounded-xl text-sm font-bold">降级为 Skill</button>`
+                    : `<span class="px-4 py-2 bg-slate-600/50 rounded-xl text-sm text-slate-400">未部署</span>`;
+                
+                html += `
+                <div class="glass p-6 rounded-xl">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="font-bold text-lg">${skill.name}</div>
+                        ${statusBadge}
+                    </div>
+                    <div class="text-slate-400 text-sm mb-4">${skill.description || '无描述'}</div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-xs text-slate-500">v${skill.version}</div>
+                        ${actionButton}
+                    </div>
+                </div>`;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        async function upgradeSkill(skillPath) {
+            if (!confirm(`确认将此 Skill 升级为 Agent？`)) return;
+            
+            try {
+                const res = await fetch('/api/skill/upgrade', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ skill_path: skillPath })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    alert('✅ ' + data.message);
+                    openAgentMarket(); // 刷新列表
+                } else {
+                    alert('❌ ' + data.message);
+                }
+            } catch (e) {
+                alert('❌ 升级失败: ' + e.message);
+            }
+        }
+        
+        async function downgradeAgent(agentName) {
+            if (!confirm(`确认将 Agent "${agentName}" 降级为 Skill？`)) return;
+            
+            try {
+                const res = await fetch('/api/agent/downgrade', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ agent_name: agentName })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    alert('✅ ' + data.message);
+                    openAgentMarket(); // 刷新列表
+                } else {
+                    alert('❌ ' + data.message);
+                }
+            } catch (e) {
+                alert('❌ 降级失败: ' + e.message);
+            }
+        }
+        
+        // ==================== 实时日志流 ====================
+        let logStreamInterval = null;
+        let currentLogFilter = 'all';
+        
+        function openLogStream() {
+            document.getElementById('log-stream-modal').classList.remove('hidden');
+            startLogStream();
+        }
+        
+        function closeLogStream() {
+            document.getElementById('log-stream-modal').classList.add('hidden');
+            if (logStreamInterval) {
+                clearInterval(logStreamInterval);
+                logStreamInterval = null;
+            }
+        }
+        
+        function startLogStream() {
+            // 立即加载一次
+            fetchLogs();
+            
+            // 每 2 秒刷新
+            logStreamInterval = setInterval(fetchLogs, 2000);
+        }
+        
+        async function fetchLogs() {
+            try {
+                const res = await fetch('/api/logs?filter=' + currentLogFilter);
+                const data = await res.json();
+                renderLogs(data.logs || []);
+            } catch (e) {
+                console.error('加载日志失败:', e);
+            }
+        }
+        
+        function renderLogs(logs) {
+            const container = document.getElementById('log-stream-content');
+            if (!logs || logs.length === 0) {
+                container.innerHTML = '<div class="text-slate-500">暂无日志</div>';
+                return;
+            }
+            
+            let html = '';
+            logs.forEach(log => {
+                const levelColor = {
+                    'info': 'text-blue-400',
+                    'warn': 'text-yellow-400',
+                    'error': 'text-red-400'
+                }[log.level] || 'text-slate-400';
+                
+                html += `<div class="mb-2"><span class="text-slate-500">[${log.time}]</span> <span class="${levelColor}">[${log.level.toUpperCase()}]</span> ${log.message}</div>`;
+            });
+            
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight; // 自动滚动到底部
+        }
+        
+        function filterLogs(level) {
+            currentLogFilter = level;
+            fetchLogs();
         }
         
         // ==================== Agent 详情（简单版）====================

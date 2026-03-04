@@ -1,0 +1,131 @@
+{
+  "dashboard": {
+    "title": "AIOS Runtime Dashboard v2.0",
+    "tags": ["aios", "runtime", "agents"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "P95 Task Latency (目标: ≤6s)",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(task_latency_seconds_bucket[5m])) by (le, agent_id))",
+            "legendFormat": "{{agent_id}} P95"
+          }
+        ],
+        "yaxes": [
+          {"format": "s", "label": "Latency"},
+          {"format": "short"}
+        ],
+        "alert": {
+          "conditions": [
+            {
+              "evaluator": {"params": [8], "type": "gt"},
+              "query": {"params": ["A", "5m", "now"]},
+              "type": "query"
+            }
+          ],
+          "name": "P95 Latency > 8s"
+        }
+      },
+      {
+        "id": 2,
+        "title": "Success Rate % (目标: ≥95%)",
+        "type": "graph",
+        "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "100 * sum(rate(task_success_total[5m])) by (agent_id) / sum(rate(task_total[5m])) by (agent_id)",
+            "legendFormat": "{{agent_id}}"
+          }
+        ],
+        "yaxes": [
+          {"format": "percent", "label": "Success Rate", "min": 0, "max": 100},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Queue Backlog (目标: ≤50)",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 8, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "queue_size_gauge",
+            "legendFormat": "{{queue_name}}"
+          }
+        ],
+        "yaxes": [
+          {"format": "short", "label": "Queue Size"},
+          {"format": "short"}
+        ],
+        "alert": {
+          "conditions": [
+            {
+              "evaluator": {"params": [200], "type": "gt"},
+              "query": {"params": ["A", "5m", "now"]},
+              "type": "query"
+            }
+          ],
+          "name": "Queue Backlog > 200"
+        }
+      },
+      {
+        "id": 4,
+        "title": "Memory Usage (目标: 增长≤10%/12h)",
+        "type": "graph",
+        "gridPos": {"x": 12, "y": 8, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "process_resident_memory_bytes / 1024 / 1024",
+            "legendFormat": "RSS (MB)"
+          },
+          {
+            "expr": "process_heap_memory_bytes / 1024 / 1024",
+            "legendFormat": "Heap (MB)"
+          }
+        ],
+        "yaxes": [
+          {"format": "decmbytes", "label": "Memory"},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Agent Spawn Rate (目标: ≤120/h)",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 16, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "rate(agent_spawn_per_hour_total[1h])",
+            "legendFormat": "{{agent_id}}"
+          }
+        ],
+        "yaxes": [
+          {"format": "short", "label": "Spawns/hour"},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Queue Wait Time P95",
+        "type": "graph",
+        "gridPos": {"x": 12, "y": 16, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(queue_wait_time_seconds_bucket[5m])) by (le))",
+            "legendFormat": "P95 Wait Time"
+          }
+        ],
+        "yaxes": [
+          {"format": "s", "label": "Wait Time"},
+          {"format": "short"}
+        ]
+      }
+    ],
+    "refresh": "10s",
+    "time": {"from": "now-1h", "to": "now"}
+  }
+}
