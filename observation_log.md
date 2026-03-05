@@ -31,16 +31,25 @@
 
 ---
 
-## Day 2 - 2026-03-05（待更新）
+## Day 2 - 2026-03-05
 
-**时间：** --:--
-**状态：** 待观察
+```
+Day 2
+  tasks       = 1
+  success     = 100%
+  debate      = 200% (2 debates / 1 task, noise from low volume)
+  fast_ratio  = 0% (no router events)
+  top_failure = none
+  regen       = 0 attempts (max_attempts: 3)
+  api_health  = 476 consecutive healthy checks
+  system_state = stable
+```
 
-**观察重点：**
-- 置信度是否保持95%+
-- 成功率是否稳定在80%+
-- 是否出现异常卦象（大过卦）
-- API健康度是否持续
+**Observation:** 数据量太低（仅1个任务），指标不具统计意义。debate_rate 200% 是噪声（2个历史 decision_log 条目 / 1个今日任务）。API 连续健康 476 次，基础设施稳定。需要更多任务量才能看到真实 pattern。
+
+**增强完成：**
+1. OBSERVATION_PERIOD.md 补充 Freeze Reason + prompt 冻结提醒
+2. daily_metrics.json 新增 max_regeneration_attempts 字段（防 retry loop）
 
 ---
 

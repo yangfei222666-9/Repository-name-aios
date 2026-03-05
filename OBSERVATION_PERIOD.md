@@ -2,6 +2,21 @@
 # 时间：2026-03-04 ~ 2026-03-11（7天）
 # 目标：验证99.5%置信度长期稳定性
 
+## Freeze Reason
+确保 7 天观测期数据具有可比性，避免参数变化导致指标偏移。
+
+观察期内冻结配置：
+- Router 阈值（fast/slow 切换逻辑）
+- Debate 触发条件（risk_score >= 0.7）
+- Phase3 重试策略（max_attempts = 3）
+- Agent prompt（所有 Agent 的 system prompt）
+- 策略参数（kun_strategy.py 的所有阈值）
+
+⚠️ 观察期内禁止修改：
+- ❌ 不要改 prompt
+- ❌ 不要改 agent 策略
+- ❌ 不要改 Router/Debate/Phase3 参数
+
 ## 观察期间系统自动运行的任务
 
 ### 每日任务（09:15）

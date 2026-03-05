@@ -112,6 +112,74 @@
             </div>
         </div>
 
+        <!-- Hexagram Timeline (新增) -->
+        <div class="glass p-8 rounded-3xl glow">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="text-3xl">☯️</span>
+                卦象时间线
+            </h2>
+            
+            <!-- 当前状态 -->
+            <div class="bg-zinc-800/50 p-6 rounded-xl mb-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div>
+                        <div class="text-slate-400 text-sm mb-1">当前卦象</div>
+                        <div id="current-hexagram" class="text-2xl font-bold text-cyan-400">坤</div>
+                    </div>
+                    <div>
+                        <div class="text-slate-400 text-sm mb-1">运行阶段</div>
+                        <div id="current-phase" class="text-lg font-semibold text-emerald-400">stable 🟢</div>
+                    </div>
+                    <div>
+                        <div class="text-slate-400 text-sm mb-1">系统负载</div>
+                        <div id="current-load" class="text-lg font-semibold text-slate-300">normal</div>
+                    </div>
+                    <div>
+                        <div class="text-slate-400 text-sm mb-1">延迟压力</div>
+                        <div id="current-latency" class="text-lg font-semibold text-slate-300">1.0 (normal)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7天时间线 -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-3 text-slate-300">最近 7 天</h3>
+                <div id="daily-timeline" class="space-y-2">
+                    <!-- 动态填充 -->
+                </div>
+            </div>
+
+            <!-- 转移统计 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-slate-300">Top 转移</h3>
+                    <div id="top-transitions" class="space-y-2">
+                        <!-- 动态填充 -->
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-slate-300">异常转移</h3>
+                    <div id="anomaly-transitions" class="space-y-2 text-sm text-slate-400">
+                        <!-- 动态填充 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 稳定性指数 -->
+            <div class="mt-6 bg-zinc-800/50 p-4 rounded-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-slate-400 text-sm mb-1">System Stability Index</div>
+                        <div id="stability-score" class="text-3xl font-bold text-purple-400">58.3%</div>
+                    </div>
+                    <div class="text-right text-sm text-slate-400">
+                        <div>Transition Entropy: <span id="trans-entropy" class="text-slate-300">0.92</span></div>
+                        <div>Distribution Entropy: <span id="dist-entropy" class="text-slate-300">0.87</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- 资源监控 -->
         <div class="glass p-8 rounded-3xl">
             <h2 class="text-2xl font-bold mb-6">资源监控</h2>
@@ -192,27 +260,31 @@
         <!-- ClawdHub 社区 Agent 贡献 (新增) -->
         <div class="glass p-8 rounded-3xl glow">
             <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                <span class="text-3xl">🌐</span>
-                ClawdHub 社区 Agent 贡献
+                <span class="text-3xl">🦀</span>
+                三诸侯协作实时状态（比卦神级核心）
             </h2>
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid grid-cols-3 gap-6">
                 <div class="bg-zinc-800/50 p-6 rounded-xl">
-                    <div class="text-slate-400 text-sm mb-2">已安装社区 Agent</div>
+                    <div class="text-slate-400 text-sm mb-2">📚 smart_researcher</div>
                     <div class="flex items-baseline gap-2">
-                        <div id="community-count" class="text-4xl font-bold text-cyan-400">1</div>
-                        <div class="text-slate-400 text-sm">(smart_researcher)</div>
+                        <div id="researcher-status" class="text-xl font-bold text-cyan-400">卦象洞察已激活</div>
                     </div>
-                    <div class="text-emerald-400 text-sm mt-2">🦀 比卦研究员</div>
+                    <div class="text-emerald-400 text-sm mt-2">每日简报贡献 +1</div>
                 </div>
                 <div class="bg-zinc-800/50 p-6 rounded-xl">
-                    <div class="text-slate-400 text-sm mb-2">研究员贡献</div>
-                    <div id="community-contribution" class="text-2xl font-bold text-emerald-400 mb-2">卦象洞察已激活</div>
-                    <div class="text-slate-400 text-sm">+1 条策略建议</div>
+                    <div class="text-slate-400 text-sm mb-2">🛡️ self_heal_agent</div>
+                    <div id="healer-status" class="text-xl font-bold text-emerald-400 mb-2">Self-Healing Loop v2 运行中</div>
+                    <div class="text-emerald-400 text-sm mt-2">重生率 100%</div>
+                </div>
+                <div class="bg-zinc-800/50 p-6 rounded-xl">
+                    <div class="text-slate-400 text-sm mb-2">📡 monitor_master</div>
+                    <div id="monitor-status" class="text-xl font-bold text-purple-400 mb-2">全系统监控守护中</div>
+                    <div class="text-emerald-400 text-sm mt-2">Health 99.9+</div>
                 </div>
             </div>
             <div class="mt-6 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl">
-                <div class="text-emerald-400 font-bold mb-2">✅ smart_researcher 正在为每日简报提供智能分析！</div>
-                <div class="text-slate-400 text-sm">生态扩张已启动，"亲诸侯"模式激活</div>
+                <div id="collaboration-status" class="text-emerald-400 font-bold mb-2">✅ 三诸侯已协同工作！研究员分析 + 自愈执行 + 监控调度 = 永生进化闭环</div>
+                <div class="text-slate-400 text-sm">monitor_master 实时追踪三诸侯状态 + 自动生成健康报告</div>
             </div>
         </div>
 
@@ -511,12 +583,26 @@
                     console.error('获取数据失败:', error);
                 }
             }
+
+            async function fetchHexagramTimeline() {
+                try {
+                    const response = await fetch('/api/hexagram_timeline');
+                    const data = await response.json();
+                    console.log('卦象时间线:', data);
+                    updateHexagramTimeline(data);
+                } catch (error) {
+                    console.error('获取卦象时间线失败:', error);
+                }
+            }
             
             // 立即获取一次
             fetchData();
+            fetchHexagramTimeline();
             
             // 每 3 秒轮询一次
             setInterval(fetchData, 5000);
+            // 卦象时间线每 30 秒更新一次
+            setInterval(fetchHexagramTimeline, 30000);
         }
         
         
@@ -542,9 +628,13 @@
             document.getElementById('slo-false-positive').textContent = (data.slo_false_positive || 0) + '%';
             document.getElementById('slo-health-gain').textContent = '+' + (data.slo_health_gain || 3.2) + '%';
             
-            // ClawdHub 社区 Agent 数据更新（新增）
-            document.getElementById('community-count').textContent = data.community_agents_count || 1;
-            document.getElementById('community-contribution').textContent = data.community_contribution || '卦象洞察已激活';
+            // 三诸侯协作状态更新（新增）
+            if (data.three_lords) {
+                document.getElementById('researcher-status').textContent = data.three_lords.researcher.status || '卦象洞察已激活';
+                document.getElementById('healer-status').textContent = data.three_lords.healer.status || 'Self-Healing Loop v2 运行中';
+                document.getElementById('monitor-status').textContent = data.three_lords.monitor.status || '全系统监控守护中';
+                document.getElementById('collaboration-status').textContent = data.three_lords.collaboration || '✅ 三诸侯已协同工作！';
+            }
             
             // 资源监控
             document.getElementById('cpu-value').textContent = (data.cpu || 0) + '%';
@@ -683,6 +773,62 @@
             });
             
             container.innerHTML = html;
+        }
+
+        function updateHexagramTimeline(data) {
+            // 当前状态
+            const current = data.current || {};
+            document.getElementById('current-hexagram').textContent = current.hexagram || '坤';
+            
+            const phaseEmoji = {
+                'stable': '🟢',
+                'pressure': '🟡',
+                'recovery': '🔴'
+            };
+            const phase = current.runtime_phase || 'stable';
+            document.getElementById('current-phase').textContent = `${phase} ${phaseEmoji[phase] || ''}`;
+            document.getElementById('current-load').textContent = current.system_load || 'normal';
+            document.getElementById('current-latency').textContent = 
+                `${current.latency_pressure || 1.0} (${current.latency_state || 'normal'})`;
+
+            // 7天时间线
+            const dailyContainer = document.getElementById('daily-timeline');
+            let dailyHtml = '';
+            (data.daily_timeline || []).forEach(day => {
+                dailyHtml += `
+                <div class="flex items-center justify-between bg-zinc-800/30 p-3 rounded-lg">
+                    <div class="text-slate-400 text-sm">${day.date}</div>
+                    <div class="font-semibold text-cyan-400">${day.hexagram}</div>
+                    <div class="text-slate-500 text-xs">${day.count}/${day.total}</div>
+                </div>`;
+            });
+            dailyContainer.innerHTML = dailyHtml || '<div class="text-slate-500 text-sm">暂无数据</div>';
+
+            // Top 转移
+            const transContainer = document.getElementById('top-transitions');
+            let transHtml = '';
+            (data.transitions || []).slice(0, 5).forEach(t => {
+                transHtml += `
+                <div class="flex items-center justify-between bg-zinc-800/30 p-2 rounded-lg text-sm">
+                    <div class="text-slate-300">${t.from} → ${t.to}</div>
+                    <div class="text-cyan-400 font-semibold">${t.count}</div>
+                </div>`;
+            });
+            transContainer.innerHTML = transHtml || '<div class="text-slate-500 text-sm">暂无数据</div>';
+
+            // 异常转移
+            const anomalyContainer = document.getElementById('anomaly-transitions');
+            let anomalyHtml = '';
+            (data.anomaly_transitions || []).forEach(t => {
+                anomalyHtml += `<div>${t.from} → ${t.to} (rare)</div>`;
+            });
+            anomalyContainer.innerHTML = anomalyHtml || '<div class="text-slate-500">无异常转移</div>';
+
+            // 稳定性指数
+            const stability = data.stability || {};
+            document.getElementById('stability-score').textContent = `${stability.stability_pct || 0}%`;
+            document.getElementById('trans-entropy').textContent = (stability.transition_entropy || 0).toFixed(2);
+            document.getElementById('dist-entropy').textContent = (stability.distribution_entropy || 0).toFixed(2);
         }
         
         async function upgradeSkill(skillPath) {
