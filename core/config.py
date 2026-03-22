@@ -34,7 +34,27 @@ def read_simple_yaml(path: Path) -> dict:
         if ":" in stripped:
             key, _, val = stripped.partition(":")
             key = key.strip()
-            val = val.strip().strip('"').strip("'")
+            # strip inline comments before unquoting
+            if '"' in val:
+                # handle quoted value with possible trailing comment
+                val = val.strip()
+                if val.startswith('"'):
+                    end = val.find('"', 1)
+                    val = val[1:end] if end > 0 else val.strip('"')
+                elif val.startswith("'"):
+                    end = val.find("'", 1)
+                    val = val[1:end] if end > 0 else val.strip("'")
+                else:
+                    val = val.split('#')[0].strip().strip('"').strip("'")
+            elif "'" in val:
+                val = val.strip()
+                if val.startswith("'"):
+                    end = val.find("'", 1)
+                    val = val[1:end] if end > 0 else val.strip("'")
+                else:
+                    val = val.split('#')[0].strip().strip("'")
+            else:
+                val = val.split('#')[0].strip()
 
             full_key = f"{prefix}.{key}" if prefix else key
 

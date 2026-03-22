@@ -1,0 +1,133 @@
+# AIOS Dev Configuration
+# 继承 prod.yaml 的结构，覆盖开发环境差异项
+# 用法：TAIJI_ENV=dev
+
+version: "1.0"
+environment: dev
+
+# === Core Settings ===
+core:
+  workspace: "C:\\Users\\A\\.openclaw\\workspace\\aios-dev"
+  log_level: "DEBUG"
+  max_workers: 2
+  timeout_seconds: 60
+
+# === Model Configuration ===
+models:
+  default: "claude-haiku-4-5"  # dev 用便宜模型
+  thinking:
+    enabled: false
+    model: "claude-opus-4-6"
+  fallback: "claude-haiku-4-5"
+  api_key_env: "OPENCLAW_API_KEY"
+
+# === Agent System ===
+agents:
+  max_concurrent: 2
+  retry_limit: 1
+  health_check_interval: 300
+
+  timeouts:
+    coder: 60
+    analyst: 60
+    monitor: 30
+    default: 60
+
+# === Task Queue ===
+queue:
+  max_pending: 10
+  priority_levels: ["critical", "high", "normal", "low"]
+  auto_cleanup_days: 1
+
+# === Self-Improving Loop ===
+self_improving:
+  enabled: false  # dev 不自动改进
+  min_samples: 2
+  confidence_threshold: 0.5
+  auto_apply: false
+  rollback_enabled: true
+  backup_retention_days: 3
+
+# === Monitoring & Alerts ===
+monitoring:
+  health_check_interval: 300
+  alert_threshold:
+    error_rate: 0.5
+    latency_p95: 30.0
+    cost_daily: 1.0
+  metrics_retention_days: 7
+
+# === Notifications ===
+# dev 告警发到独立的 dev 群，禁止发到 prod 群
+notifications:
+  telegram:
+    enabled: true
+    bot_token_env: "TAIJI_TELEGRAM_BOT_TOKEN"
+    chat_id_env: "TAIJI_DEV_TELEGRAM_CHAT_ID"  # dev 专用 chat_id
+
+  channels:
+    critical: ["telegram"]
+    warning: []   # dev 只发 critical
+    info: []
+
+# === Feature Flags ===
+features:
+  auto_recovery: false
+  parallel_execution: false
+  cost_optimization: false
+  experimental_agents: true  # dev 可以跑实验性 agent
+
+quality_gates:
+  L0:
+    enabled: true
+    timeout: 30
+  L1:
+    enabled: true
+    timeout: 300
+    min_success_rate: 0.85
+  L2:
+    enabled: true
+    require_approval: true
+
+storage:
+  backend: "sqlite"
+  path: "C:\\Users\\A\\.openclaw\\workspace\\aios-dev\\data\\aios.db"
+  backup:
+    enabled: true
+    interval_hours: 24
+    retention_days: 3
+    path: "C:\\Users\\A\\.openclaw\\workspace\\aios-dev\\backups"
+
+cron:
+  heartbeat:
+    enabled: false
+    schedule: "*/30 * * * *"
+  learning:
+    enabled: false
+    schedule: "50 8 * * *"
+  health_check:
+    enabled: false
+    schedule: "0 */6 * * *"
+  cleanup:
+    enabled: false
+    schedule: "0 2 * * *"
+  backup:
+    enabled: false
+    schedule: "0 3 * * *"
+  reports:
+    enabled: false
+    schedule: "0 9 * * *"
+
+cost_control:
+  daily_limit: 1.0
+  monthly_limit: 20.0
+  alert_at_percent: 80
+  model_costs:
+    input:
+      "claude-opus-4-6": 15.0
+      "claude-sonnet-4-6": 3.0
+      "claude-haiku-4-5": 0.8
+    output:
+      "claude-opus-4-6": 75.0
+      "claude-sonnet-4-6": 15.0
+      "claude-haiku-4-5": 4.0

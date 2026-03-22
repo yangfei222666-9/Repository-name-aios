@@ -16,6 +16,20 @@ memory/
 config_local.py
 api_keys.json
 
+# ── 敏感配置文件（明文 token/密钥）──────────────────────────────────
+# notify.json 可能含明文 bot_token/chat_id，禁止入库
+agent_system/config/notify.json
+agent_system/config/notify.*.json
+# auth.json 含明文 api_token，禁止入库
+agent_system/config/auth.json
+# 允许示例文件入库
+!agent_system/config/*.example.json
+
+# 运行时数据目录（按环境隔离后的数据目录）
+agent_system/data/dev/
+agent_system/data/staging/
+agent_system/data/prod/
+
 # LanceDB data
 lancedb_data/
 *.lance

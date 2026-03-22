@@ -1,0 +1,133 @@
+# AIOS Staging Configuration
+# 尽量贴近 prod，但数据/通知目标隔离
+# 用法：TAIJI_ENV=staging
+
+version: "1.0"
+environment: staging
+
+# === Core Settings ===
+core:
+  workspace: "C:\\Users\\A\\.openclaw\\workspace\\aios-staging"
+  log_level: "INFO"
+  max_workers: 3
+  timeout_seconds: 180
+
+# === Model Configuration ===
+models:
+  default: "claude-sonnet-4-6"
+  thinking:
+    enabled: false
+    model: "claude-opus-4-6"
+  fallback: "claude-haiku-4-5"
+  api_key_env: "OPENCLAW_API_KEY"
+
+# === Agent System ===
+agents:
+  max_concurrent: 3
+  retry_limit: 2
+  health_check_interval: 1800
+
+  timeouts:
+    coder: 120
+    analyst: 90
+    monitor: 60
+    default: 90
+
+# === Task Queue ===
+queue:
+  max_pending: 30
+  priority_levels: ["critical", "high", "normal", "low"]
+  auto_cleanup_days: 3
+
+# === Self-Improving Loop ===
+self_improving:
+  enabled: true
+  min_samples: 3
+  confidence_threshold: 0.70
+  auto_apply: false  # staging 仍需人工审批
+  rollback_enabled: true
+  backup_retention_days: 7
+
+# === Monitoring & Alerts ===
+monitoring:
+  health_check_interval: 1800
+  alert_threshold:
+    error_rate: 0.20
+    latency_p95: 15.0
+    cost_daily: 2.0
+  metrics_retention_days: 30
+
+# === Notifications ===
+# staging 告警发到独立的 staging 群，严禁复用 prod chat_id
+notifications:
+  telegram:
+    enabled: true
+    bot_token_env: "TAIJI_TELEGRAM_BOT_TOKEN"
+    chat_id_env: "TAIJI_STAGING_TELEGRAM_CHAT_ID"  # staging 专用 chat_id
+
+  channels:
+    critical: ["telegram"]
+    warning: ["telegram"]
+    info: []
+
+# === Feature Flags ===
+features:
+  auto_recovery: true
+  parallel_execution: true
+  cost_optimization: true
+  experimental_agents: false
+
+quality_gates:
+  L0:
+    enabled: true
+    timeout: 30
+  L1:
+    enabled: true
+    timeout: 300
+    min_success_rate: 0.85
+  L2:
+    enabled: true
+    require_approval: true
+
+storage:
+  backend: "sqlite"
+  path: "C:\\Users\\A\\.openclaw\\workspace\\aios-staging\\data\\aios.db"
+  backup:
+    enabled: true
+    interval_hours: 24
+    retention_days: 7
+    path: "C:\\Users\\A\\.openclaw\\workspace\\aios-staging\\backups"
+
+cron:
+  heartbeat:
+    enabled: true
+    schedule: "*/30 * * * *"
+  learning:
+    enabled: false
+    schedule: "50 8 * * *"
+  health_check:
+    enabled: true
+    schedule: "0 */6 * * *"
+  cleanup:
+    enabled: true
+    schedule: "0 2 * * *"
+  backup:
+    enabled: true
+    schedule: "0 3 * * *"
+  reports:
+    enabled: true
+    schedule: "0 9 * * *"
+
+cost_control:
+  daily_limit: 2.0
+  monthly_limit: 50.0
+  alert_at_percent: 80
+  model_costs:
+    input:
+      "claude-opus-4-6": 15.0
+      "claude-sonnet-4-6": 3.0
+      "claude-haiku-4-5": 0.8
+    output:
+      "claude-opus-4-6": 75.0
+      "claude-sonnet-4-6": 15.0
+      "claude-haiku-4-5": 4.0

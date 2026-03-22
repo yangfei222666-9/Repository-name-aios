@@ -16,7 +16,22 @@ AIOS_ROOT = Path(__file__).resolve().parent.parent
 def replay(start_ts: int, end_ts: int, days: int = 30) -> dict:
     """抽取 [start_ts, end_ts] 的事件，写入临时文件，重跑 analyze"""
     all_events = load_events(days)
-    filtered = [e for e in all_events if start_ts <= e.get("ts", 0) <= end_ts]
+    filtered = []
+    for e in all_events:
+        raw = e.get("epoch")
+        if raw is None:
+            raw = e.get("ts", 0)
+        ts = 0
+        if isinstance(raw, (int, float)):
+            ts = int(raw)
+        else:
+            s = str(raw or "").strip()
+            try:
+                ts = int(float(s))
+            except Exception:
+                ts = 0
+        if start_ts <= ts <= end_ts:
+            filtered.append(e)
 
     if not filtered:
         return {"error": "no events in range", "count": 0}

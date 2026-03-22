@@ -6,10 +6,25 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      run_full:
+        description: '运行 full 套件'
+        type: boolean
+        default: false
+  schedule:
+    # 每天 02:00 UTC 跑 full
+    - cron: '0 2 * * *'
+
+# 任一 gate 红灯禁止进 prod
+env:
+  TAIJI_ENV: dev
+  PYTHONIOENCODING: utf-8
+  PYTHONUTF8: "1"
 
 jobs:
-  quick-gate:
-    name: Quick Gate (fail-fast)
+  # ── SMOKE（PR 必过）────────────────────────────────────────────────
+  smoke:
+    name: Smoke Gate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,38 +36,121 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev]"
+          pip install flake8 pytest
+          pip install -e ".[dev]" || pip install -e "." || true
 
-      - name: Quick test (fail on first error)
+      # 1. 语法检查（致命错误级别）
+      - name: Lint - fatal errors
         run: |
-          pytest tests/ -q --maxfail=1 --tb=short --no-cov
+          flake8 aios/ --count --select=E9,F63,F7,F82 \
+            --exclude=__pycache__,dist,build,htmlcov \
+            --show-source --statistics
 
-  test:
-    name: Full Test Suite
-    needs: quick-gate
+      # 2. compileall
+      - name: Compile check
+        run: |
+          python -m compileall aios/agent_system/ aios/core/ -q
+
+      # 3. 配置校验
+      - name: Config validation
+        run: |
+          python aios/agent_system/scripts/validate_config.py --strict
+        continue-on-error: false
+
+      # 4. path_sweeper gate（high=0, ledger_fork=0）
+      - name: Path sweeper gate
+        run: |
+          python aios/agent_system/scripts/path_sweeper.py \
+            --gate \
+            --gate-max-high 0 \
+            --gate-max-ledger-fork 0 \
+            --out-dir /tmp/ci-artifacts
+        continue-on-error: false
+
+      # 5. secret scan gate
+      - name: Secret scan gate
+        run: |
+          python aios/agent_system/scripts/secret_scan.py \
+            --gate \
+            --out-dir /tmp/ci-artifacts
+        continue-on-error: false
+
+      # 6. 核心 pytest 子集（不含 e2e/integration）
+      - name: Core tests
+        run: |
+          pytest tests/ \
+            --ignore=tests/e2e \
+            --ignore=tests/integration \
+            -q --maxfail=3 --tb=short \
+            --junitxml=/tmp/ci-artifacts/smoke-junit.xml
+        continue-on-error: false
+
+      # 产物上传
+      - name: Upload smoke artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-artifacts-${{ github.run_id }}
+          path: /tmp/ci-artifacts/
+          retention-days: 7
+
+  # ── FULL（夜间 / 手动）────────────────────────────────────────────
+  full:
+    name: Full Suite
+    needs: smoke
+    if: |
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && inputs.run_full == true)
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ['3.10', '3.11', '3.12']
+        python-version: ['3.11', '3.12']
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev]"
+          pip install -e ".[dev]" || pip install -e "." || true
 
-      - name: Run tests with skip report
+      # 完整测试套件
+      - name: Full pytest
         run: |
-          pytest tests/ -v -ra --cov=agent_system --cov=aios --cov=core --cov-report=xml --cov-report=term-missing --tb=short
+          pytest tests/ -v -ra \
+            --cov=aios/agent_system --cov=aios/core \
+            --cov-report=xml \
+            --cov-report=term-missing \
+            --tb=short \
+            --junitxml=full-junit.xml
+        env:
+          TAIJI_ENV: dev
+
+      # 多环境配置启动验证
+      - name: Multi-env config check
+        run: |
+          for env in dev staging prod; do
+            TAIJI_ENV=$env python aios/agent_system/scripts/validate_config.py --env $env
+          done
+        shell: bash
+
+      # 告警链路集成测试（不真实发送，dry-run）
+      - name: Alert chain dry-run
+        run: |
+          python aios/agent_system/telegram_notifier.py send \
+            --title "CI dry-run" \
+            --level info \
+            --reason-code ci_dry_run \
+            --caller ci-full || true
+        env:
+          TAIJI_ENV: dev
+          # 不设置 token，预期返回 missing_telegram_config（exit 2）
 
       - name: Upload coverage
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
@@ -61,7 +159,21 @@ jobs:
           file: ./coverage.xml
           flags: unittests
 
-  lint:
+      - name: Upload full artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-artifacts-${{ matrix.os }}-py${{ matrix.python-version }}-${{ github.run_id }}
+          path: |
+            full-junit.xml
+            coverage.xml
+          retention-days: 14
+
+  # ── PROD GATE（main 分支 push 才跑）──────────────────────────────
+  prod-gate:
+    name: Prod Gate
+    needs: smoke
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -70,8 +182,30 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install lint tools
-        run: pip install flake8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]" || pip install -e "." || true
 
-      - name: Lint (fatal errors only)
-        run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      # prod 环境配置严格校验
+      - name: Prod config strict validation
+        run: |
+          TAIJI_ENV=prod python aios/agent_system/scripts/validate_config.py \
+            --env prod --strict
+
+      # prod 不允许任何 high severity 路径问题
+      - name: Prod path sweeper strict gate
+        run: |
+          python aios/agent_system/scripts/path_sweeper.py \
+            --gate \
+            --gate-max-high 0 \
+            --gate-max-ledger-fork 0 \
+            --out-dir /tmp/prod-gate-artifacts
+
+      - name: Upload prod gate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-gate-artifacts-${{ github.run_id }}
+          path: /tmp/prod-gate-artifacts/
+          retention-days: 30

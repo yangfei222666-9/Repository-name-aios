@@ -20,25 +20,25 @@ class ModelConfig:
     # 模型映射
     MODELS = {
         "planning": {
-            "model": "claude-opus-4-5",
+            "model": "ollama/llama3.2:latest",
             "temperature": 0,  # 降低随机性，提高稳定性
             "max_tokens": 2000,
-            "reason": "强大推理能力，适合复杂任务拆解"
+            "reason": "最强推理能力，适合复杂任务拆解"
         },
         "memory": {
-            "model": "deepseek-r1",
+            "model": "ollama/llama3.2:latest",
             "temperature": 0,
             "max_tokens": 1000,
-            "reason": "性价比高，适合记忆检索"
+            "reason": "稳定快速，适合记忆检索与整理"
         },
         "vision": {
-            "model": "gemini-2.0",
+            "model": "ollama/llama3.2:latest",
             "temperature": 0.3,
             "max_tokens": 1500,
             "reason": "多模态支持，适合图像理解"
         },
         "default": {
-            "model": "claude-sonnet-4-6",
+            "model": "ollama/llama3.2:latest",
             "temperature": 0.7,
             "max_tokens": 1500,
             "reason": "平衡性能和成本"

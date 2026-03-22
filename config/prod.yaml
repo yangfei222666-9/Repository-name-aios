@@ -3,7 +3,7 @@
 # Environment: Production (stable, cost-optimized)
 
 version: "1.0"
-environment: production
+environment: prod
 
 # === Core Settings ===
 core:
@@ -129,8 +129,9 @@ cost_control:
 notifications:
   telegram:
     enabled: true
-    chat_id_env: "TELEGRAM_CHAT_ID"
-    
+    bot_token_env: "TAIJI_TELEGRAM_BOT_TOKEN"
+    chat_id_env: "TAIJI_TELEGRAM_CHAT_ID"  # prod 专用 chat_id
+
   channels:
     critical: ["telegram"]  # Critical alerts
     warning: ["telegram"]   # Warnings

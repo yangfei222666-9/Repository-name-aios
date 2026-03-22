@@ -16,6 +16,7 @@ import subprocess
 from typing import Optional, Dict, Any, List
 from dataclasses import dataclass
 from pathlib import Path
+import os
 
 @dataclass
 class LLMResponse:
@@ -52,8 +53,8 @@ class LLM:
         # 验证配置
         if self.provider == "ollama":
             self._check_ollama()
-        elif self.provider in ["deepseek", "claude"]:
-            if not api_key:
+        elif self.provider in ["deepseek", "claude", "pgt"]:
+            if not self._resolved_api_key():
                 raise ValueError(f"{provider} 需要 API Key")
     
     def _check_ollama(self):
@@ -88,8 +89,32 @@ class LLM:
             return self._generate_deepseek(prompt, system, temperature, max_tokens)
         elif self.provider == "claude":
             return self._generate_claude(prompt, system, temperature, max_tokens)
+        elif self.provider == "pgt":
+            return self._generate_pgt(prompt, system, temperature, max_tokens)
         else:
             raise ValueError(f"不支持的提供商: {self.provider}")
+
+    def _resolved_api_key(self) -> Optional[str]:
+        if self.api_key:
+            return self.api_key
+        if self.provider == "pgt":
+            k = os.getenv("PGT_RELAY_API_KEY", "").strip()
+            return k or None
+        return None
+
+    def _resolved_base_url(self) -> Optional[str]:
+        if self.base_url:
+            return self.base_url
+        if self.provider == "pgt":
+            full = os.getenv("PGT_RELAY_URL", "").strip()
+            if full:
+                return full
+            base = os.getenv("PGT_RELAY_BASE_URL", "").strip().rstrip("/")
+            if not base:
+                return None
+            path = os.getenv("PGT_RELAY_CHAT_PATH", "/v1/chat/completions").strip().lstrip("/")
+            return f"{base}/{path}"
+        return None
     
     def _generate_ollama(self, prompt: str, system: Optional[str], 
                         temperature: float, max_tokens: int) -> LLMResponse:
@@ -198,6 +223,86 @@ class LLM:
                 cost=cost
             )
         
+        except Exception as e:
+            return LLMResponse(
+                content="",
+                model=self.model,
+                provider=self.provider,
+                error=str(e)
+            )
+
+    def _generate_pgt(self, prompt: str, system: Optional[str],
+                     temperature: float, max_tokens: int) -> LLMResponse:
+        try:
+            import requests
+
+            url = self._resolved_base_url()
+            if not url:
+                return LLMResponse(
+                    content="",
+                    model=self.model,
+                    provider=self.provider,
+                    error="PGT_RELAY_URL/PGT_RELAY_BASE_URL 未配置"
+                )
+
+            api_key = self._resolved_api_key()
+            if not api_key:
+                return LLMResponse(
+                    content="",
+                    model=self.model,
+                    provider=self.provider,
+                    error="PGT_RELAY_API_KEY 未配置"
+                )
+            if not api_key.isascii():
+                return LLMResponse(
+                    content="",
+                    model=self.model,
+                    provider=self.provider,
+                    error="PGT_RELAY_API_KEY 包含非 ASCII 字符，请只粘贴纯 key（不要带中文说明/引号内容）"
+                )
+
+            messages = []
+            if system:
+                messages.append({"role": "system", "content": system})
+            messages.append({"role": "user", "content": prompt})
+
+            timeout_s = float(os.getenv("PGT_TIMEOUT_S", "60"))
+            response = requests.post(
+                url,
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "model": self.model,
+                    "messages": messages,
+                    "temperature": temperature,
+                    "max_tokens": max_tokens
+                },
+                timeout=timeout_s
+            )
+
+            if response.status_code != 200:
+                return LLMResponse(
+                    content="",
+                    model=self.model,
+                    provider=self.provider,
+                    error=f"API 错误: {response.status_code}"
+                )
+
+            data = response.json()
+            content = data["choices"][0]["message"]["content"]
+            usage = data.get("usage") or {}
+            tokens_used = int(usage.get("total_tokens") or 0)
+
+            return LLMResponse(
+                content=content,
+                model=self.model,
+                provider=self.provider,
+                tokens_used=tokens_used,
+                cost=0.0
+            )
+
         except Exception as e:
             return LLMResponse(
                 content="",

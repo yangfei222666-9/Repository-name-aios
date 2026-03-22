@@ -21,6 +21,7 @@ from __future__ import annotations
 import json
 import time
 import uuid
+import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 import sys
@@ -300,6 +301,7 @@ if __name__ == "__main__":
     submit_parser.add_argument("--type", default="code", choices=TASK_TYPES, help="Task type")
     submit_parser.add_argument("--priority", default="normal", choices=PRIORITIES, help="Priority")
     submit_parser.add_argument("--agent", help="Assign to specific agent")
+    submit_parser.add_argument("--token", default="", help="API token (or env TAIJIOS_API_TOKEN)")
     
     # list command
     list_parser = subparsers.add_parser("list", help="List tasks")
@@ -322,13 +324,32 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     if args.command == "submit":
-        task_id = submit_task(
-            description=args.desc,
-            task_type=args.type,
-            priority=args.priority,
-            assigned_agent=args.agent,
-        )
-        print(f"[OK] Task submitted: {task_id}")
+        from auth import require, write_op_audit
+        token = (args.token or os.environ.get("TAIJIOS_API_TOKEN", "")).strip()
+        try:
+            require(token, caller="cli:task_submitter", action="tasks.submit")
+        except PermissionError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(2)
+        try:
+            task_id = submit_task(
+                description=args.desc,
+                task_type=args.type,
+                priority=args.priority,
+                assigned_agent=args.agent,
+            )
+            write_op_audit(
+                caller="cli:task_submitter", action="tasks.submit",
+                op_result="success", task_id=task_id,
+            )
+            print(f"[OK] Task submitted: {task_id}")
+        except Exception as e:
+            write_op_audit(
+                caller="cli:task_submitter", action="tasks.submit",
+                op_result="failed", fail_reason=str(e),
+            )
+            print(f"[ERROR] Submit failed: {e}")
+            sys.exit(1)
     
     elif args.command == "list":
         tasks = list_tasks(

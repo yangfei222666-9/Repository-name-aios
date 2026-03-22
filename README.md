@@ -77,6 +77,47 @@ flowchart TD
 
 ---
 
+## Main-Chain Baselines
+
+AIOS treats “a task is done” as an end-to-end, reproducible chain with artifacts and evidence.
+
+### Mouseflow Main Chain (Repeatable Baseline)
+
+```powershell
+$env:PYTHONPATH="g:/TaijiOS_Backup"
+python g:/TaijiOS_Backup/aios/agent_system/scripts/verify_mouseflow_main_chain_baseline.py --repeat 5
+```
+
+Pass criteria:
+- `terminal_state=completed`
+- `reason_code=ok`
+- `blocked_stage=none`
+- Evidence exists on disk (analysis_outputs + task_executions + spawn_results)
+
+### Shared External Memory (shared_state.json)
+
+Shared state is a minimal collaboration layer designed for “read-before-work / write-after-work”.
+
+File: `memory/shared_state.json`
+
+Fixed fields:
+- `current_goal` (single source of truth)
+- `active_task`
+- `latest_decision`
+- `handoff_notes`
+- `last_execution` (terminal_state + summary + evidence)
+
+CLI:
+
+```powershell
+$env:PYTHONPATH="g:/TaijiOS_Backup"
+python g:/TaijiOS_Backup/aios/agent_system/scripts/shared_state_cli.py --get current_goal
+python g:/TaijiOS_Backup/aios/agent_system/scripts/shared_state_cli.py --set active_task --value "..." --writer "xiaojiu" --task-id "task-001"
+python g:/TaijiOS_Backup/aios/agent_system/scripts/shared_state_cli.py --set-last-execution --terminal-state completed --reason-code ok --summary "..." --evidence "path-or-url" --writer "xiaojiu" --task-id "task-001"
+```
+
+---
+
 ## Full Runtime
 
 The demo uses a mock executor for simplicity. The full runtime requires:

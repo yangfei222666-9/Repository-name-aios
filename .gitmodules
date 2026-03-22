@@ -1,0 +1,6 @@
+[submodule "agent_system"]
+	path = agent_system
+	url = https://github.com/yangfei222666-9/self-improving-loop.git
+[submodule "AIOS-Friend-Edition/agent_system"]
+	path = AIOS-Friend-Edition/agent_system
+	url = https://github.com/yangfei222666-9/self-improving-loop.git

@@ -36,8 +36,8 @@ def read_json(file_path):
             return None
 
 def main():
-    base_dir = Path(r"C:\Users\A\.openclaw\workspace\aios\agent_system")
-    output_path = Path(r"C:\Users\A\.openclaw\workspace\aios\dashboard\export_data.json")
+    base_dir = (__import__('pathlib').Path(__import__('os').environ.get('OPENCLAW_WORKSPACE') or __import__('pathlib').Path.home() / '.openclaw' / 'workspace')) / 'aios' / 'agent_system'
+    output_path = (__import__('pathlib').Path(__import__('os').environ.get('OPENCLAW_WORKSPACE') or __import__('pathlib').Path.home() / '.openclaw' / 'workspace')) / 'aios' / 'dashboard' / 'export_data.json'
     
     print("=== AIOS Data Export ===")
     

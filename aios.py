@@ -359,6 +359,12 @@ def main():
         default=50,
         help="最大结果数（用于 tasks 命令）"
     )
+
+    parser.add_argument(
+        "--token",
+        default="",
+        help="任务提交鉴权 token（也可用环境变量 TAIJIOS_API_TOKEN）"
+    )
     
     args = parser.parse_args()
     
@@ -394,13 +400,33 @@ def main():
             print("[ERROR] --desc is required for submit command")
             sys.exit(1)
         
+        from agent_system.auth import require, write_op_audit
+        token = (args.token or os.environ.get("TAIJIOS_API_TOKEN", "")).strip()
+        try:
+            require(token, caller="cli:aios.py", action="tasks.submit")
+        except PermissionError as e:
+            print(f"[ERROR] {e}")
+            sys.exit(2)
+
         from core.task_submitter import submit_task
-        task_id = submit_task(
-            description=args.desc,
-            task_type=args.type,
-            priority=args.priority,
-        )
-        print(f"[OK] Task submitted: {task_id}")
+        try:
+            task_id = submit_task(
+                description=args.desc,
+                task_type=args.type,
+                priority=args.priority,
+            )
+            write_op_audit(
+                caller="cli:aios.py", action="tasks.submit",
+                op_result="success", task_id=task_id,
+            )
+            print(f"[OK] Task submitted: {task_id}")
+        except Exception as e:
+            write_op_audit(
+                caller="cli:aios.py", action="tasks.submit",
+                op_result="failed", fail_reason=str(e),
+            )
+            print(f"[ERROR] Submit failed: {e}")
+            sys.exit(1)
     
     elif args.command == "tasks":
         # List tasks

@@ -16,6 +16,7 @@ v0.2 Schema:
 
 import json, time, os, sys
 from pathlib import Path
+from datetime import datetime, timezone
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from core.config import get_path
@@ -219,8 +220,29 @@ def load_events(days: int = 30, event_type: str = None, layer: str = None) -> li
             continue
         try:
             ev = json.loads(line)
-            ts = ev.get("epoch", ev.get("ts", 0))
-            if ts < cutoff:
+            raw_ts = ev.get("epoch")
+            if raw_ts is None:
+                raw_ts = ev.get("ts", 0)
+            ts = 0.0
+            if isinstance(raw_ts, (int, float)):
+                ts = float(raw_ts)
+            else:
+                s = str(raw_ts or "").strip()
+                if not s:
+                    ts = 0.0
+                else:
+                    try:
+                        ts = float(s)
+                    except Exception:
+                        try:
+                            s2 = s.replace("Z", "+00:00")
+                            dt = datetime.fromisoformat(s2)
+                            if dt.tzinfo is None:
+                                dt = dt.replace(tzinfo=timezone.utc)
+                            ts = dt.timestamp()
+                        except Exception:
+                            ts = 0.0
+            if ts and ts < cutoff:
                 continue
             # v0.2 layer 过滤
             if layer and ev.get("layer") != layer:

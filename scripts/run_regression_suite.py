@@ -52,18 +52,23 @@ def test_engine_log_and_load():
     )
 
     ev = log_event("test", "regression", "test event", {"key": "value"})
-    assert ev["type"] == "test"
-    assert ev["ts"] > 0
+    assert ev["layer"] in ("KERNEL", "COMMS", "TOOL", "MEM", "SEC")
+    assert ev["event"].startswith("test_regression")
+    assert ev["epoch"] > 0
+    payload = ev.get("payload") or {}
+    assert payload.get("_v1_type") == "test"
+    assert payload.get("_v1_source") == "regression"
 
     tev = log_tool_event("test_tool", True, 42)
-    assert tev["data"]["name"] == "test_tool"
-    assert tev["data"]["ms"] == 42
+    payload2 = tev.get("payload") or {}
+    assert payload2["name"] == "test_tool"
+    assert payload2["ms"] == 42
 
     events = load_events(days=1, event_type="test")
     assert len(events) >= 1
 
     counts = count_by_type(days=1)
-    assert "test" in counts
+    assert "TOOL" in counts
 
 
 def test_policies():
@@ -223,7 +228,7 @@ def test_gateway_collector():
     record_tool("exec", True, 100)
     s = daily_summary()
     assert "tools" in s
-    assert "total_calls" in s
+    assert "total_events" in s
 
 
 # === replay ===
